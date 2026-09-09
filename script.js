@@ -69,7 +69,8 @@ const conteneur = document.getElementById("liste-articles");
 const boutonsFiltre = document.querySelectorAll(".filtre-btn:not(.filtre-adherer)");
 const menuToggle = document.getElementById("menu-toggle");
 const filtresList = document.getElementById("filtres-list");
-const boutonAdmin = document.getElementById("mode-admin");
+/* bouton admin géré dans le menu gauche */
+const boutonAdmin = { textContent: "" }; // placeholder inactif
 const formulaireAjout = document.getElementById("formulaire-ajout");
 
 /* ============================================================
@@ -138,22 +139,7 @@ function metAJourAffichageAdmin() {
     }
 }
 
-boutonAdmin.addEventListener("click", function () {
-    if (estAdmin) {
-        estAdmin = false;
-        sessionStorage.removeItem("adminUNDR");
-    } else {
-        const saisie = prompt("Mot de passe administrateur :");
-        if (saisie === MOT_DE_PASSE_ADMIN) {
-            estAdmin = true;
-            sessionStorage.setItem("adminUNDR", "true");
-        } else if (saisie !== null) {
-            alert("Mot de passe incorrect.");
-        }
-    }
-    metAJourAffichageAdmin();
-    afficherArticles();
-});
+/* Admin : géré dans le menu gauche (menu-btn-admin) */
 
 /* ============================================================
    MENU FILTRES
@@ -193,7 +179,7 @@ function mettreAJourBandeauAbo() {
             statut.innerHTML = `<div class="statut-abo inactif">🔒 Pas d'abonnement actif</div>
                 <button class="btn-payer" id="btn-abo-panneau" style="margin-top:8px;">S'abonner — 1 000 FCFA/mois</button>`;
             document.getElementById("btn-abo-panneau").addEventListener("click", function () {
-                document.getElementById("panneau-parametres").style.display = "none";
+                fermerMenuGauche();
                 ouvrirModalAbonnement();
             });
         }
@@ -581,28 +567,7 @@ if (boutonDirectEl) {
     });
 }
 
-/* ============================================================
-   PARTAGER L'APPLICATION
-   ============================================================ */
-const boutonPartagerEl = document.getElementById("partager-app");
-if (boutonPartagerEl) {
-    boutonPartagerEl.addEventListener("click", function () {
-        const lien = window.location.href;
-        if (navigator.share) {
-            navigator.share({
-                title: "UNDR Actualités",
-                text: "Découvrez UNDR Actualités, l'application du Groupe Parlementaire UNDR.",
-                url: lien
-            }).catch(function (err) { console.log("Partage annulé :", err); });
-        } else if (navigator.clipboard) {
-            navigator.clipboard.writeText(lien).then(function () {
-                alert("Lien copié : " + lien);
-            }).catch(function () { prompt("Copiez ce lien manuellement :", lien); });
-        } else {
-            prompt("Copiez ce lien manuellement :", lien);
-        }
-    });
-}
+/* Partager : géré dans le menu gauche (menu-btn-partager) */
 
 /* ============================================================
    LANGUE
@@ -652,27 +617,70 @@ document.querySelectorAll(".taille-btn").forEach(function (bouton) {
 appliquerTailleTexte(localStorage.getItem("tailleTexteUNDR") || "normal");
 
 /* ============================================================
-   PANNEAU PARAMÈTRES
+   MENU GAUCHE (tiroir)
    ============================================================ */
-const boutonOuvrirParametres = document.getElementById("ouvrir-parametres");
-const boutonFermerParametres = document.getElementById("fermer-parametres");
-if (boutonOuvrirParametres) {
-    boutonOuvrirParametres.addEventListener("click", function () {
-        mettreAJourBandeauAbo();
-        document.getElementById("panneau-parametres").style.display = "flex";
-    });
+function ouvrirMenuGauche() {
+    mettreAJourBandeauAbo();
+    document.getElementById("menu-gauche").style.display = "block";
+    document.getElementById("overlay-menu-gauche").style.display = "block";
 }
-if (boutonFermerParametres) {
-    boutonFermerParametres.addEventListener("click", function () {
-        document.getElementById("panneau-parametres").style.display = "none";
-    });
+function fermerMenuGauche() {
+    document.getElementById("menu-gauche").style.display = "none";
+    document.getElementById("overlay-menu-gauche").style.display = "none";
 }
+
+document.getElementById("ouvrir-menu-gauche").addEventListener("click", ouvrirMenuGauche);
+document.getElementById("fermer-menu-gauche").addEventListener("click", fermerMenuGauche);
+document.getElementById("overlay-menu-gauche").addEventListener("click", fermerMenuGauche);
+
+// Bouton Admin dans le menu gauche
+document.getElementById("menu-btn-admin").addEventListener("click", function () {
+    fermerMenuGauche();
+    if (estAdmin) {
+        estAdmin = false;
+        sessionStorage.removeItem("adminUNDR");
+    } else {
+        const saisie = prompt("Mot de passe administrateur :");
+        if (saisie === MOT_DE_PASSE_ADMIN) {
+            estAdmin = true;
+            sessionStorage.setItem("adminUNDR", "true");
+        } else if (saisie !== null) {
+            alert("Mot de passe incorrect.");
+        }
+    }
+    metAJourAffichageAdmin();
+    afficherArticles();
+});
+
+// Bouton Partager dans le menu gauche
+document.getElementById("menu-btn-partager").addEventListener("click", function () {
+    fermerMenuGauche();
+    const lien = window.location.href;
+    if (navigator.share) {
+        navigator.share({ title: "UNDR Actualités", url: lien });
+    } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(lien).then(function () { alert("Lien copié !"); });
+    } else {
+        prompt("Copiez ce lien :", lien);
+    }
+});
+
+// Bouton Adhérer dans le menu gauche
+document.getElementById("menu-btn-adherer").addEventListener("click", function () {
+    fermerMenuGauche();
+    ouvrirModalAdhesion();
+});
+
+// Bouton S'abonner dans le menu gauche
+document.getElementById("menu-btn-abonner").addEventListener("click", function () {
+    fermerMenuGauche();
+    ouvrirModalAbonnement();
+});
 
 /* ============================================================
    MODAL ADHÉSION
    ============================================================ */
 function ouvrirModalAdhesion() {
-    // Réinitialiser
     document.getElementById("etape-adhesion-1").style.display = "block";
     document.getElementById("etape-adhesion-2").style.display = "none";
     document.getElementById("etape-adhesion-3").style.display = "none";
@@ -689,9 +697,8 @@ function fermerModalAdhesion() {
     document.getElementById("modal-adhesion").style.display = "none";
 }
 
-// Boutons qui ouvrent la modal adhésion
-document.getElementById("btn-adherer-menu").addEventListener("click", ouvrirModalAdhesion);
-document.getElementById("btn-adherer-footer").addEventListener("click", ouvrirModalAdhesion);
+// Bouton Adhérer dans le bandeau
+document.getElementById("bandeau-btn-adherer").addEventListener("click", ouvrirModalAdhesion);
 document.getElementById("fermer-adhesion").addEventListener("click", fermerModalAdhesion);
 document.getElementById("fermer-succes-adhesion").addEventListener("click", fermerModalAdhesion);
 
@@ -808,8 +815,8 @@ function fermerModalAbonnement() {
     document.getElementById("modal-abonnement").style.display = "none";
 }
 
-// Boutons qui ouvrent la modal abonnement
-document.getElementById("btn-abonner-footer").addEventListener("click", ouvrirModalAbonnement);
+// Bouton S'abonner depuis le bandeau
+
 document.getElementById("fermer-abonnement").addEventListener("click", fermerModalAbonnement);
 document.getElementById("fermer-succes-abo").addEventListener("click", function () {
     fermerModalAbonnement();
