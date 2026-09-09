@@ -1,8 +1,9 @@
 /* ============================================================
    UNDR Actualités — script.js — Version complète corrigée
-   7 corrections : paiement, adhésion organe/poste, admin secret,
-   bandeau orange, Times New Roman 12, partage par article, vues admin
+   Corrections : bouton admin visible, DOMContentLoaded, ordre scripts
    ============================================================ */
+
+document.addEventListener("DOMContentLoaded", function () {
 
 const MOT_DE_PASSE_ADMIN = "undr2026";
 let estAdmin = sessionStorage.getItem("adminUNDR") === "true";
@@ -28,14 +29,27 @@ const boutonsFiltre = document.querySelectorAll(".filtre-btn");
    ADMIN — POINT ORANGE SECRET
    ============================================================ */
 function mettreAJourPointAdmin() {
+    // Point dans le menu gauche
     const point = document.getElementById("point-admin");
-    if (!point) return;
-    point.textContent = estAdmin ? "●" : "●";
-    point.style.color = estAdmin ? "#e63946" : "#e67e22";
-    point.title = estAdmin ? "Admin actif — cliquer pour quitter" : "Accès admin";
+    if (point) {
+        point.textContent = estAdmin ? "●" : "●";
+        point.style.color = estAdmin ? "#e63946" : "#e67e22";
+        point.title = estAdmin ? "Admin actif — cliquer pour quitter" : "Accès admin";
+    }
+    // Bouton ⚙ dans le header
+    const btnHeader = document.getElementById("btn-admin-header");
+    if (btnHeader) {
+        btnHeader.title = estAdmin ? "Admin actif — cliquer pour quitter" : "Accès administrateur";
+        if (estAdmin) {
+            btnHeader.classList.add("admin-actif");
+        } else {
+            btnHeader.classList.remove("admin-actif");
+        }
+    }
 }
 
-document.getElementById("point-admin").addEventListener("click", function (e) {
+// Fonction partagée pour la logique admin (point menu + bouton header)
+function gererClicAdmin(e) {
     e.stopPropagation();
     if (estAdmin) {
         if (confirm("Quitter le mode administration ?")) {
@@ -58,7 +72,10 @@ document.getElementById("point-admin").addEventListener("click", function (e) {
         metAJourAffichageAdmin();
         afficherArticles();
     }
-});
+}
+
+document.getElementById("point-admin").addEventListener("click", function(e) { e.stopPropagation(); gererClicAdmin(e); });
+document.getElementById("btn-admin-header").addEventListener("click", function(e) { e.stopPropagation(); gererClicAdmin(e); });
 
 function metAJourAffichageAdmin() {
     const form = document.getElementById("formulaire-ajout");
@@ -743,3 +760,5 @@ rafraichirPubs();
 afficherArticles();
 
 if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js"); }
+
+}); // fin DOMContentLoaded
