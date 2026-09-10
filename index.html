@@ -17,27 +17,26 @@
         <div class="menu-logo">
             <div style="position:relative; display:inline-block;">
                 <img src="logo.png" alt="UNDR" style="width:52px;">
-                <!-- Point orange admin secret -->
-                <span id="point-admin" class="point-admin" title=""></span>
+                <span id="point-admin" class="point-admin">●</span>
             </div>
             <strong style="font-size:15px; color:#003366;">UNDR Actualités</strong>
         </div>
         <hr style="margin:14px 0;">
-        <button class="menu-item-btn" id="menu-btn-adherer">📋 Adhérer à l'UNDR</button>
-        <button class="menu-item-btn" id="menu-btn-abonner">💎 S'abonner</button>
-        <button class="menu-item-btn" id="menu-btn-partager">📤 Partager l'application</button>
+        <button class="menu-item-btn" id="menu-btn-adherer">📋 <span data-i18n="menu_adherer">Adhérer à l'UNDR</span></button>
+        <button class="menu-item-btn" id="menu-btn-abonner">💎 <span data-i18n="menu_abonner">S'abonner</span></button>
+        <button class="menu-item-btn" id="menu-btn-partager">📤 <span data-i18n="menu_partager">Partager l'application</span></button>
         <hr style="margin:14px 0;">
-        <p class="menu-section-titre">Langue</p>
+        <p class="menu-section-titre" data-i18n="menu_langue">Langue</p>
         <div class="choix-langue">
             <button class="lang-btn" data-lang="fr">Français</button>
             <button class="lang-btn" data-lang="en">English</button>
             <button class="lang-btn" data-lang="ar">عربية</button>
         </div>
-        <p class="menu-section-titre">Apparence</p>
+        <p class="menu-section-titre" data-i18n="menu_apparence">Apparence</p>
         <label class="switch-sombre">
-            <input type="checkbox" id="toggle-sombre"> Mode sombre
+            <input type="checkbox" id="toggle-sombre"> <span data-i18n="menu_sombre">Mode sombre</span>
         </label>
-        <p class="menu-section-titre">Taille du texte</p>
+        <p class="menu-section-titre" data-i18n="menu_taille">Taille du texte</p>
         <div class="choix-taille">
             <button class="taille-btn" data-taille="petit">A-</button>
             <button class="taille-btn" data-taille="normal">A</button>
@@ -49,15 +48,15 @@
 </div>
 <div id="overlay-menu-gauche" class="overlay-menu-gauche" style="display:none;"></div>
 
-<!-- ===== BOUTON HAMBURGER ===== -->
+<!-- ===== HAMBURGER ===== -->
 <button id="ouvrir-menu-gauche" class="icone-menu">☰</button>
 
-<!-- ===== BANDEAU (orange) + boutons Adhérer & S'abonner ===== -->
+<!-- ===== BANDEAU ORANGE ===== -->
 <div id="bandeau-abonnement" class="bandeau-abonnement" style="display:none;">
-    🔒 Contenu réservé aux abonnés
+    🔒 <span data-i18n="bandeau_texte">Contenu réservé aux abonnés</span>
     <div class="bandeau-boutons">
-        <button id="bandeau-btn-adherer">📋 Adhérer</button>
-        <button id="bandeau-btn-abo">💎 S'abonner</button>
+        <button id="bandeau-btn-adherer">📋 <span data-i18n="btn_adherer">Adhérer</span></button>
+        <button id="bandeau-btn-abo">💎 <span data-i18n="btn_abonner">S'abonner</span></button>
     </div>
 </div>
 
@@ -65,8 +64,6 @@
 <header>
     <img src="logo.png" alt="UNDR L'Espoir" class="logo">
     <h1 class="titre-site">UNDR Actualités</h1>
-    <!-- Bouton admin discret toujours visible -->
-    <button id="btn-admin-header" class="btn-admin-header" title="Administration">⚙</button>
 </header>
 
 <!-- ===== PUB HAUTE ===== -->
@@ -76,20 +73,19 @@
 
 <!-- ===== FILTRES ===== -->
 <div class="filtres" id="filtres-list">
-    <button class="filtre-btn actif" data-categorie="Toutes">Toutes</button>
-    <button class="filtre-btn" data-categorie="Actualités">Actualités</button>
-    <button class="filtre-btn" data-categorie="Activités">Activités</button>
-    <button class="filtre-btn" data-categorie="Communiqués">Communiqués</button>
-    <button class="filtre-btn" data-categorie="Portraits des membres du BNE">Portraits BNE</button>
-    <button class="filtre-btn" data-categorie="Actualités Tchad">Tchad</button>
-    <button class="filtre-btn" data-categorie="Actualités Politique">Politique</button>
-    <button class="filtre-btn" data-categorie="Divertissement">Divertissement</button>
+    <button class="filtre-btn actif" data-categorie="Toutes" data-i18n="cat_toutes">Toutes</button>
+    <button class="filtre-btn" data-categorie="Actualités" data-i18n="cat_actu">Actualités</button>
+    <button class="filtre-btn" data-categorie="Activités" data-i18n="cat_activ">Activités</button>
+    <button class="filtre-btn" data-categorie="Communiqués" data-i18n="cat_com">Communiqués</button>
+    <button class="filtre-btn" data-categorie="Portraits des membres du BNE" data-i18n="cat_bne">Portraits BNE</button>
+    <button class="filtre-btn" data-categorie="Actualités Tchad" data-i18n="cat_tchad">Tchad</button>
+    <button class="filtre-btn" data-categorie="Actualités Politique" data-i18n="cat_pol">Politique</button>
+    <button class="filtre-btn" data-categorie="Divertissement" data-i18n="cat_div">Divertissement</button>
 </div>
-<button id="menu-toggle" class="menu-toggle" style="display:none;">☰ Filtres</button>
 
 <!-- ===== FORMULAIRE ADMIN ===== -->
 <div class="formulaire" id="formulaire-ajout" style="display:none;">
-    <h2>Ajouter un article</h2>
+    <h2 data-i18n="form_titre">Ajouter un article</h2>
     <input type="text" id="nouveau-titre" placeholder="Titre de l'article">
     <select id="nouvelle-categorie">
         <option value="Actualités">Actualités</option>
@@ -100,8 +96,9 @@
         <option value="Actualités Politique">Actualités Politique</option>
         <option value="Divertissement">Divertissement</option>
     </select>
-    <!-- Éditeur de texte riche Times New Roman 12 -->
-    <div id="barre-outils-editeur" class="barre-outils-editeur">
+
+    <!-- Éditeur texte riche -->
+    <div class="barre-outils-editeur">
         <button type="button" onclick="document.execCommand('bold')"><b>G</b></button>
         <button type="button" onclick="document.execCommand('italic')"><i>I</i></button>
         <button type="button" onclick="document.execCommand('underline')"><u>S</u></button>
@@ -114,19 +111,27 @@
          style="font-family:'Times New Roman',serif; font-size:12pt;"
          placeholder="Contenu de l'article..."></div>
 
-    <label style="display:block; margin-top:10px; font-size:14px;">Image de l'article :</label>
+    <!-- Image -->
+    <label class="label-upload">📷 Image de l'article :</label>
     <input type="file" id="nouvelle-image" accept="image/*">
+    <div id="apercu-image-admin" class="apercu-media"></div>
 
-    <label style="display:block; margin-top:10px; font-size:14px;">Lien vidéo (YouTube/Facebook, optionnel) :</label>
-    <input type="text" id="nouvelle-video" placeholder="https://...">
+    <!-- Vidéo fichier -->
+    <label class="label-upload">🎬 Vidéo depuis le téléphone (MP4, max 50 Mo) :</label>
+    <input type="file" id="nouvelle-video-fichier" accept="video/*">
+    <div id="apercu-video-admin" class="apercu-media"></div>
+
+    <!-- Vidéo lien -->
+    <label class="label-upload">🔗 OU lien vidéo (YouTube / Facebook) :</label>
+    <input type="text" id="nouvelle-video" placeholder="https://www.youtube.com/...">
 
     <label style="display:flex; align-items:center; gap:8px; margin-top:10px; font-size:14px;">
-        <input type="checkbox" id="article-premium"> Contenu réservé aux abonnés 🔒
+        <input type="checkbox" id="article-premium"> 🔒 Contenu réservé aux abonnés
     </label>
 
     <button id="bouton-publier">Publier</button>
 
-    <!-- GESTION PUBS MAISON -->
+    <!-- PUBS MAISON -->
     <div class="admin-pub-section">
         <h3>📢 Publicités maison</h3>
         <label>Pub HAUTE :</label>
@@ -134,49 +139,42 @@
         <input type="text" id="pub-haut-lien" placeholder="Lien URL">
         <input type="file" id="pub-haut-image" accept="image/*">
         <button id="btn-sauver-pub-haut">💾 Enregistrer pub haute</button>
-
         <label style="margin-top:12px; display:block;">Pub BASSE :</label>
         <input type="text" id="pub-bas-titre" placeholder="Titre">
         <input type="text" id="pub-bas-lien" placeholder="Lien URL">
         <input type="file" id="pub-bas-image" accept="image/*">
         <button id="btn-sauver-pub-bas">💾 Enregistrer pub basse</button>
-
         <hr style="margin:16px 0;">
         <h3>👥 Demandes d'adhésion</h3>
         <div id="liste-adhesions" class="liste-adhesions">Chargement...</div>
-
         <hr style="margin:16px 0;">
-        <h3>💳 Abonnés à valider</h3>
+        <h3>💳 Abonnés</h3>
         <div id="liste-abonnes" class="liste-adhesions">Chargement...</div>
     </div>
 </div>
 
-<!-- ===== LISTE DES ARTICLES ===== -->
+<!-- ===== ARTICLES ===== -->
 <main id="liste-articles" class="grille-articles"></main>
 
 <!-- ===== VUE DÉTAIL ===== -->
 <div id="vue-detail" class="vue-detail" style="display:none;">
-    <button id="retour-liste" class="retour-btn">← Retour</button>
+    <button id="retour-liste" class="retour-btn">← <span data-i18n="btn_retour">Retour</span></button>
     <img id="detail-img" class="article-img" alt="">
     <div id="detail-video-zone"></div>
     <span id="detail-badge" class="badge"></span>
     <h2 id="detail-titre"></h2>
     <p id="detail-date" class="date-article"></p>
-    <!-- Vues : visibles uniquement pour les admins (géré par JS) -->
     <p id="detail-vues" class="vues-admin" style="display:none;"></p>
-    <!-- Bouton partager l'article -->
-    <button id="btn-partager-article" class="btn-partager-article">📤 Partager cet article</button>
+    <button id="btn-partager-article" class="btn-partager-article">📤 <span data-i18n="btn_partager_art">Partager cet article</span></button>
     <div id="detail-resume" class="contenu-article"></div>
-
     <div id="verrou-premium" class="verrou-premium" style="display:none;">
         <div class="verrou-contenu">
             <span class="verrou-icone">🔒</span>
-            <h3>Contenu réservé aux abonnés</h3>
-            <p>Abonnez-vous pour accéder à l'intégralité de cet article.</p>
-            <button class="btn-abo-verrou" id="btn-abo-verrou">S'abonner — 1 000 FCFA/mois</button>
+            <h3 data-i18n="verrou_titre">Contenu réservé aux abonnés</h3>
+            <p data-i18n="verrou_texte">Abonnez-vous pour accéder à l'intégralité de cet article.</p>
+            <button class="btn-abo-verrou" id="btn-abo-verrou" data-i18n="btn_abo_verrou">S'abonner — 1 000 FCFA/mois</button>
         </div>
     </div>
-
     <div id="lire-aussi" class="lire-aussi"></div>
 </div>
 
@@ -186,56 +184,58 @@
         <button class="fermer-modal" id="fermer-adhesion">✖</button>
         <div class="modal-header-adhesion">
             <img src="logo.png" alt="UNDR" style="width:55px; margin-bottom:6px;">
-            <h2>Adhérer à l'UNDR</h2>
-            <p>Rejoignez le mouvement pour l'espoir et le renouveau du Tchad</p>
+            <h2 data-i18n="adh_titre">Adhérer à l'UNDR</h2>
+            <p data-i18n="adh_sous">Rejoignez le mouvement pour l'espoir et le renouveau du Tchad</p>
         </div>
-
         <div id="etape-adhesion-1" class="etape-adhesion">
-            <h3>Votre identité</h3>
+            <h3 data-i18n="adh_identite">Votre identité</h3>
             <input type="text" id="adh-nom" placeholder="Nom et Prénom complet *">
-            <label class="label-champ">Date de naissance *</label>
+            <label class="label-champ" data-i18n="adh_naissance">Date de naissance *</label>
             <input type="date" id="adh-naissance">
             <input type="tel" id="adh-tel" placeholder="Numéro de téléphone *">
             <input type="text" id="adh-region" placeholder="Adresse / Région / Ville *">
-            <!-- NOUVEAU : Organe du Parti et Poste -->
             <input type="text" id="adh-organe" placeholder="Organe du Parti (ex: Bureau Exécutif, Section...)">
             <input type="text" id="adh-poste" placeholder="Poste occupé (ex: Secrétaire, Membre...)">
-            <label class="label-champ" style="margin-top:10px;">Photo d'identité * (max 2 Mo)</label>
+            <label class="label-champ" data-i18n="adh_photo">Photo d'identité * (max 2 Mo)</label>
             <div class="zone-photo-id">
                 <input type="file" id="adh-photo" accept="image/*">
                 <div id="apercu-photo" class="apercu-photo"></div>
             </div>
-            <button id="btn-suivant-adhesion" class="btn-primary-vert">Suivant →</button>
+            <button id="btn-suivant-adhesion" class="btn-primary-vert" data-i18n="btn_suivant">Suivant →</button>
         </div>
-
         <div id="etape-adhesion-2" class="etape-adhesion" style="display:none;">
-            <h3>Confirmation</h3>
+            <h3 data-i18n="adh_confirm">Confirmation</h3>
             <div id="recapitulatif-adhesion" class="recap-adhesion"></div>
             <div class="charte-adhesion">
-                <p><strong>En adhérant à l'UNDR, je m'engage à :</strong></p>
+                <p><strong data-i18n="charte_titre">En adhérant à l'UNDR, je m'engage à :</strong></p>
                 <ul>
-                    <li>Respecter les statuts et règlements du parti</li>
-                    <li>Contribuer activement aux activités du mouvement</li>
-                    <li>Défendre les valeurs de démocratie et de développement</li>
-                    <li>Payer la cotisation annuelle fixée par la direction</li>
+                    <li data-i18n="charte_1">Respecter les statuts et règlements du parti</li>
+                    <li data-i18n="charte_2">Contribuer activement aux activités du mouvement</li>
+                    <li data-i18n="charte_3">Défendre les valeurs de démocratie et de développement</li>
+                    <li data-i18n="charte_4">Payer la cotisation annuelle fixée par la direction</li>
                 </ul>
             </div>
             <label class="label-checkbox">
-                <input type="checkbox" id="adh-accord"> J'accepte la charte et les statuts de l'UNDR
+                <input type="checkbox" id="adh-accord"> <span data-i18n="charte_accord">J'accepte la charte et les statuts de l'UNDR</span>
             </label>
             <div class="btn-row">
-                <button id="btn-retour-adhesion" class="btn-secondary">← Retour</button>
-                <button id="btn-soumettre-adhesion" class="btn-primary-vert">✅ Soumettre</button>
+                <button id="btn-retour-adhesion" class="btn-secondary" data-i18n="btn_retour_f">← Retour</button>
+                <button id="btn-soumettre-adhesion" class="btn-primary-vert" data-i18n="btn_soumettre">✅ Soumettre</button>
             </div>
         </div>
-
         <div id="etape-adhesion-3" class="etape-adhesion" style="display:none;">
             <div class="succes-adhesion">
                 <div class="succes-icone">✅</div>
-                <h3>Demande envoyée !</h3>
-                <p>Un responsable de l'UNDR vous contactera sous 48h.</p>
+                <h3 data-i18n="adh_succes">Demande envoyée !</h3>
+                <p data-i18n="adh_succes_texte">Un responsable de l'UNDR vous contactera sous 48h.</p>
                 <p><strong>Dossier : <span id="num-dossier"></span></strong></p>
-                <button class="btn-primary-vert" id="fermer-succes-adhesion">Fermer</button>
+                <div class="info-pdf-telechargement">
+                    <span class="icone-pdf">📄</span>
+                    <p>Votre fiche d'adhésion a été <strong>téléchargée en PDF</strong> dans votre dossier <strong>Téléchargements</strong> sous le nom <code>adhesion_UNDR-XXXXXX.pdf</code>.</p>
+                    <p style="font-size:12px; color:#888; margin-top:6px;">Si le téléchargement ne s'est pas lancé, appuyez sur le bouton ci-dessous.</p>
+                    <button class="btn-retelecharger" id="btn-retelecharger-pdf">📥 Re-télécharger la fiche</button>
+                </div>
+                <button class="btn-primary-vert" id="fermer-succes-adhesion" data-i18n="btn_fermer" style="margin-top:12px;">Fermer</button>
             </div>
         </div>
     </div>
@@ -246,60 +246,67 @@
     <div class="modal-contenu">
         <button class="fermer-modal" id="fermer-abonnement">✖</button>
         <div class="modal-header-abo">
-            <h2>💎 Abonnement Premium</h2>
-            <p>Accédez à tous les contenus exclusifs de l'UNDR</p>
+            <h2>💎 <span data-i18n="abo_titre">Abonnement Premium</span></h2>
+            <p data-i18n="abo_sous">Accédez à tous les contenus exclusifs de l'UNDR</p>
         </div>
         <div class="offre-abo">
+            <div class="prix-abo-badge">1 000 FCFA <span>/mois</span></div>
             <div class="avantages-abo-liste">
-                <div>✅ Tous les articles sans restriction</div>
-                <div>✅ Actualités politiques exclusives</div>
-                <div>✅ Communiqués officiels complets</div>
-                <div>✅ Divertissement & contenus spéciaux</div>
+                <div>✅ <span data-i18n="abo_av1">Tous les articles sans restriction</span></div>
+                <div>✅ <span data-i18n="abo_av2">Actualités politiques exclusives</span></div>
+                <div>✅ <span data-i18n="abo_av3">Communiqués officiels complets</span></div>
+                <div>✅ <span data-i18n="abo_av4">Divertissement & contenus spéciaux</span></div>
             </div>
         </div>
 
+        <!-- ÉTAPE 1 : Coordonnées -->
         <div id="etape-paiement-1" class="etape-paiement">
-            <h3>Vos coordonnées</h3>
+            <h3 data-i18n="paiement_coords">Vos coordonnées</h3>
             <input type="text" id="abo-nom" placeholder="Nom et Prénom *">
-            <input type="tel" id="abo-tel" placeholder="Votre numéro Mobile Money *">
+            <input type="tel" id="abo-tel" placeholder="Numéro Mobile Money * (ex: 66 00 00 00)">
             <select id="abo-operateur">
-                <option value="">-- Choisir l'opérateur --</option>
-                <option value="Airtel Money">Airtel Money</option>
-                <option value="Moov Money">Moov Money</option>
+                <option value="">-- <span data-i18n="paiement_choisir">Choisir l'opérateur</span> --</option>
+                <option value="airtel">📱 Airtel Money</option>
+                <option value="moov">📱 Moov Money</option>
             </select>
-            <button id="btn-payer" class="btn-payer">Voir les instructions de paiement →</button>
+            <button id="btn-payer" class="btn-payer">💳 <span data-i18n="btn_payer">Payer 1 000 FCFA</span></button>
         </div>
 
+        <!-- ÉTAPE 2 : Attente confirmation sur le téléphone -->
         <div id="etape-paiement-2" class="etape-paiement" style="display:none;">
-            <h3>Instructions de paiement</h3>
-            <div class="instructions-paiement">
-                <p>Depuis votre téléphone, envoyez <strong>1 000 FCFA</strong> au :</p>
-                <div class="numero-paiement">+235 66 79 77 51</div>
-                <p style="margin-top:8px;">Référence à indiquer dans le motif :</p>
-                <div class="numero-paiement" style="font-size:18px;" id="ref-paiement"></div>
-                <p style="font-size:13px; margin-top:10px; color:#555;">
-                    Après votre envoi, entrez ci-dessous le code de transaction reçu par SMS :
-                </p>
+            <div class="attente-paiement">
+                <div class="spinner-paiement"></div>
+                <h3 data-i18n="paiement_attente">Vérifiez votre téléphone !</h3>
+                <p data-i18n="paiement_attente_texte">Une demande de confirmation a été envoyée sur le numéro <strong id="tel-affiche"></strong>. Entrez votre code PIN <strong id="operateur-affiche"></strong> pour confirmer le paiement de <strong>1 000 FCFA</strong>.</p>
+                <p class="info-validation" data-i18n="paiement_ne_quittez">Ne quittez pas cette page...</p>
             </div>
-            <input type="text" id="code-confirmation" placeholder="Code de transaction SMS *">
-            <button id="btn-valider-paiement" class="btn-payer">✅ Confirmer mon paiement</button>
-            <p class="info-validation">Votre accès sera activé sous 24h après vérification.</p>
+            <button id="btn-annuler-paiement" class="btn-secondary" style="width:100%; margin-top:12px;" data-i18n="btn_annuler">Annuler</button>
         </div>
 
+        <!-- ÉTAPE 3 : Succès -->
         <div id="etape-paiement-3" class="etape-paiement" style="display:none;">
             <div class="succes-adhesion">
                 <div class="succes-icone">🎉</div>
-                <h3>Paiement soumis !</h3>
-                <p>Notre équipe vérifie et active votre accès sous 24h.</p>
-                <p>Vous serez contacté au numéro indiqué.</p>
-                <button class="btn-primary-vert" id="fermer-succes-abo">Fermer</button>
+                <h3 data-i18n="paiement_succes">Paiement confirmé !</h3>
+                <p data-i18n="paiement_succes_texte">Votre abonnement est activé. Bonne lecture !</p>
+                <button class="btn-primary-vert" id="fermer-succes-abo" data-i18n="btn_fermer">Fermer</button>
+            </div>
+        </div>
+
+        <!-- ÉTAPE ERREUR -->
+        <div id="etape-paiement-erreur" class="etape-paiement" style="display:none;">
+            <div class="succes-adhesion">
+                <div class="succes-icone">❌</div>
+                <h3 data-i18n="paiement_echec">Paiement non confirmé</h3>
+                <p id="msg-erreur-paiement" data-i18n="paiement_echec_texte">Le paiement n'a pas été confirmé. Vérifiez votre solde et réessayez.</p>
+                <button class="btn-primary-vert" id="btn-reessayer" data-i18n="btn_reessayer">Réessayer</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ===== DIRECT FACEBOOK ===== -->
-<button id="toggle-direct" class="direct-btn">🔴 Suivre le Direct</button>
+<!-- ===== DIRECT ===== -->
+<button id="toggle-direct" class="direct-btn">🔴 <span data-i18n="btn_direct">Suivre le Direct</span></button>
 <div id="zone-direct" class="zone-direct" style="display:none;">
     <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAssembleenationaleTchad&tabs=timeline&width=500&height=700&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false"
         width="100%" height="700" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
@@ -309,12 +316,12 @@
 
 <!-- ===== CHAT ===== -->
 <div class="chat-box">
-    <h2>Chat en direct</h2>
+    <h2 data-i18n="chat_titre">Chat en direct</h2>
     <div id="chat-messages" class="chat-messages"></div>
     <div class="chat-input-row">
         <input type="text" id="chat-pseudo" placeholder="Votre nom" maxlength="20">
         <input type="text" id="chat-message" placeholder="Votre message">
-        <button id="chat-envoyer">Envoyer</button>
+        <button id="chat-envoyer" data-i18n="btn_envoyer">Envoyer</button>
     </div>
 </div>
 
@@ -325,17 +332,18 @@
 
 <!-- ===== FOOTER ===== -->
 <footer class="pied-de-page">
-    <p>© 2026 UNDR Actualités — Tous droits réservés</p>
+    <p>© 2026 UNDR Actualités</p>
     <p class="contact-info">
-        📞 <a href="tel:+23566797751">+235 66 79 77 51</a>
-        &nbsp;|&nbsp;
+        📞 <a href="tel:+23566797751">+235 66 79 77 51</a> &nbsp;|&nbsp;
         ✉️ <a href="mailto:gouatainebienvenu3@gmail.com">gouatainebienvenu3@gmail.com</a>
     </p>
 </footer>
 
+<!-- jsPDF : génération PDF fiche d'adhésion -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="script.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="chat.js"></script>
-<script src="script.js"></script>
 </body>
 </html>
