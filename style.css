@@ -310,3 +310,67 @@ body.mode-sombre .info-pdf-telechargement {
     border-color: #28a745;
 }
 body.mode-sombre .info-pdf-telechargement p { color: #ccc; }
+
+/* ===== BANNIÈRE NOTIFICATIONS ===== */
+.banniere-notif {
+    background: #003366;
+    color: white;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    z-index: 100;
+}
+.banniere-notif-btns { display: flex; gap: 8px; flex-shrink: 0; }
+.banniere-notif-btns button {
+    padding: 6px 14px; border: none; border-radius: 20px;
+    font-size: 12px; cursor: pointer; font-weight: bold;
+}
+.banniere-notif-btns button:first-child { background: #e67e22; color: white; }
+.banniere-notif-btns button:last-child { background: rgba(255,255,255,0.2); color: white; }
+
+/* ===== BADGE À LA UNE ===== */
+.badge-une {
+    display: inline-block;
+    background: #e67e22;
+    color: white;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 6px;
+    font-weight: bold;
+}
+
+/* ===== SÉLECTEUR IMPORTANCE ADMIN ===== */
+.select-importance {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 12px;
+    background: white;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+/* ===== BOUTON PARTAGER FACEBOOK ===== */
+.btn-partager-carte {
+    position: absolute; top: 8px; right: 8px;
+    background: #1877f2;
+    color: white;
+    border: none; border-radius: 50%;
+    width: 32px; height: 32px;
+    font-size: 14px; cursor: pointer; z-index: 3;
+}
+.btn-partager-article {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 7px 14px;
+    background: #1877f2;
+    color: white; border: none; border-radius: 20px;
+    font-size: 13px; cursor: pointer; margin: 8px 0 12px;
+}
+.btn-partager-article:active { background: #145dbf; }
+
+body.mode-sombre .select-importance { background: #2a2a2a; color: #eee; border-color: #444; }

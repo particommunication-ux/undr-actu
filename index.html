@@ -10,6 +10,15 @@
 </head>
 <body>
 
+<!-- ===== BANNIÈRE NOTIFICATIONS ===== -->
+<div id="banniere-notif" class="banniere-notif" style="display:none;">
+    <span>🔔 Recevez les nouvelles publications en temps réel</span>
+    <div class="banniere-notif-btns">
+        <button id="btn-activer-notif" onclick="activerNotifications()">Oui, activer</button>
+        <button id="btn-refuser-notif" onclick="document.getElementById('banniere-notif').style.display='none'; localStorage.setItem('notifRefuseeUNDR','true');">Non merci</button>
+    </div>
+</div>
+
 <!-- ===== MENU GAUCHE ===== -->
 <div id="menu-gauche" class="menu-gauche" style="display:none;">
     <div class="menu-gauche-contenu">
@@ -73,7 +82,7 @@
 
 <!-- ===== FILTRES ===== -->
 <div class="filtres" id="filtres-list">
-    <button class="filtre-btn actif" data-categorie="Toutes" data-i18n="cat_toutes">Toutes</button>
+    <button class="filtre-btn actif" data-categorie="Toutes" data-i18n="cat_toutes">⭐ À la Une</button>
     <button class="filtre-btn" data-categorie="Actualités" data-i18n="cat_actu">Actualités</button>
     <button class="filtre-btn" data-categorie="Activités" data-i18n="cat_activ">Activités</button>
     <button class="filtre-btn" data-categorie="Communiqués" data-i18n="cat_com">Communiqués</button>
