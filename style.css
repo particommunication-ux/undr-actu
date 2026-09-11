@@ -1,476 +1,273 @@
-/* ============================================================
-   UNDR Actualités — style.css — Version complète corrigée
-   ============================================================ */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { width: 100%; overflow-x: hidden; font-family: Arial, sans-serif; background: #f4f5f7; color: #222; }
+/* UNDR Actualités - style.css - Version finale */
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;overflow-x:hidden;font-family:Arial,sans-serif;background:#f4f5f7;color:#222;}
 
-/* ===== HEADER ===== */
-header { background: white; padding: 14px 16px 10px; text-align: center; border-bottom: 3px solid #e67e22; }
-.titre-site { font-size: 22px; font-weight: bold; color: #003366; margin: 6px 0 0; }
-.logo { max-width: 65px; height: auto; display: block; margin: 0 auto 4px; }
+/* BANNIÈRE NOTIFICATIONS */
+.banniere-notif{background:#003366;color:white;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;}
+.banniere-notif-btns{display:flex;gap:8px;flex-shrink:0;}
+.banniere-notif-btns button{padding:6px 14px;border:none;border-radius:20px;font-size:12px;cursor:pointer;font-weight:bold;}
+.banniere-notif-btns button:first-child{background:#e67e22;color:white;}
+.banniere-notif-btns button:last-child{background:rgba(255,255,255,0.2);color:white;}
 
-/* ===== HAMBURGER ===== */
-.icone-menu { position: fixed; top: 10px; left: 10px; z-index: 500; background: rgba(0,51,102,0.9); color: white; border: none; font-size: 22px; width: 42px; height: 42px; border-radius: 8px; cursor: pointer; }
-.icone-menu:active { background: #e67e22; }
+/* HAMBURGER */
+.icone-menu{position:fixed;top:10px;left:10px;z-index:700;background:rgba(0,51,102,0.9);color:white;border:none;font-size:22px;width:42px;height:42px;border-radius:8px;cursor:pointer;}
 
-/* ===== MENU GAUCHE ===== */
-.menu-gauche { position: fixed; top: 0; left: 0; bottom: 0; width: 275px; background: white; z-index: 600; box-shadow: 4px 0 16px rgba(0,0,0,0.2); overflow-y: auto; }
-.menu-gauche-contenu { padding: 18px 16px; }
-.fermer-menu-gauche { position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 20px; cursor: pointer; color: #555; }
-.menu-logo { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-.overlay-menu-gauche { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.45); z-index: 550; }
+/* MENU GAUCHE */
+.menu-gauche{position:fixed;top:0;left:0;bottom:0;width:275px;background:white;z-index:800;box-shadow:4px 0 16px rgba(0,0,0,0.2);overflow-y:auto;}
+.menu-gauche-contenu{padding:18px 16px;}
+.fermer-menu-gauche{position:absolute;top:12px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;color:#555;}
+.menu-logo{display:flex;align-items:center;gap:10px;margin-top:10px;}
+.overlay-menu-gauche{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:750;}
+.point-admin{position:absolute;bottom:-2px;right:-4px;font-size:14px;color:#e67e22;cursor:pointer;user-select:none;}
+.menu-item-btn{display:block;width:100%;text-align:left;padding:12px 10px;background:none;border:none;border-radius:8px;font-size:15px;cursor:pointer;color:#003366;font-weight:bold;margin-bottom:4px;}
+.menu-item-btn:active{background:#f0f4ff;}
 
-/* Point orange admin secret */
-.point-admin { position: absolute; bottom: -2px; right: -4px; font-size: 14px; color: #e67e22; cursor: pointer; line-height: 1; user-select: none; }
-.point-admin:hover { transform: scale(1.4); }
+/* ACCORDÉONS MENU */
+.acc-btn{display:flex;align-items:center;justify-content:space-between;width:100%;padding:11px 10px;background:none;border:none;border-radius:8px;font-size:14px;cursor:pointer;color:#003366;font-weight:bold;margin-bottom:2px;text-align:left;}
+.acc-btn:active{background:#f0f4ff;}
+.acc-icone{font-size:16px;color:#e67e22;}
+.acc-contenu{padding:8px 10px 12px;background:#f8f9fa;border-radius:0 0 8px 8px;margin-bottom:6px;}
+.choix-langue{display:flex;flex-direction:column;gap:6px;}
+.lang-btn{padding:8px 12px;border:1px solid #ddd;border-radius:6px;background:white;cursor:pointer;font-size:14px;text-align:left;}
+.lang-btn:active{background:#e0e7ff;border-color:#003366;}
+.choix-taille{display:flex;gap:6px;}
+.taille-btn{flex:1;padding:8px;border:1px solid #ccc;border-radius:6px;background:white;cursor:pointer;font-size:13px;}
+.switch-sombre{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;padding:4px 0;}
 
-.menu-item-btn { display: block; width: 100%; text-align: left; padding: 12px 10px; background: none; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; color: #003366; font-weight: bold; margin-bottom: 4px; }
-.menu-item-btn:active { background: #f0f4ff; }
-.menu-section-titre { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin: 14px 0 6px; }
+/* STATUT ABO */
+.statut-abo-panneau{margin-top:4px;}
+.statut-abo{padding:9px 12px;border-radius:8px;font-size:14px;font-weight:bold;text-align:center;margin-bottom:6px;}
+.statut-abo.actif{background:#d4edda;color:#155724;}
+.statut-abo.inactif{background:#f8f9fa;color:#555;border:1px solid #ddd;}
+.btn-resilier{display:block;width:100%;padding:7px;background:#dc3545;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;}
 
-/* ===== BANDEAU ORANGE ===== */
-.bandeau-abonnement { background: #e67e22; color: white; font-size: 13px; font-weight: bold; padding: 8px 12px; text-align: center; }
-.bandeau-boutons { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
-.bandeau-boutons button { padding: 6px 14px; border: none; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: bold; }
-#bandeau-btn-adherer { background: white; color: #e67e22; }
-#bandeau-btn-abo { background: #003366; color: white; }
+/* EN-TÊTE FIXE */
+.entete-fixe{position:fixed;top:0;left:0;right:0;z-index:100;background:white;box-shadow:0 2px 8px rgba(0,0,0,0.12);}
 
-/* ===== FILTRES ===== */
-.filtres { display: flex; width: 100%; overflow-x: auto; background: white; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 10; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-.filtres::-webkit-scrollbar { display: none; }
-.filtre-btn { background: none; border: none; padding: 13px 13px; font-size: 13px; color: #555; cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; flex-shrink: 0; }
-.filtre-btn.actif { color: #e67e22; font-weight: bold; border-bottom: 3px solid #e67e22; }
-.menu-toggle { display: none; }
+/* BANDEAU ORANGE */
+.bandeau-abonnement{background:#e67e22;color:white;font-size:13px;font-weight:bold;padding:8px 12px;text-align:center;}
+.bandeau-boutons{display:flex;justify-content:center;gap:8px;margin-top:6px;flex-wrap:wrap;}
+.bandeau-boutons button{padding:6px 14px;border:none;border-radius:20px;font-size:13px;cursor:pointer;font-weight:bold;}
+#bandeau-btn-adherer{background:white;color:#e67e22;}
+#bandeau-btn-abo{background:#003366;color:white;}
 
-/* ===== ÉDITEUR ADMIN ===== */
-.barre-outils-editeur { display: flex; gap: 4px; flex-wrap: wrap; padding: 6px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 6px 6px 0 0; }
-.barre-outils-editeur button { padding: 4px 10px; border: 1px solid #ccc; background: white; border-radius: 4px; cursor: pointer; font-size: 13px; }
-.barre-outils-editeur button:active { background: #e67e22; color: white; }
-.editeur-contenu { width: 100%; min-height: 120px; padding: 10px; border: 1px solid #ccc; border-top: none; border-radius: 0 0 6px 6px; font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.8; outline: none; background: white; margin-bottom: 10px; }
-.editeur-contenu:empty:before { content: attr(placeholder); color: #aaa; }
+/* HEADER */
+header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3px solid #e67e22;}
+.titre-site{font-size:22px;font-weight:bold;color:#003366;margin:5px 0 0;}
+.logo{max-width:62px;height:auto;display:block;margin:0 auto 4px;}
 
-/* ===== FORMULAIRE ADMIN ===== */
-.formulaire { width: 100%; max-width: 700px; margin: 16px auto; padding: 16px; background: white; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-.formulaire h2 { margin-bottom: 14px; color: #003366; font-size: 18px; }
-.formulaire input, .formulaire select { width: 100%; padding: 9px 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; font-size: 14px; }
-.formulaire > button { padding: 11px 20px; background: #003366; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; margin-top: 4px; width: 100%; font-weight: bold; }
-.formulaire > button:active { background: #e67e22; }
+/* FILTRES */
+.filtres{display:flex;width:100%;overflow-x:auto;background:white;border-bottom:1px solid #eee;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.filtres::-webkit-scrollbar{display:none;}
+.filtre-btn{background:none;border:none;padding:12px 13px;font-size:13px;color:#555;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;flex-shrink:0;}
+.filtre-btn.actif{color:#e67e22;font-weight:bold;border-bottom:3px solid #e67e22;}
 
-.admin-pub-section { margin-top: 20px; padding-top: 16px; border-top: 2px dashed #e0e0e0; }
-.admin-pub-section h3 { color: #003366; margin: 0 0 10px; font-size: 15px; }
-.admin-pub-section input { width: 100%; padding: 7px 10px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
-.admin-pub-section button { padding: 8px 14px; background: #003366; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; margin-bottom: 6px; }
-.admin-pub-section label { font-size: 13px; color: #555; }
+/* FORMULAIRE ADMIN */
+.formulaire{width:100%;max-width:700px;margin:16px auto;padding:16px;background:white;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.formulaire h2{margin-bottom:14px;color:#003366;font-size:18px;}
+.formulaire input,.formulaire select{width:100%;padding:9px 10px;margin-bottom:10px;border:1px solid #ccc;border-radius:6px;font-family:inherit;font-size:14px;}
+.formulaire>button{padding:11px 20px;background:#003366;color:white;border:none;border-radius:6px;cursor:pointer;font-size:15px;margin-top:4px;width:100%;font-weight:bold;}
+.formulaire>button:active{background:#e67e22;}
+.barre-outils-editeur{display:flex;gap:4px;flex-wrap:wrap;padding:6px;background:#f0f0f0;border:1px solid #ccc;border-radius:6px 6px 0 0;}
+.barre-outils-editeur button{padding:4px 10px;border:1px solid #ccc;background:white;border-radius:4px;cursor:pointer;font-size:13px;}
+.editeur-contenu{width:100%;min-height:120px;padding:10px;border:1px solid #ccc;border-top:none;border-radius:0 0 6px 6px;font-family:'Times New Roman',serif;font-size:12pt;line-height:1.8;outline:none;background:white;margin-bottom:10px;}
+.editeur-contenu:empty:before{content:attr(placeholder);color:#aaa;}
+.label-upload{display:block;margin-top:10px;margin-bottom:4px;font-size:13px;color:#555;font-weight:bold;}
+.apercu-media{margin-top:4px;margin-bottom:4px;}
+.apercu-media img,.apercu-media video{max-height:90px;border-radius:6px;display:block;}
+.admin-pub-section{margin-top:20px;padding-top:16px;border-top:2px dashed #e0e0e0;}
+.admin-pub-section h3{color:#003366;margin:0 0 10px;font-size:15px;}
+.admin-pub-section input{width:100%;padding:7px 10px;margin-bottom:8px;border:1px solid #ccc;border-radius:6px;font-size:14px;}
+.admin-pub-section button{padding:8px 14px;background:#003366;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;margin-bottom:6px;}
+.admin-pub-section label{font-size:13px;color:#555;}
+.liste-adhesions{max-height:280px;overflow-y:auto;border:1px solid #eee;border-radius:8px;padding:8px;background:#fafafa;}
+.adhesion-item{padding:8px;border-bottom:1px solid #eee;font-size:12px;line-height:1.6;}
+.adhesion-item:last-child{border-bottom:none;}
+.badge-statut{display:inline-block;font-size:11px;padding:2px 7px;border-radius:10px;margin:3px 3px 3px 0;font-weight:bold;}
+.badge-statut.valide{background:#d4edda;color:#155724;}
+.badge-statut.attente{background:#fff3cd;color:#856404;}
+.btn-valider-adhesion,.btn-activer-abo{padding:3px 8px;background:#28a745;color:white;border:none;border-radius:4px;cursor:pointer;font-size:12px;margin-right:3px;}
+.btn-suppr-adhesion,.btn-suppr-abo{padding:3px 8px;background:#dc3545;color:white;border:none;border-radius:4px;cursor:pointer;font-size:12px;}
 
-.liste-adhesions { max-height: 280px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; padding: 8px; background: #fafafa; }
-.adhesion-item { padding: 8px; border-bottom: 1px solid #eee; font-size: 12px; line-height: 1.6; }
-.adhesion-item:last-child { border-bottom: none; }
-.badge-statut { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 10px; margin: 3px 3px 3px 0; font-weight: bold; }
-.badge-statut.valide { background: #d4edda; color: #155724; }
-.badge-statut.attente { background: #fff3cd; color: #856404; }
-.btn-valider-adhesion, .btn-activer-abo { padding: 3px 8px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; margin-right: 3px; }
-.btn-suppr-adhesion, .btn-suppr-abo { padding: 3px 8px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
+/* GRILLE ARTICLES */
+.grille-articles{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;width:100%;max-width:1000px;margin:14px auto;padding:0 12px;}
+.article{background:white;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,0.08);cursor:pointer;border-top:3px solid #e67e22;position:relative;overflow:hidden;}
+.article h2{color:#003366;font-size:15px;margin:6px 0 4px;}
+.date-article{color:#888;font-size:12px;margin-bottom:4px;}
+.vues-admin{color:#e67e22;font-size:12px;font-weight:bold;margin-bottom:6px;}
 
-/* ===== GRILLE ARTICLES ===== */
-.grille-articles { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; width: 100%; max-width: 1000px; margin: 14px auto; padding: 0 12px; }
+/* ARTICLE UNE */
+.article.une{grid-column:1/-1;background:linear-gradient(135deg,#003366,#00509e);color:white;border-top:none;border-left:5px solid #e63946;}
+.article.une h2{color:white;font-size:19px;}
+.article.une .date-article{color:#cdd9e8;}
+.article.une .badge{background:rgba(255,255,255,0.2);color:white;}
+.article.une .article-img{height:190px;}
 
-.article { background: white; border-radius: 10px; padding: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); cursor: pointer; border-top: 3px solid #e67e22; position: relative; overflow: hidden; }
-.article h2 { color: #003366; font-size: 15px; margin: 6px 0 4px; }
-.date-article { color: #888; font-size: 12px; margin-bottom: 4px; }
-.vues-admin { color: #e67e22; font-size: 12px; font-weight: bold; margin-bottom: 6px; }
+/* BADGES */
+.badge{display:inline-block;background:#e0e7ff;color:#003366;font-size:12px;padding:3px 9px;border-radius:12px;margin-bottom:6px;border-left:3px solid #e67e22;}
+.badge-premium{display:inline-block;background:#fff3cd;color:#856404;font-size:11px;padding:2px 6px;border-radius:12px;margin-left:4px;font-weight:bold;}
+.badge-une{display:inline-block;background:#e67e22;color:white;font-size:11px;padding:2px 8px;border-radius:12px;margin-left:4px;font-weight:bold;}
 
-/* Bouton partager sur carte */
-.btn-partager-carte { position: absolute; top: 8px; right: 8px; background: rgba(0,51,102,0.1); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 14px; cursor: pointer; z-index: 3; }
-.btn-partager-carte:active { background: #e67e22; }
+/* VERROU */
+.carte-verrou-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;color:white;font-size:24px;gap:5px;z-index:2;}
+.carte-verrou-overlay small{font-size:11px;background:rgba(0,0,0,0.55);padding:3px 9px;border-radius:20px;}
+.img-floue{filter:blur(5px);}
 
-/* Article vedette */
-.article.une { grid-column: 1 / -1; background: linear-gradient(135deg, #003366, #00509e); color: white; border-top: none; border-left: 5px solid #e63946; }
-.article.une h2 { color: white; font-size: 19px; }
-.article.une .date-article { color: #cdd9e8; }
-.article.une .badge { background: rgba(255,255,255,0.2); color: white; }
-.article.une .article-img { height: 190px; }
+/* BOUTONS ADMIN CARTE */
+.admin-carte-btns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.btn-supprimer{padding:5px 10px;background:#e63946;color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px;}
+.btn-modifier{padding:5px 10px;background:#003366;color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px;}
+.select-importance{padding:4px 8px;border:1px solid #ccc;border-radius:6px;font-size:12px;background:white;cursor:pointer;}
 
-/* Verrou premium */
-.carte-verrou-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 10px; color: white; font-size: 24px; gap: 5px; z-index: 2; }
-.carte-verrou-overlay small { font-size: 11px; background: rgba(0,0,0,0.55); padding: 3px 9px; border-radius: 20px; }
-.img-floue { filter: blur(5px); }
-.badge-premium { display: inline-block; background: #fff3cd; color: #856404; font-size: 11px; padding: 2px 6px; border-radius: 12px; margin-left: 4px; font-weight: bold; }
+/* PARTAGER FACEBOOK */
+.btn-partager-carte{position:absolute;top:8px;right:8px;background:#1877f2;color:white;border:none;border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;z-index:3;}
+.btn-partager-article{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:#1877f2;color:white;border:none;border-radius:20px;font-size:13px;cursor:pointer;margin:8px 0 12px;}
 
-/* Boutons admin sur carte */
-.admin-carte-btns { display: flex; gap: 6px; margin-top: 8px; }
-.btn-supprimer { padding: 5px 10px; background: #e63946; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; }
-.btn-modifier { padding: 5px 10px; background: #003366; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; }
+/* IMAGES ET VIDÉOS */
+.article-img{display:block;width:100%;height:155px;object-fit:cover;border-radius:8px;margin-bottom:8px;}
+.article-video{display:block;width:100%;height:200px;border-radius:8px;margin-bottom:10px;}
 
-/* Images */
-.article-img { display: block; width: 100%; height: 155px; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
-.article-video { display: block; width: 100%; height: 200px; border-radius: 8px; margin-bottom: 10px; }
-.badge { display: inline-block; background: #e0e7ff; color: #003366; font-size: 12px; padding: 3px 9px; border-radius: 12px; margin-bottom: 6px; border-left: 3px solid #e67e22; }
+/* VUE DÉTAIL */
+.vue-detail{width:100%;max-width:700px;margin:14px auto;padding:0 14px;}
+.retour-btn{background:none;border:none;color:#003366;font-size:15px;cursor:pointer;margin-bottom:12px;padding:0;font-weight:bold;display:block;}
+#vue-detail .article-img{height:200px;}
+.contenu-article{font-family:'Times New Roman',serif;font-size:12pt;line-height:1.8;color:#222;margin-top:10px;}
+.verrou-premium{display:flex;justify-content:center;margin:18px 0;}
+.verrou-contenu{background:white;border:2px solid #e67e22;border-radius:12px;padding:20px;text-align:center;width:100%;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+.verrou-icone{font-size:32px;display:block;margin-bottom:8px;}
+.verrou-contenu h3{color:#003366;margin:0 0 8px;}
+.verrou-contenu p{color:#666;font-size:14px;margin:0 0 14px;}
+.btn-abo-verrou{background:#e67e22;color:white;border:none;padding:10px 18px;border-radius:20px;font-size:14px;cursor:pointer;font-weight:bold;}
+.lire-aussi{margin-top:22px;padding-top:14px;border-top:1px solid #eee;}
+.lire-aussi h3{color:#003366;margin-bottom:10px;font-size:15px;}
+.lire-aussi-grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;}
+.lire-aussi-carte{cursor:pointer;border-radius:8px;overflow:hidden;background:white;box-shadow:0 2px 5px rgba(0,0,0,0.08);}
+.lire-aussi-carte img{width:100%;height:80px;object-fit:cover;display:block;}
+.lire-aussi-carte p{padding:6px;margin:0;font-size:12px;font-weight:bold;color:#003366;}
 
-/* ===== VUE DÉTAIL ===== */
-.vue-detail { width: 100%; max-width: 700px; margin: 14px auto; padding: 0 14px; }
-.retour-btn { background: none; border: none; color: #003366; font-size: 15px; cursor: pointer; margin-bottom: 12px; padding: 0; font-weight: bold; display: block; }
-#vue-detail .article-img { height: 200px; }
+/* DIRECT */
+.direct-btn{display:block;margin:12px auto 0;padding:10px 18px;background:#e63946;color:white;border:none;border-radius:6px;font-size:14px;cursor:pointer;font-weight:bold;}
+.zone-direct{width:100%;max-width:700px;margin:14px auto;padding:0 12px;}
+.zone-direct iframe{display:block;max-width:100%;border-radius:10px;}
 
-/* Bouton partager article */
-.btn-partager-article { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; background: #003366; color: white; border: none; border-radius: 20px; font-size: 13px; cursor: pointer; margin: 8px 0 12px; }
-.btn-partager-article:active { background: #e67e22; }
+/* CHAT */
+.chat-box{width:100%;max-width:700px;margin:18px auto;padding:14px;background:white;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+.chat-box h2{color:#003366;margin-bottom:10px;font-size:16px;}
+.chat-messages{height:200px;overflow-y:auto;border:1px solid #ddd;border-radius:6px;padding:8px;margin-bottom:8px;background:#f9f9f9;font-size:14px;}
+.chat-msg{margin-bottom:5px;}
+.chat-input-row{display:flex;gap:5px;}
+#chat-pseudo{width:85px;flex-shrink:0;padding:8px;border:1px solid #ccc;border-radius:6px;font-size:13px;}
+#chat-message{flex:1;min-width:0;padding:8px;border:1px solid #ccc;border-radius:6px;font-size:13px;}
+#chat-envoyer{padding:8px 10px;background:#003366;color:white;border:none;border-radius:6px;cursor:pointer;font-size:13px;flex-shrink:0;}
 
-/* Contenu article Times New Roman 12 */
-.contenu-article { font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.8; color: #222; margin-top: 10px; }
+/* PUBLICITÉS */
+.pub-zone{width:100%;max-width:800px;margin:8px auto;padding:0 12px;text-align:center;}
+.pub-maison-lien{display:block;text-decoration:none;position:relative;}
+.pub-maison-img{width:100%;max-height:110px;object-fit:cover;border-radius:8px;border:1px solid #eee;}
+.pub-label{position:absolute;bottom:4px;right:8px;font-size:10px;background:rgba(0,0,0,0.4);color:white;padding:1px 5px;border-radius:3px;}
 
-.verrou-premium { display: flex; justify-content: center; margin: 18px 0; }
-.verrou-contenu { background: white; border: 2px solid #e67e22; border-radius: 12px; padding: 20px; text-align: center; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-.verrou-icone { font-size: 32px; display: block; margin-bottom: 8px; }
-.verrou-contenu h3 { color: #003366; margin: 0 0 8px; }
-.verrou-contenu p { color: #666; font-size: 14px; margin: 0 0 14px; }
-.btn-abo-verrou { background: #e67e22; color: white; border: none; padding: 10px 18px; border-radius: 20px; font-size: 14px; cursor: pointer; font-weight: bold; }
+/* FOOTER */
+.pied-de-page{text-align:center;padding:18px 14px;margin-top:18px;background:#f0f0f0;color:#777;font-size:13px;}
+.contact-info{margin:6px 0;}
+.contact-info a{color:#003366;text-decoration:none;}
 
-/* Lire aussi */
-.lire-aussi { margin-top: 22px; padding-top: 14px; border-top: 1px solid #eee; }
-.lire-aussi h3 { color: #003366; margin-bottom: 10px; font-size: 15px; }
-.lire-aussi-grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
-.lire-aussi-carte { cursor: pointer; border-radius: 8px; overflow: hidden; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.08); }
-.lire-aussi-carte img { width: 100%; height: 80px; object-fit: cover; display: block; }
-.lire-aussi-carte p { padding: 6px; margin: 0; font-size: 12px; font-weight: bold; color: #003366; }
+/* MODALS */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:900;display:flex;align-items:flex-end;justify-content:center;}
+.modal-contenu{background:white;border-radius:18px 18px 0 0;padding:22px 16px;width:100%;max-width:500px;position:relative;max-height:92vh;overflow-y:auto;}
+.fermer-modal{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#666;}
+.modal-header-adhesion{text-align:center;margin-bottom:16px;}
+.modal-header-adhesion h2{color:#003366;margin:0 0 5px;font-size:19px;}
+.modal-header-adhesion p{color:#666;font-size:13px;}
+.etape-adhesion h3{color:#003366;margin:0 0 12px;font-size:16px;}
+.etape-adhesion input,.etape-adhesion select{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:15px;margin-bottom:9px;font-family:inherit;}
+.label-champ{font-size:12px;color:#555;margin-bottom:3px;display:block;}
+.zone-photo-id{border:2px dashed #ccc;border-radius:8px;padding:10px;margin-bottom:10px;text-align:center;}
+.charte-adhesion{background:#f8f9fa;border-radius:8px;padding:10px;margin:10px 0;font-size:13px;}
+.charte-adhesion ul{margin:5px 0 0 14px;}
+.charte-adhesion li{margin-bottom:3px;}
+.label-checkbox{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:12px;cursor:pointer;}
+.recap-adhesion{background:#f0f4ff;border-radius:8px;padding:10px;margin-bottom:10px;font-size:14px;}
+.recap-ligne{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #dce3ff;}
+.recap-ligne:last-child{border-bottom:none;}
+.recap-ligne span{color:#666;}
+.btn-row{display:flex;gap:8px;margin-top:6px;}
+.btn-primary-vert{flex:1;padding:12px;background:#003366;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-weight:bold;}
+.btn-primary-vert:active{background:#e67e22;}
+.btn-secondary{padding:12px;background:#f0f0f0;color:#333;border:none;border-radius:8px;font-size:15px;cursor:pointer;}
+.succes-adhesion{text-align:center;padding:16px 6px;}
+.succes-icone{font-size:46px;display:block;margin-bottom:10px;}
+.succes-adhesion h3{color:#155724;margin:0 0 8px;}
+.succes-adhesion p{color:#444;font-size:14px;margin-bottom:6px;}
+.modal-header-abo{text-align:center;margin-bottom:12px;}
+.modal-header-abo h2{color:#003366;margin:0 0 4px;}
+.modal-header-abo p{color:#666;font-size:13px;}
+.offre-abo{background:#f0f4ff;border-radius:10px;padding:12px;margin-bottom:14px;}
+.prix-abo-badge{font-size:24px;font-weight:bold;color:#003366;text-align:center;background:#e0e7ff;border-radius:8px;padding:8px;margin-bottom:8px;}
+.prix-abo-badge span{font-size:14px;font-weight:normal;color:#666;}
+.avantages-abo-liste{font-size:14px;}
+.avantages-abo-liste div{padding:3px 0;}
+.etape-paiement h3{color:#003366;margin:0 0 12px;font-size:16px;}
+.etape-paiement input,.etape-paiement select{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:15px;margin-bottom:9px;font-family:inherit;}
+.btn-payer{width:100%;padding:13px;background:#e67e22;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-weight:bold;margin-top:4px;}
+.btn-payer:active{background:#cf6d17;}
 
-/* ===== DIRECT ===== */
-.direct-btn { display: block; margin: 12px auto 0; padding: 10px 18px; background: #e63946; color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; font-weight: bold; }
-.zone-direct { width: 100%; max-width: 700px; margin: 14px auto; padding: 0 12px; }
-.zone-direct iframe { display: block; max-width: 100%; border-radius: 10px; }
+/* GUIDE PAIEMENT */
+.guide-paiement{background:#f0f8ff;border:1px solid #b3d4f5;border-radius:10px;padding:14px;margin-bottom:14px;}
+.guide-etape{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;font-size:13px;line-height:1.5;color:#333;}
+.guide-etape:last-child{margin-bottom:0;}
+.guide-num{background:#e67e22;color:white;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:13px;flex-shrink:0;}
+.guide-note{margin-top:5px;font-size:12px;color:#555;background:white;border-radius:6px;padding:6px 8px;border-left:3px solid #e67e22;}
+.numero-paiement{font-size:20px;font-weight:bold;color:#003366;text-align:center;padding:6px 0;letter-spacing:2px;}
+.aide-ref{font-size:12px;color:#666;background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:8px 10px;margin:6px 0 10px;line-height:1.5;}
 
-/* ===== CHAT ===== */
-.chat-box { width: 100%; max-width: 700px; margin: 18px auto; padding: 14px; background: white; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-.chat-box h2 { color: #003366; margin-bottom: 10px; font-size: 16px; }
-.chat-messages { height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 6px; padding: 8px; margin-bottom: 8px; background: #f9f9f9; font-size: 14px; }
-.chat-msg { margin-bottom: 5px; }
-.chat-input-row { display: flex; gap: 5px; }
-#chat-pseudo { width: 85px; flex-shrink: 0; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; }
-#chat-message { flex: 1; min-width: 0; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; }
-#chat-envoyer { padding: 8px 10px; background: #003366; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; flex-shrink: 0; }
+/* PDF ADHÉSION */
+.info-pdf-telechargement{background:#f0f8f0;border:1px solid #28a745;border-radius:10px;padding:14px;margin-top:14px;text-align:center;}
+.icone-pdf{font-size:32px;display:block;margin-bottom:6px;}
+.info-pdf-telechargement p{font-size:13px;color:#333;line-height:1.5;margin:0;}
+.btn-retelecharger{display:inline-block;margin-top:10px;padding:8px 18px;background:#28a745;color:white;border:none;border-radius:20px;font-size:13px;cursor:pointer;font-weight:bold;}
 
-/* ===== PUBS ===== */
-.pub-zone { width: 100%; max-width: 800px; margin: 8px auto; padding: 0 12px; text-align: center; }
-.pub-maison-lien { display: block; text-decoration: none; position: relative; }
-.pub-maison-img { width: 100%; max-height: 110px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; }
-.pub-label { position: absolute; bottom: 4px; right: 8px; font-size: 10px; background: rgba(0,0,0,0.4); color: white; padding: 1px 5px; border-radius: 3px; }
+/* MODE SOMBRE */
+body.mode-sombre{background:#121212;color:#eee;}
+body.mode-sombre .entete-fixe{background:#1a1a1a;box-shadow:0 2px 8px rgba(0,0,0,0.4);}
+body.mode-sombre header{background:#1a1a1a;}
+body.mode-sombre .titre-site{color:#6fa8dc;}
+body.mode-sombre .filtres{background:#1e1e1e;border-bottom-color:#333;}
+body.mode-sombre .filtre-btn{color:#aaa;}
+body.mode-sombre .filtre-btn.actif{color:#e67e22;}
+body.mode-sombre .article,.body.mode-sombre .formulaire,.body.mode-sombre .chat-box,body.mode-sombre .formulaire,body.mode-sombre .chat-box,body.mode-sombre .menu-gauche,body.mode-sombre .modal-contenu,body.mode-sombre .lire-aussi-carte{background:#1e1e1e;color:#eee;}
+body.mode-sombre .article{background:#1e1e1e;}
+body.mode-sombre .article h2{color:#6fa8dc;}
+body.mode-sombre .lire-aussi-carte{background:#1e1e1e;}
+body.mode-sombre .lire-aussi-carte p{color:#6fa8dc;}
+body.mode-sombre .chat-box{background:#1e1e1e;}
+body.mode-sombre .menu-gauche{background:#1e1e1e;}
+body.mode-sombre .modal-contenu{background:#1e1e1e;}
+body.mode-sombre .chat-messages{background:#2a2a2a;}
+body.mode-sombre .pied-de-page{background:#1a1a1a;color:#aaa;}
+body.mode-sombre .offre-abo,.recap-adhesion,.charte-adhesion{background:#2a2a2a;}
+body.mode-sombre .verrou-contenu{background:#1e1e1e;}
+body.mode-sombre .editeur-contenu{background:#2a2a2a;color:#eee;border-color:#444;}
+body.mode-sombre .contenu-article{color:#ddd;}
+body.mode-sombre .menu-item-btn,.acc-btn{color:#6fa8dc;}
+body.mode-sombre .acc-contenu{background:#1a1a2e;}
+body.mode-sombre .guide-paiement{background:#1a2030;border-color:#2a4060;}
+body.mode-sombre .guide-etape{color:#ccc;}
+body.mode-sombre .guide-note{background:#1e1e1e;color:#aaa;}
+body.mode-sombre .aide-ref{background:#2a2000;border-color:#665500;color:#ccc;}
+body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-color:#444;}
 
-/* ===== FOOTER ===== */
-.pied-de-page { text-align: center; padding: 18px 14px; margin-top: 18px; background: #f0f0f0; color: #777; font-size: 13px; }
-.contact-info { margin: 6px 0; }
-.contact-info a { color: #003366; text-decoration: none; }
-
-/* ===== MODALS ===== */
-.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 700; display: flex; align-items: flex-end; justify-content: center; }
-.modal-contenu { background: white; border-radius: 18px 18px 0 0; padding: 22px 16px; width: 100%; max-width: 500px; position: relative; max-height: 92vh; overflow-y: auto; }
-.fermer-modal { position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 20px; cursor: pointer; color: #666; }
-
-.modal-header-adhesion { text-align: center; margin-bottom: 16px; }
-.modal-header-adhesion h2 { color: #003366; margin: 0 0 5px; font-size: 19px; }
-.modal-header-adhesion p { color: #666; font-size: 13px; }
-
-.etape-adhesion h3 { color: #003366; margin: 0 0 12px; font-size: 16px; }
-.etape-adhesion input, .etape-adhesion select { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; margin-bottom: 9px; font-family: inherit; }
-.label-champ { font-size: 12px; color: #555; margin-bottom: 3px; display: block; }
-.zone-photo-id { border: 2px dashed #ccc; border-radius: 8px; padding: 10px; margin-bottom: 10px; text-align: center; }
-.apercu-photo { margin-top: 6px; }
-.charte-adhesion { background: #f8f9fa; border-radius: 8px; padding: 10px; margin: 10px 0; font-size: 13px; }
-.charte-adhesion ul { margin: 5px 0 0 14px; }
-.charte-adhesion li { margin-bottom: 3px; }
-.label-checkbox { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 12px; cursor: pointer; }
-.recap-adhesion { background: #f0f4ff; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-size: 14px; }
-.recap-ligne { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #dce3ff; }
-.recap-ligne:last-child { border-bottom: none; }
-.recap-ligne span { color: #666; }
-.btn-row { display: flex; gap: 8px; margin-top: 6px; }
-.btn-primary-vert { flex: 1; padding: 12px; background: #003366; color: white; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; font-weight: bold; }
-.btn-primary-vert:active { background: #e67e22; }
-.btn-secondary { padding: 12px 12px; background: #f0f0f0; color: #333; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
-.succes-adhesion { text-align: center; padding: 16px 6px; }
-.succes-icone { font-size: 46px; display: block; margin-bottom: 10px; }
-.succes-adhesion h3 { color: #155724; margin: 0 0 8px; }
-.succes-adhesion p { color: #444; font-size: 14px; margin-bottom: 6px; }
-
-.modal-header-abo { text-align: center; margin-bottom: 12px; }
-.modal-header-abo h2 { color: #003366; margin: 0 0 4px; }
-.modal-header-abo p { color: #666; font-size: 13px; }
-.offre-abo { background: #f0f4ff; border-radius: 10px; padding: 12px; margin-bottom: 14px; }
-.avantages-abo-liste { font-size: 14px; }
-.avantages-abo-liste div { padding: 4px 0; }
-.etape-paiement h3 { color: #003366; margin: 0 0 12px; font-size: 16px; }
-.etape-paiement input, .etape-paiement select { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; margin-bottom: 9px; font-family: inherit; }
-.btn-payer { width: 100%; padding: 13px; background: #e67e22; color: white; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; font-weight: bold; margin-top: 4px; }
-.btn-payer:active { background: #cf6d17; }
-.instructions-paiement { background: #fff8f0; border: 1px solid #e67e22; border-radius: 8px; padding: 14px; margin-bottom: 10px; font-size: 14px; }
-.numero-paiement { font-size: 22px; font-weight: bold; color: #003366; text-align: center; padding: 8px 0; letter-spacing: 2px; }
-.info-validation { font-size: 12px; color: #888; text-align: center; margin-top: 8px; }
-
-/* ===== PARAMÈTRES MENU GAUCHE ===== */
-.choix-langue, .choix-taille { display: flex; gap: 6px; margin-bottom: 10px; }
-.lang-btn, .taille-btn { flex: 1; padding: 7px; border: 1px solid #ccc; border-radius: 6px; background: white; cursor: pointer; font-size: 13px; }
-.lang-btn:active, .taille-btn:active { border-color: #003366; background: #e0e7ff; }
-.switch-sombre { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 14px; cursor: pointer; }
-.statut-abo-panneau { margin-top: 4px; }
-.statut-abo { padding: 9px 12px; border-radius: 8px; font-size: 14px; font-weight: bold; text-align: center; margin-bottom: 6px; }
-.statut-abo.actif { background: #d4edda; color: #155724; }
-.statut-abo.inactif { background: #f8f9fa; color: #555; border: 1px solid #ddd; }
-.btn-resilier { display: block; width: 100%; padding: 7px; background: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; }
-
-/* ===== MODE SOMBRE ===== */
-body.mode-sombre { background: #121212; color: #eee; }
-body.mode-sombre header { background: #1a1a1a; }
-body.mode-sombre .titre-site { color: #6fa8dc; }
-body.mode-sombre .filtres { background: #1e1e1e; border-bottom-color: #333; }
-body.mode-sombre .filtre-btn { color: #aaa; }
-body.mode-sombre .filtre-btn.actif { color: #e67e22; }
-body.mode-sombre .article, body.mode-sombre .formulaire, body.mode-sombre .chat-box,
-body.mode-sombre .menu-gauche, body.mode-sombre .modal-contenu, body.mode-sombre .lire-aussi-carte { background: #1e1e1e; color: #eee; }
-body.mode-sombre .article h2, body.mode-sombre .lire-aussi-carte p { color: #6fa8dc; }
-body.mode-sombre .chat-messages { background: #2a2a2a; }
-body.mode-sombre .pied-de-page { background: #1a1a1a; color: #aaa; }
-body.mode-sombre .offre-abo, body.mode-sombre .recap-adhesion, body.mode-sombre .charte-adhesion { background: #2a2a2a; }
-body.mode-sombre .verrou-contenu { background: #1e1e1e; }
-body.mode-sombre .editeur-contenu { background: #2a2a2a; color: #eee; border-color: #444; }
-body.mode-sombre .contenu-article { color: #ddd; }
-body.mode-sombre .menu-item-btn { color: #6fa8dc; }
-
-/* ===== RESPONSIVE ANDROID ===== */
-@media (max-width: 480px) {
-    .grille-articles { grid-template-columns: 1fr; padding: 0 10px; gap: 12px; }
-    .article.une h2 { font-size: 16px; }
-    .article-img { height: 145px; }
-    .article.une .article-img { height: 175px; }
-    .filtre-btn { padding: 11px 9px; font-size: 12px; }
-    .lire-aussi-grille { grid-template-columns: 1fr 1fr; }
-    .btn-row { flex-direction: column; }
-    .chat-input-row { flex-wrap: wrap; }
-    #chat-pseudo, #chat-message, #chat-envoyer { width: 100%; }
-    .menu-gauche { width: 255px; }
-    .modal-contenu { padding: 18px 14px; }
+/* RESPONSIVE */
+@media(max-width:480px){
+    .grille-articles{grid-template-columns:1fr;padding:0 10px;gap:12px;}
+    .article.une h2{font-size:16px;}
+    .article-img{height:145px;}
+    .article.une .article-img{height:175px;}
+    .filtre-btn{padding:11px 9px;font-size:12px;}
+    .lire-aussi-grille{grid-template-columns:1fr 1fr;}
+    .btn-row{flex-direction:column;}
+    .chat-input-row{flex-wrap:wrap;}
+    #chat-pseudo,#chat-message,#chat-envoyer{width:100%;}
+    .menu-gauche{width:255px;}
+    .modal-contenu{padding:18px 14px;}
+    .guide-etape{font-size:12px;}
 }
-
-/* ===== UPLOAD VIDÉO ADMIN ===== */
-.label-upload { display:block; margin-top:12px; margin-bottom:4px; font-size:13px; color:#555; font-weight:bold; }
-.apercu-media { margin-top:6px; margin-bottom:4px; }
-.apercu-media img, .apercu-media video { max-height:90px; border-radius:6px; display:block; }
-
-/* ===== PRIX ABO ===== */
-.prix-abo-badge { font-size:26px; font-weight:bold; color:#003366; text-align:center; background:#e0e7ff; border-radius:10px; padding:10px; margin-bottom:10px; }
-.prix-abo-badge span { font-size:14px; font-weight:normal; color:#666; }
-
-/* ===== SPINNER PAIEMENT ===== */
-.attente-paiement { text-align:center; padding:10px 0 6px; }
-.spinner-paiement {
-    width:52px; height:52px; border:5px solid #e0e7ff;
-    border-top:5px solid #e67e22; border-radius:50%;
-    animation:spin 1s linear infinite;
-    margin:0 auto 14px;
-}
-@keyframes spin { to { transform:rotate(360deg); } }
-.attente-paiement h3 { color:#003366; margin-bottom:8px; }
-.attente-paiement p { font-size:14px; color:#444; line-height:1.6; }
-
-/* Mode sombre spinner */
-body.mode-sombre .spinner-paiement { border-color:#333; border-top-color:#e67e22; }
-body.mode-sombre .prix-abo-badge { background:#2a2a3e; color:#6fa8dc; }
-
-/* ===== FICHE PDF ADHÉSION ===== */
-.info-pdf-telechargement {
-    background: #f0f8f0;
-    border: 1px solid #28a745;
-    border-radius: 10px;
-    padding: 14px;
-    margin-top: 14px;
-    text-align: center;
-}
-.icone-pdf { font-size: 32px; display: block; margin-bottom: 6px; }
-.info-pdf-telechargement p { font-size: 13px; color: #333; line-height: 1.5; margin: 0; }
-.info-pdf-telechargement code {
-    background: #e0f0e0;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 12px;
-    color: #155724;
-}
-.btn-retelecharger {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 8px 18px;
-    background: #28a745;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    font-size: 13px;
-    cursor: pointer;
-    font-weight: bold;
-}
-.btn-retelecharger:active { background: #1e7e34; }
-
-body.mode-sombre .info-pdf-telechargement {
-    background: #1a2e1a;
-    border-color: #28a745;
-}
-body.mode-sombre .info-pdf-telechargement p { color: #ccc; }
-
-/* ===== BANNIÈRE NOTIFICATIONS ===== */
-.banniere-notif {
-    background: #003366;
-    color: white;
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    flex-wrap: wrap;
-    font-size: 13px;
-    z-index: 100;
-}
-.banniere-notif-btns { display: flex; gap: 8px; flex-shrink: 0; }
-.banniere-notif-btns button {
-    padding: 6px 14px; border: none; border-radius: 20px;
-    font-size: 12px; cursor: pointer; font-weight: bold;
-}
-.banniere-notif-btns button:first-child { background: #e67e22; color: white; }
-.banniere-notif-btns button:last-child { background: rgba(255,255,255,0.2); color: white; }
-
-/* ===== BADGE À LA UNE ===== */
-.badge-une {
-    display: inline-block;
-    background: #e67e22;
-    color: white;
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 12px;
-    margin-left: 6px;
-    font-weight: bold;
-}
-
-/* ===== SÉLECTEUR IMPORTANCE ADMIN ===== */
-.select-importance {
-    padding: 4px 8px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 12px;
-    background: white;
-    cursor: pointer;
-    margin-top: 4px;
-}
-
-/* ===== BOUTON PARTAGER FACEBOOK ===== */
-.btn-partager-carte {
-    position: absolute; top: 8px; right: 8px;
-    background: #1877f2;
-    color: white;
-    border: none; border-radius: 50%;
-    width: 32px; height: 32px;
-    font-size: 14px; cursor: pointer; z-index: 3;
-}
-.btn-partager-article {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 7px 14px;
-    background: #1877f2;
-    color: white; border: none; border-radius: 20px;
-    font-size: 13px; cursor: pointer; margin: 8px 0 12px;
-}
-.btn-partager-article:active { background: #145dbf; }
-
-body.mode-sombre .select-importance { background: #2a2a2a; color: #eee; border-color: #444; }
-
-/* ===== 2. EN-TÊTE FIXE (bandeau + header + filtres) ===== */
-.entete-fixe {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 50;
-    background: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-}
-#espace-entete {
-    /* Hauteur calculée par JS au chargement */
-    height: 0;
-}
-
-/* ===== 3. ACCORDÉONS MENU GAUCHE ===== */
-.accordeon-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 11px 10px;
-    background: none;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    color: #003366;
-    font-weight: bold;
-    margin-bottom: 2px;
-    text-align: left;
-}
-.accordeon-btn:active { background: #f0f4ff; }
-.accordeon-icone {
-    font-size: 16px;
-    color: #e67e22;
-    font-weight: normal;
-    margin-left: 6px;
-}
-.accordeon-contenu {
-    padding: 6px 10px 10px 10px;
-    background: #f8f9fa;
-    border-radius: 0 0 8px 8px;
-    margin-bottom: 4px;
-}
-
-/* Guide paiement abonnement */
-.guide-paiement {
-    background: #f0f8ff;
-    border: 1px solid #b3d4f5;
-    border-radius: 10px;
-    padding: 14px;
-    margin-bottom: 14px;
-}
-.guide-etape {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 12px;
-    font-size: 13px;
-    line-height: 1.5;
-    color: #333;
-}
-.guide-etape:last-child { margin-bottom: 0; }
-.guide-num {
-    background: #e67e22;
-    color: white;
-    border-radius: 50%;
-    width: 24px; height: 24px;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: bold; font-size: 13px;
-    flex-shrink: 0;
-}
-.guide-note {
-    margin-top: 5px;
-    font-size: 12px;
-    color: #555;
-    background: white;
-    border-radius: 6px;
-    padding: 6px 8px;
-    border-left: 3px solid #e67e22;
-}
-.aide-ref {
-    font-size: 12px;
-    color: #666;
-    background: #fffbe6;
-    border: 1px solid #ffe58f;
-    border-radius: 6px;
-    padding: 8px 10px;
-    margin: 6px 0 10px;
-    line-height: 1.5;
-}
-
-body.mode-sombre .accordeon-btn { color: #6fa8dc; }
-body.mode-sombre .accordeon-btn:active { background: #2a2a3e; }
-body.mode-sombre .accordeon-contenu { background: #1a1a2e; }
-body.mode-sombre .guide-paiement { background: #1a2030; border-color: #2a4060; }
-body.mode-sombre .guide-etape { color: #ccc; }
-body.mode-sombre .guide-note { background: #1e1e1e; color: #aaa; }
-body.mode-sombre .aide-ref { background: #2a2000; border-color: #665500; color: #ccc; }
-body.mode-sombre .entete-fixe { background: #1a1a1a; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
