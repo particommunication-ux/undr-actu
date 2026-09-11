@@ -792,4 +792,4 @@ afficherArticles();
 ajusterEspaceEntete();
 setTimeout(demanderNotifications, 3000);
 
-if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js").catch(function(){}); }
+if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js?v=4").catch(function(){}); }
