@@ -1,10 +1,5 @@
-/* UNDR Actualités — service-worker.js — v4 */
-const CACHE_NAME = "undr-actu-v4-" + Date.now();
-
-self.addEventListener("install", function(e) {
-    self.skipWaiting();
-});
-
+/* Service worker désactivé — vide tous les caches existants */
+self.addEventListener("install", function() { self.skipWaiting(); });
 self.addEventListener("activate", function(e) {
     e.waitUntil(
         caches.keys().then(function(keys) {
@@ -12,10 +7,7 @@ self.addEventListener("activate", function(e) {
         }).then(function() { return self.clients.claim(); })
     );
 });
-
-/* Ne pas mettre en cache — toujours aller chercher le serveur */
 self.addEventListener("fetch", function(e) {
-    e.respondWith(fetch(e.request).catch(function() {
-        return caches.match(e.request);
-    }));
+    /* Pas de cache — réseau direct */
+    e.respondWith(fetch(e.request));
 });

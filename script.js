@@ -1,4 +1,16 @@
-/* UNDR Actualités - script.js - Version finale corrigée */
+/* UNDR Actualites - script.js - Version finale corrigee */
+
+/* Desinscrire tous les anciens service workers et vider les caches */
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function(regs) {
+        regs.forEach(function(r) { r.unregister(); });
+    });
+    caches.keys().then(function(keys) {
+        keys.forEach(function(k) { caches.delete(k); });
+    });
+}
+
+
 
 const MOT_DE_PASSE_ADMIN = "undr2026";
 let estAdmin = sessionStorage.getItem("adminUNDR") === "true";
@@ -792,4 +804,4 @@ afficherArticles();
 ajusterEspaceEntete();
 setTimeout(demanderNotifications, 3000);
 
-if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js?v=4").catch(function(){}); }
+
