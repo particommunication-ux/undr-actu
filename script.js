@@ -303,6 +303,18 @@ function fermerMenuGauche() {
 document.getElementById("ouvrir-menu-gauche").addEventListener("click", ouvrirMenuGauche);
 document.getElementById("fermer-menu-gauche").addEventListener("click", fermerMenuGauche);
 document.getElementById("overlay-menu-gauche").addEventListener("click", fermerMenuGauche);
+
+// Accordéons du menu gauche
+["acc-langue","acc-apparence","acc-taille"].forEach(function(id) {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    const cible = document.getElementById("contenu-" + id.replace("acc-",""));
+    btn.addEventListener("click", function() {
+        const ouvert = cible.style.display !== "none";
+        cible.style.display = ouvert ? "none" : "block";
+        btn.querySelector(".accordeon-icone").textContent = ouvert ? "▾" : "▴";
+    });
+});
 document.getElementById("menu-btn-adherer").addEventListener("click", function() { fermerMenuGauche(); ouvrirModalAdhesion(); });
 document.getElementById("menu-btn-abonner").addEventListener("click", function() { fermerMenuGauche(); ouvrirModalAbonnement(); });
 document.getElementById("menu-btn-partager").addEventListener("click", function() { fermerMenuGauche(); partagerFacebook(window.location.href); });
@@ -350,10 +362,10 @@ function afficherArticles() {
             ${verr?`<div class="carte-verrou-overlay"><span>🔒</span><small>Abonnez-vous</small></div>`:""}
             <span class="badge">${art.categorie}</span>
             ${premium?`<span class="badge-premium">🔒 Premium</span>`:""}
-            ${i===0?`<span class="badge-une">⭐ À la Une</span>`:""}
+            ${(i===0 && estAdmin)?`<span class="badge-une">⭐ À la Une</span>`:""}
             <h2>${art.titre}</h2>
             <p class="date-article">${art.date}</p>
-            <button class="btn-partager-carte" data-id="${art.id}" title="Partager sur Facebook">📘</button>
+            ${estAdmin?`<button class="btn-partager-carte" data-id="${art.id}" title="Partager sur Facebook">📘</button>`:""}
             ${estAdmin?`<div class="admin-carte-btns">
                 <button class="btn-modifier" data-id="${art.id}">✏️ Modifier</button>
                 <button class="btn-supprimer" data-id="${art.id}">🗑 Supprimer</button>
@@ -484,11 +496,11 @@ function ouvrirArticle(id) {
         }
     }
 
-    // 5. Bouton partager Facebook
+    // 5. Bouton partager Facebook : admin seulement
     const artUrl = window.location.href.split("#")[0] + "#article-" + id;
-    document.getElementById("btn-partager-article").onclick = function() {
-        partagerFacebook(artUrl);
-    };
+    const btnPart = document.getElementById("btn-partager-article");
+    btnPart.style.display = estAdmin ? "inline-flex" : "none";
+    btnPart.onclick = function() { partagerFacebook(artUrl); };
 
     // 6. Vues
     incrementerVue(id);
@@ -951,7 +963,7 @@ let intervalVerif = null;
 let transactionId = null;
 
 function afficherEtapePaiement(num) {
-    ["1","2","3","erreur"].forEach(function(n) {
+    ["1","2","erreur"].forEach(function(n) {
         const el = document.getElementById(n==="erreur"?"etape-paiement-erreur":"etape-paiement-"+n);
         if (el) el.style.display = "none";
     });
@@ -961,9 +973,10 @@ function afficherEtapePaiement(num) {
 
 function ouvrirModalAbonnement() {
     afficherEtapePaiement("1");
-    ["abo-nom","abo-tel"].forEach(function(id) { const el=document.getElementById(id); if(el) el.value=""; });
+    ["abo-nom","abo-tel","abo-ref"].forEach(function(id) {
+        const el = document.getElementById(id); if (el) el.value = "";
+    });
     document.getElementById("abo-operateur").value = "";
-    if (intervalVerif) { clearInterval(intervalVerif); intervalVerif = null; }
     document.getElementById("modal-abonnement").style.display = "flex";
 }
 function fermerModalAbonnement() {
@@ -998,19 +1011,22 @@ function activerAbonnementImmediatement(nom, tel, op, txId) {
 document.getElementById("btn-payer").addEventListener("click", function() {
     const nom = document.getElementById("abo-nom").value.trim();
     const tel = document.getElementById("abo-tel").value.trim();
-    const op = document.getElementById("abo-operateur").value;
-    if (!nom || !tel || !op) { alert("Merci de remplir tous les champs."); return; }
+    const op  = document.getElementById("abo-operateur").value;
+    const ref = document.getElementById("abo-ref").value.trim();
 
-    document.getElementById("tel-affiche").textContent = tel;
-    document.getElementById("operateur-affiche").textContent = op==="airtel"?"Airtel Money":"Moov Money";
+    if (!nom || !tel || !op || !ref) {
+        document.getElementById("msg-erreur-paiement").textContent =
+            "Merci de remplir tous les champs et d'entrer le numéro de référence de votre transaction.";
+        afficherEtapePaiement("erreur");
+        return;
+    }
+
+    // Activer l'abonnement immédiatement côté client
+    activerAbonnementImmediatement(nom, tel, op, ref);
+
+    // Afficher la référence confirmée
+    document.getElementById("ref-confirmee").textContent = ref;
     afficherEtapePaiement("2");
-    transactionId = "UNDR-" + Date.now();
-
-    // SIMULATION 8 secondes (remplacer par CinetPay en production)
-    setTimeout(function() {
-        activerAbonnementImmediatement(nom, tel, op, transactionId);
-        afficherEtapePaiement("3");
-    }, 8000);
 });
 
 document.getElementById("fermer-succes-abo").addEventListener("click", function() {
@@ -1133,6 +1149,20 @@ mettreAJourPointAdmin();
 metAJourAffichageAdmin();
 rafraichirPubs();
 afficherArticles();
+
+// 2. Ajuster l'espace sous l'entête fixe
+function ajusterEspaceEntete() {
+    const entete = document.getElementById("entete-fixe");
+    const espace = document.getElementById("espace-entete");
+    if (entete && espace) espace.style.height = entete.offsetHeight + "px";
+}
+ajusterEspaceEntete();
+window.addEventListener("resize", ajusterEspaceEntete);
+// Recalculer après affichage du bandeau
+new MutationObserver(ajusterEspaceEntete).observe(
+    document.getElementById("bandeau-abonnement"),
+    { attributes: true, attributeFilter: ["style"] }
+);
 
 // 1. Demander les notifications après 3 secondes
 if ("serviceWorker" in navigator) {

@@ -14,8 +14,8 @@
 <div id="banniere-notif" class="banniere-notif" style="display:none;">
     <span>🔔 Recevez les nouvelles publications en temps réel</span>
     <div class="banniere-notif-btns">
-        <button id="btn-activer-notif" onclick="activerNotifications()">Oui, activer</button>
-        <button id="btn-refuser-notif" onclick="document.getElementById('banniere-notif').style.display='none'; localStorage.setItem('notifRefuseeUNDR','true');">Non merci</button>
+        <button onclick="activerNotifications()">Oui, activer</button>
+        <button onclick="document.getElementById('banniere-notif').style.display='none'; localStorage.setItem('notifRefuseeUNDR','true');">Non merci</button>
     </div>
 </div>
 
@@ -31,26 +31,51 @@
             <strong style="font-size:15px; color:#003366;">UNDR Actualités</strong>
         </div>
         <hr style="margin:14px 0;">
+
+        <!-- Actions principales -->
         <button class="menu-item-btn" id="menu-btn-adherer">📋 <span data-i18n="menu_adherer">Adhérer à l'UNDR</span></button>
         <button class="menu-item-btn" id="menu-btn-abonner">💎 <span data-i18n="menu_abonner">S'abonner</span></button>
         <button class="menu-item-btn" id="menu-btn-partager">📤 <span data-i18n="menu_partager">Partager l'application</span></button>
         <hr style="margin:14px 0;">
-        <p class="menu-section-titre" data-i18n="menu_langue">Langue</p>
-        <div class="choix-langue">
-            <button class="lang-btn" data-lang="fr">Français</button>
-            <button class="lang-btn" data-lang="en">English</button>
-            <button class="lang-btn" data-lang="ar">عربية</button>
+
+        <!-- Accordéon Langue -->
+        <button class="accordeon-btn" id="acc-langue">
+            🌍 <span data-i18n="menu_langue">Langue</span>
+            <span class="accordeon-icone">▾</span>
+        </button>
+        <div class="accordeon-contenu" id="contenu-langue" style="display:none;">
+            <div class="choix-langue">
+                <button class="lang-btn" data-lang="fr">🇫🇷 Français</button>
+                <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+                <button class="lang-btn" data-lang="ar">🇹🇩 عربية</button>
+            </div>
         </div>
-        <p class="menu-section-titre" data-i18n="menu_apparence">Apparence</p>
-        <label class="switch-sombre">
-            <input type="checkbox" id="toggle-sombre"> <span data-i18n="menu_sombre">Mode sombre</span>
-        </label>
-        <p class="menu-section-titre" data-i18n="menu_taille">Taille du texte</p>
-        <div class="choix-taille">
-            <button class="taille-btn" data-taille="petit">A-</button>
-            <button class="taille-btn" data-taille="normal">A</button>
-            <button class="taille-btn" data-taille="grand">A+</button>
+
+        <!-- Accordéon Apparence -->
+        <button class="accordeon-btn" id="acc-apparence">
+            🎨 <span data-i18n="menu_apparence">Apparence</span>
+            <span class="accordeon-icone">▾</span>
+        </button>
+        <div class="accordeon-contenu" id="contenu-apparence" style="display:none;">
+            <label class="switch-sombre">
+                <input type="checkbox" id="toggle-sombre">
+                <span data-i18n="menu_sombre">Mode sombre</span>
+            </label>
         </div>
+
+        <!-- Accordéon Taille texte -->
+        <button class="accordeon-btn" id="acc-taille">
+            🔤 <span data-i18n="menu_taille">Taille du texte</span>
+            <span class="accordeon-icone">▾</span>
+        </button>
+        <div class="accordeon-contenu" id="contenu-taille" style="display:none;">
+            <div class="choix-taille">
+                <button class="taille-btn" data-taille="petit">A- Petit</button>
+                <button class="taille-btn" data-taille="normal">A Normal</button>
+                <button class="taille-btn" data-taille="grand">A+ Grand</button>
+            </div>
+        </div>
+
         <hr style="margin:14px 0;">
         <div id="statut-abonnement-panneau" class="statut-abo-panneau"></div>
     </div>
@@ -60,36 +85,42 @@
 <!-- ===== HAMBURGER ===== -->
 <button id="ouvrir-menu-gauche" class="icone-menu">☰</button>
 
-<!-- ===== BANDEAU ORANGE ===== -->
-<div id="bandeau-abonnement" class="bandeau-abonnement" style="display:none;">
-    🔒 <span data-i18n="bandeau_texte">Contenu réservé aux abonnés</span>
-    <div class="bandeau-boutons">
-        <button id="bandeau-btn-adherer">📋 <span data-i18n="btn_adherer">Adhérer</span></button>
-        <button id="bandeau-btn-abo">💎 <span data-i18n="btn_abonner">S'abonner</span></button>
+<!-- ===== EN-TÊTE FIXE (bandeau + header + filtres) ===== -->
+<div id="entete-fixe" class="entete-fixe">
+
+    <!-- Bandeau orange abonnement -->
+    <div id="bandeau-abonnement" class="bandeau-abonnement" style="display:none;">
+        🔒 <span data-i18n="bandeau_texte">Contenu réservé aux abonnés</span>
+        <div class="bandeau-boutons">
+            <button id="bandeau-btn-adherer">📋 <span data-i18n="btn_adherer">Adhérer</span></button>
+            <button id="bandeau-btn-abo">💎 <span data-i18n="btn_abonner">S'abonner</span></button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <img src="logo.png" alt="UNDR L'Espoir" class="logo">
+        <h1 class="titre-site">UNDR Actualités</h1>
+    </header>
+
+    <!-- Filtres -->
+    <div class="filtres" id="filtres-list">
+        <button class="filtre-btn actif" data-categorie="Toutes" data-i18n="cat_toutes">⭐ À la Une</button>
+        <button class="filtre-btn" data-categorie="Actualités" data-i18n="cat_actu">Actualités</button>
+        <button class="filtre-btn" data-categorie="Activités" data-i18n="cat_activ">Activités</button>
+        <button class="filtre-btn" data-categorie="Communiqués" data-i18n="cat_com">Communiqués</button>
+        <button class="filtre-btn" data-categorie="Portraits des membres du BNE" data-i18n="cat_bne">Portraits BNE</button>
+        <button class="filtre-btn" data-categorie="Actualités Tchad" data-i18n="cat_tchad">Tchad</button>
+        <button class="filtre-btn" data-categorie="Actualités Politique" data-i18n="cat_pol">Politique</button>
+        <button class="filtre-btn" data-categorie="Divertissement" data-i18n="cat_div">Divertissement</button>
     </div>
 </div>
-
-<!-- ===== HEADER ===== -->
-<header>
-    <img src="logo.png" alt="UNDR L'Espoir" class="logo">
-    <h1 class="titre-site">UNDR Actualités</h1>
-</header>
+<!-- Espace pour compenser l'en-tête fixe -->
+<div id="espace-entete"></div>
 
 <!-- ===== PUB HAUTE ===== -->
 <div class="pub-zone" id="pub-haut">
     <div id="pub-maison-haut" class="pub-maison" style="display:none;"></div>
-</div>
-
-<!-- ===== FILTRES ===== -->
-<div class="filtres" id="filtres-list">
-    <button class="filtre-btn actif" data-categorie="Toutes" data-i18n="cat_toutes">⭐ À la Une</button>
-    <button class="filtre-btn" data-categorie="Actualités" data-i18n="cat_actu">Actualités</button>
-    <button class="filtre-btn" data-categorie="Activités" data-i18n="cat_activ">Activités</button>
-    <button class="filtre-btn" data-categorie="Communiqués" data-i18n="cat_com">Communiqués</button>
-    <button class="filtre-btn" data-categorie="Portraits des membres du BNE" data-i18n="cat_bne">Portraits BNE</button>
-    <button class="filtre-btn" data-categorie="Actualités Tchad" data-i18n="cat_tchad">Tchad</button>
-    <button class="filtre-btn" data-categorie="Actualités Politique" data-i18n="cat_pol">Politique</button>
-    <button class="filtre-btn" data-categorie="Divertissement" data-i18n="cat_div">Divertissement</button>
 </div>
 
 <!-- ===== FORMULAIRE ADMIN ===== -->
@@ -105,8 +136,6 @@
         <option value="Actualités Politique">Actualités Politique</option>
         <option value="Divertissement">Divertissement</option>
     </select>
-
-    <!-- Éditeur texte riche -->
     <div class="barre-outils-editeur">
         <button type="button" onclick="document.execCommand('bold')"><b>G</b></button>
         <button type="button" onclick="document.execCommand('italic')"><i>I</i></button>
@@ -119,28 +148,19 @@
     <div id="editeur-contenu" class="editeur-contenu" contenteditable="true"
          style="font-family:'Times New Roman',serif; font-size:12pt;"
          placeholder="Contenu de l'article..."></div>
-
-    <!-- Image -->
     <label class="label-upload">📷 Image de l'article :</label>
     <input type="file" id="nouvelle-image" accept="image/*">
     <div id="apercu-image-admin" class="apercu-media"></div>
-
-    <!-- Vidéo fichier -->
     <label class="label-upload">🎬 Vidéo depuis le téléphone (MP4, max 50 Mo) :</label>
     <input type="file" id="nouvelle-video-fichier" accept="video/*">
     <div id="apercu-video-admin" class="apercu-media"></div>
-
-    <!-- Vidéo lien -->
     <label class="label-upload">🔗 OU lien vidéo (YouTube / Facebook) :</label>
     <input type="text" id="nouvelle-video" placeholder="https://www.youtube.com/...">
-
     <label style="display:flex; align-items:center; gap:8px; margin-top:10px; font-size:14px;">
         <input type="checkbox" id="article-premium"> 🔒 Contenu réservé aux abonnés
     </label>
-
     <button id="bouton-publier">Publier</button>
 
-    <!-- PUBS MAISON -->
     <div class="admin-pub-section">
         <h3>📢 Publicités maison</h3>
         <label>Pub HAUTE :</label>
@@ -174,7 +194,10 @@
     <h2 id="detail-titre"></h2>
     <p id="detail-date" class="date-article"></p>
     <p id="detail-vues" class="vues-admin" style="display:none;"></p>
-    <button id="btn-partager-article" class="btn-partager-article">📤 <span data-i18n="btn_partager_art">Partager cet article</span></button>
+    <!-- Partager Facebook : admin seulement, géré par JS -->
+    <button id="btn-partager-article" class="btn-partager-article" style="display:none;">
+        📘 <span data-i18n="btn_partager_art">Partager sur Facebook</span>
+    </button>
     <div id="detail-resume" class="contenu-article"></div>
     <div id="verrou-premium" class="verrou-premium" style="display:none;">
         <div class="verrou-contenu">
@@ -225,7 +248,8 @@
                 </ul>
             </div>
             <label class="label-checkbox">
-                <input type="checkbox" id="adh-accord"> <span data-i18n="charte_accord">J'accepte la charte et les statuts de l'UNDR</span>
+                <input type="checkbox" id="adh-accord">
+                <span data-i18n="charte_accord">J'accepte la charte et les statuts de l'UNDR</span>
             </label>
             <div class="btn-row">
                 <button id="btn-retour-adhesion" class="btn-secondary" data-i18n="btn_retour_f">← Retour</button>
@@ -240,11 +264,10 @@
                 <p><strong>Dossier : <span id="num-dossier"></span></strong></p>
                 <div class="info-pdf-telechargement">
                     <span class="icone-pdf">📄</span>
-                    <p>Votre fiche d'adhésion a été <strong>téléchargée en PDF</strong> dans votre dossier <strong>Téléchargements</strong> sous le nom <code>adhesion_UNDR-XXXXXX.pdf</code>.</p>
-                    <p style="font-size:12px; color:#888; margin-top:6px;">Si le téléchargement ne s'est pas lancé, appuyez sur le bouton ci-dessous.</p>
-                    <button class="btn-retelecharger" id="btn-retelecharger-pdf">📥 Re-télécharger la fiche</button>
+                    <p>Votre fiche d'adhésion a été <strong>générée</strong>. Appuyez pour la télécharger.</p>
+                    <button class="btn-retelecharger" id="btn-retelecharger-pdf">📥 Télécharger la fiche PDF</button>
                 </div>
-                <button class="btn-primary-vert" id="fermer-succes-adhesion" data-i18n="btn_fermer" style="margin-top:12px;">Fermer</button>
+                <button class="btn-primary-vert" id="fermer-succes-adhesion" style="margin-top:12px;">Fermer</button>
             </div>
         </div>
     </div>
@@ -268,37 +291,52 @@
             </div>
         </div>
 
-        <!-- ÉTAPE 1 : Coordonnées -->
+        <!-- ÉTAPE 1 : Instructions de transfert -->
         <div id="etape-paiement-1" class="etape-paiement">
-            <h3 data-i18n="paiement_coords">Vos coordonnées</h3>
-            <input type="text" id="abo-nom" placeholder="Nom et Prénom *">
-            <input type="tel" id="abo-tel" placeholder="Numéro Mobile Money * (ex: 66 00 00 00)">
-            <select id="abo-operateur">
-                <option value="">-- <span data-i18n="paiement_choisir">Choisir l'opérateur</span> --</option>
-                <option value="airtel">📱 Airtel Money</option>
-                <option value="moov">📱 Moov Money</option>
-            </select>
-            <button id="btn-payer" class="btn-payer">💳 <span data-i18n="btn_payer">Payer 1 000 FCFA</span></button>
-        </div>
+            <h3>Comment s'abonner ?</h3>
 
-        <!-- ÉTAPE 2 : Attente confirmation sur le téléphone -->
-        <div id="etape-paiement-2" class="etape-paiement" style="display:none;">
-            <div class="attente-paiement">
-                <div class="spinner-paiement"></div>
-                <h3 data-i18n="paiement_attente">Vérifiez votre téléphone !</h3>
-                <p data-i18n="paiement_attente_texte">Une demande de confirmation a été envoyée sur le numéro <strong id="tel-affiche"></strong>. Entrez votre code PIN <strong id="operateur-affiche"></strong> pour confirmer le paiement de <strong>1 000 FCFA</strong>.</p>
-                <p class="info-validation" data-i18n="paiement_ne_quittez">Ne quittez pas cette page...</p>
+            <!-- Explication du processus -->
+            <div class="guide-paiement">
+                <div class="guide-etape">
+                    <span class="guide-num">1</span>
+                    <div>
+                        <strong>Transférez 1 000 FCFA</strong> au numéro Mobile Money :
+                        <div class="numero-paiement">+235 66 79 77 51</div>
+                        <p class="guide-note">Airtel Money : composez <strong>*555#</strong> → Envoyer argent<br>
+                        Moov Money : composez <strong>*606#</strong> → Transfert</p>
+                    </div>
+                </div>
+                <div class="guide-etape">
+                    <span class="guide-num">2</span>
+                    <div>Notez le <strong>numéro de référence</strong> de la transaction reçu par SMS après le transfert.</div>
+                </div>
+                <div class="guide-etape">
+                    <span class="guide-num">3</span>
+                    <div>Revenez ici et remplissez le formulaire ci-dessous avec ce numéro de référence.</div>
+                </div>
             </div>
-            <button id="btn-annuler-paiement" class="btn-secondary" style="width:100%; margin-top:12px;" data-i18n="btn_annuler">Annuler</button>
+
+            <h3 style="margin-top:16px;">Confirmer votre paiement</h3>
+            <input type="text" id="abo-nom" placeholder="Nom et Prénom *">
+            <input type="tel" id="abo-tel" placeholder="Votre numéro de téléphone *">
+            <select id="abo-operateur">
+                <option value="">-- Choisir l'opérateur --</option>
+                <option value="Airtel Money">📱 Airtel Money</option>
+                <option value="Moov Money">📱 Moov Money</option>
+            </select>
+            <input type="text" id="abo-ref" placeholder="Numéro de référence de la transaction *">
+            <p class="aide-ref">💡 Le numéro de référence se trouve dans le SMS de confirmation reçu après votre transfert. Exemple : <em>TXN123456789</em></p>
+            <button id="btn-payer" class="btn-payer">✅ Confirmer mon abonnement</button>
         </div>
 
-        <!-- ÉTAPE 3 : Succès -->
-        <div id="etape-paiement-3" class="etape-paiement" style="display:none;">
+        <!-- ÉTAPE 2 : Succès -->
+        <div id="etape-paiement-2" class="etape-paiement" style="display:none;">
             <div class="succes-adhesion">
                 <div class="succes-icone">🎉</div>
-                <h3 data-i18n="paiement_succes">Paiement confirmé !</h3>
-                <p data-i18n="paiement_succes_texte">Votre abonnement est activé. Bonne lecture !</p>
-                <button class="btn-primary-vert" id="fermer-succes-abo" data-i18n="btn_fermer">Fermer</button>
+                <h3 data-i18n="paiement_succes">Abonnement activé !</h3>
+                <p>Votre référence <strong id="ref-confirmee"></strong> a été enregistrée.</p>
+                <p data-i18n="paiement_succes_texte">Vous avez maintenant accès à tous les contenus. Bonne lecture !</p>
+                <button class="btn-primary-vert" id="fermer-succes-abo">Fermer et accéder</button>
             </div>
         </div>
 
@@ -306,9 +344,9 @@
         <div id="etape-paiement-erreur" class="etape-paiement" style="display:none;">
             <div class="succes-adhesion">
                 <div class="succes-icone">❌</div>
-                <h3 data-i18n="paiement_echec">Paiement non confirmé</h3>
-                <p id="msg-erreur-paiement" data-i18n="paiement_echec_texte">Le paiement n'a pas été confirmé. Vérifiez votre solde et réessayez.</p>
-                <button class="btn-primary-vert" id="btn-reessayer" data-i18n="btn_reessayer">Réessayer</button>
+                <h3 data-i18n="paiement_echec">Informations incomplètes</h3>
+                <p id="msg-erreur-paiement">Merci de remplir tous les champs et d'entrer votre numéro de référence.</p>
+                <button class="btn-primary-vert" id="btn-reessayer">Réessayer</button>
             </div>
         </div>
     </div>
@@ -348,7 +386,6 @@
     </p>
 </footer>
 
-<!-- jsPDF : génération PDF fiche d'adhésion -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="script.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>

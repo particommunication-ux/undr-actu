@@ -374,3 +374,103 @@ body.mode-sombre .info-pdf-telechargement p { color: #ccc; }
 .btn-partager-article:active { background: #145dbf; }
 
 body.mode-sombre .select-importance { background: #2a2a2a; color: #eee; border-color: #444; }
+
+/* ===== 2. EN-TÊTE FIXE (bandeau + header + filtres) ===== */
+.entete-fixe {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+#espace-entete {
+    /* Hauteur calculée par JS au chargement */
+    height: 0;
+}
+
+/* ===== 3. ACCORDÉONS MENU GAUCHE ===== */
+.accordeon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 11px 10px;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #003366;
+    font-weight: bold;
+    margin-bottom: 2px;
+    text-align: left;
+}
+.accordeon-btn:active { background: #f0f4ff; }
+.accordeon-icone {
+    font-size: 16px;
+    color: #e67e22;
+    font-weight: normal;
+    margin-left: 6px;
+}
+.accordeon-contenu {
+    padding: 6px 10px 10px 10px;
+    background: #f8f9fa;
+    border-radius: 0 0 8px 8px;
+    margin-bottom: 4px;
+}
+
+/* Guide paiement abonnement */
+.guide-paiement {
+    background: #f0f8ff;
+    border: 1px solid #b3d4f5;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 14px;
+}
+.guide-etape {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #333;
+}
+.guide-etape:last-child { margin-bottom: 0; }
+.guide-num {
+    background: #e67e22;
+    color: white;
+    border-radius: 50%;
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 13px;
+    flex-shrink: 0;
+}
+.guide-note {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #555;
+    background: white;
+    border-radius: 6px;
+    padding: 6px 8px;
+    border-left: 3px solid #e67e22;
+}
+.aide-ref {
+    font-size: 12px;
+    color: #666;
+    background: #fffbe6;
+    border: 1px solid #ffe58f;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin: 6px 0 10px;
+    line-height: 1.5;
+}
+
+body.mode-sombre .accordeon-btn { color: #6fa8dc; }
+body.mode-sombre .accordeon-btn:active { background: #2a2a3e; }
+body.mode-sombre .accordeon-contenu { background: #1a1a2e; }
+body.mode-sombre .guide-paiement { background: #1a2030; border-color: #2a4060; }
+body.mode-sombre .guide-etape { color: #ccc; }
+body.mode-sombre .guide-note { background: #1e1e1e; color: #aaa; }
+body.mode-sombre .aide-ref { background: #2a2000; border-color: #665500; color: #ccc; }
+body.mode-sombre .entete-fixe { background: #1a1a1a; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
