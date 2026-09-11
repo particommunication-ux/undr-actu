@@ -113,6 +113,7 @@ function metAJourAffichageAdmin() {
     if (vues) vues.style.display = estAdmin ? "block" : "none";
     var btnPart = document.getElementById("btn-partager-article");
     if (btnPart) btnPart.style.display = estAdmin ? "inline-flex" : "none";
+    afficherBoutonPremiumAdmin();
 }
 
 /* ================================================================
@@ -196,7 +197,7 @@ function afficherArticles() {
 
     liste.forEach(function(art, i) {
         var div = document.createElement("div");
-        var premium = estPremium(art);
+        var premium = estPremiumEffectif(art);
         var verr = premium && !estAbonne && !estAdmin;
         div.className = i === 0 ? "article une" : "article";
         if (verr) div.classList.add("article-verrou");
@@ -278,7 +279,7 @@ function afficherLireAussi(artActuel) {
     var html = "<h3>Lire aussi</h3><div class='lire-aussi-grille'>";
     sugg.forEach(function(art) {
         var img = art.image || ("https://picsum.photos/seed/" + encodeURIComponent(art.titre) + "/400/200");
-        var v = estPremium(art) && !estAbonne && !estAdmin;
+        var v = estPremiumEffectif(art) && !estAbonne && !estAdmin;
         html += "<div class='lire-aussi-carte' data-id='" + art.id + "'>" +
                 "<img src='" + img + "' " + (v ? "style='filter:blur(3px)'" : "") + " alt=''>" +
                 "<p>" + (v ? "🔒 " : "") + art.titre + "</p></div>";
@@ -296,7 +297,7 @@ function afficherLireAussi(artActuel) {
 function ouvrirArticle(id) {
     var art = articles.find(function(a) { return a.id === id; });
     if (!art) return;
-    var premium = estPremium(art);
+    var premium = estPremiumEffectif(art);
     var verr = premium && !estAbonne && !estAdmin;
     var img = art.image || ("https://picsum.photos/seed/" + encodeURIComponent(art.titre) + "/400/200");
 
@@ -402,7 +403,7 @@ conteneur.addEventListener("click", function(e) {
     if (carte) {
         var id = Number(carte.dataset.id);
         var art = articles.find(function(a) { return a.id === id; });
-        if (art && estPremium(art) && !estAbonne && !estAdmin) { ouvrirModalAbonnement(); return; }
+        if (art && estPremiumEffectif(art) && !estAbonne && !estAdmin) { ouvrirModalAbonnement(); return; }
         if (art) ouvrirArticle(id);
     }
 });
@@ -572,11 +573,11 @@ function genererPDF(d, photoDataUrl) {
             var doc = new jsPDF({ unit:"mm", format:"a4" });
             doc.setFillColor(0,51,102); doc.rect(0,0,210,36,"F");
             doc.setTextColor(255,255,255); doc.setFontSize(18); doc.setFont("helvetica","bold");
-            doc.text("UNDR — L'Espoir", 105, 13, {align:"center"});
+            doc.text("UNDR — Parti de l'Espoir", 105, 13, {align:"center"});
             doc.setFontSize(11); doc.setFont("helvetica","normal");
             doc.text("FICHE D'ADHÉSION", 105, 22, {align:"center"});
             doc.setFontSize(8);
-            doc.text("Groupe Parlementaire UNDR — Assemblée Nationale du Tchad", 105, 30, {align:"center"});
+            doc.text("Paix — Discipline — Travail", 105, 30, {align:"center"});
             doc.setFillColor(230,126,34); doc.rect(0,36,210,4,"F");
             doc.setFillColor(240,244,255); doc.roundedRect(14,46,182,12,2,2,"F");
             doc.setTextColor(0,51,102); doc.setFontSize(10); doc.setFont("helvetica","bold");
@@ -629,7 +630,7 @@ function genererPDF(d, photoDataUrl) {
     var photoHTML = photoDataUrl ? "<img src='" + photoDataUrl + "' style='width:100%;height:100%;object-fit:cover;'>" : "<p style='color:#999;text-align:center;margin-top:30px;font-size:11px;'>Photo d'identité</p>";
     var html = "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Adhésion " + d.id + "</title><style>*{box-sizing:border-box;margin:0;padding:0;}body{font-family:Arial,sans-serif;}.entete{background:#003366;color:white;padding:18px;text-align:center;}.bande{height:5px;background:#e67e22;}.corps{padding:16px;display:flex;gap:16px;}.infos{flex:1;}.photo{width:105px;flex-shrink:0;}.cadre{width:100px;height:120px;border:2px solid #003366;overflow:hidden;}.num{background:#f0f4ff;padding:10px;border-radius:6px;margin-bottom:14px;font-size:13px;}.num strong{color:#003366;font-size:15px;}table{width:100%;border-collapse:collapse;margin-bottom:14px;}td{padding:6px 8px;font-size:12px;border-bottom:1px solid #eee;}td:first-child{font-weight:bold;color:#003366;width:40%;}.charte{background:#f8f9fa;padding:10px;border-radius:6px;font-size:11px;margin-bottom:14px;}.charte p{font-weight:bold;margin-bottom:4px;}.sigs{display:flex;gap:14px;}.sig{flex:1;background:#f0f4ff;padding:10px;border-radius:6px;font-size:11px;text-align:center;}.sl{border-top:1px solid #003366;margin-top:28px;padding-top:4px;color:#888;}.pied{background:#003366;color:white;padding:10px;text-align:center;font-size:10px;margin-top:16px;}@media print{.np{display:none;}}</style></head><body>";
     html += "<div class='np' style='background:#e67e22;color:white;padding:10px;text-align:center;'><button onclick='window.print()' style='background:white;color:#e67e22;border:none;padding:8px 20px;border-radius:20px;font-weight:bold;cursor:pointer;'>🖨️ Imprimer / Sauvegarder en PDF</button></div>";
-    html += "<div class='entete'><h2>UNDR — L'Espoir</h2><p>FICHE D'ADHÉSION</p></div><div class='bande'></div><div style='padding:16px;'><div class='num'>Dossier : <strong>" + d.id + "</strong> &nbsp; Date : " + d.date + "</div><div class='corps'><div class='infos'><table><tr><td>Nom et Prénom</td><td>" + d.nom + "</td></tr><tr><td>Date de naissance</td><td>" + d.naissance + "</td></tr><tr><td>Téléphone</td><td>" + d.tel + "</td></tr><tr><td>Région</td><td>" + d.region + "</td></tr><tr><td>Organe du Parti</td><td>" + (d.organe||"—") + "</td></tr><tr><td>Poste</td><td>" + (d.poste||"—") + "</td></tr></table></div><div class='photo'><div class='cadre'>" + photoHTML + "</div><p style='font-size:10px;color:#888;text-align:center;margin-top:4px;'>Photo d'identité</p></div></div><div class='charte'><p>Charte d'adhésion — En adhérant je m'engage à :</p><ul style='margin-left:14px;'><li>Respecter les statuts du parti</li><li>Contribuer aux activités du mouvement</li><li>Défendre les valeurs de démocratie</li><li>Payer la cotisation annuelle</li></ul></div><div class='sigs'><div class='sig'>Signature du membre<div class='sl'></div></div><div class='sig'>Visa du responsable<div class='sl'></div></div></div></div><div class='pied'>UNDR — +235 66 79 77 51 — Document généré le " + d.date + "</div><script>setTimeout(function(){window.print();},600);</scr" + "ipt></body></html>";
+    html += "<div class='entete'><h2>UNDR — Parti de l'Espoir</h2><p>FICHE D'ADHÉSION — Paix — Discipline — Travail</p></div><div class='bande'></div><div style='padding:16px;'><div class='num'>Dossier : <strong>" + d.id + "</strong> &nbsp; Date : " + d.date + "</div><div class='corps'><div class='infos'><table><tr><td>Nom et Prénom</td><td>" + d.nom + "</td></tr><tr><td>Date de naissance</td><td>" + d.naissance + "</td></tr><tr><td>Téléphone</td><td>" + d.tel + "</td></tr><tr><td>Région</td><td>" + d.region + "</td></tr><tr><td>Organe du Parti</td><td>" + (d.organe||"—") + "</td></tr><tr><td>Poste</td><td>" + (d.poste||"—") + "</td></tr></table></div><div class='photo'><div class='cadre'>" + photoHTML + "</div><p style='font-size:10px;color:#888;text-align:center;margin-top:4px;'>Photo d'identité</p></div></div><div class='charte'><p>Charte d'adhésion — En adhérant je m'engage à :</p><ul style='margin-left:14px;'><li>Respecter les statuts du parti</li><li>Contribuer aux activités du mouvement</li><li>Défendre les valeurs de démocratie</li><li>Payer la cotisation annuelle</li></ul></div><div class='sigs'><div class='sig'>Signature du membre<div class='sl'></div></div><div class='sig'>Visa du responsable<div class='sl'></div></div></div></div><div class='pied'>UNDR — +235 66 79 77 51 — Document généré le " + d.date + "</div><script>setTimeout(function(){window.print();},600);</scr" + "ipt></body></html>";
     var blob = new Blob([html], { type: "text/html;charset=utf-8" });
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
@@ -693,24 +694,63 @@ document.getElementById("fermer-succes-abo").addEventListener("click", function(
     alert("🎉 Bienvenue ! Vous avez maintenant accès à tous les contenus UNDR.");
 });
 
+/* ================================================================
+   3. MODE ABONNEMENT — BOUTON ADMIN POUR DÉSACTIVER
+   ================================================================ */
+var modeAbonnementActif = localStorage.getItem("premiumDesactiveUNDR") !== "true";
+
+function afficherBoutonPremiumAdmin() {
+    var zone = document.getElementById("btn-premium-admin");
+    if (!zone || !estAdmin) return;
+    zone.style.display = "block";
+    zone.innerHTML = modeAbonnementActif
+        ? "<button id='btn-toggle-premium' class='btn-premium-on'>🔒 Premium activé — Cliquer pour désactiver</button>"
+        : "<button id='btn-toggle-premium' class='btn-premium-off'>🔓 Premium désactivé — Cliquer pour réactiver</button>";
+    document.getElementById("btn-toggle-premium").addEventListener("click", function() {
+        modeAbonnementActif = !modeAbonnementActif;
+        localStorage.setItem("premiumDesactiveUNDR", modeAbonnementActif ? "false" : "true");
+        // Si désactivé : tous les articles sont accessibles sans abonnement
+        afficherBoutonPremiumAdmin();
+        afficherArticles();
+        alert(modeAbonnementActif ? "✅ Mode Premium réactivé." : "🔓 Mode Premium désactivé. Tous les articles sont maintenant accessibles.");
+    });
+}
+
+// Surcharger estPremium pour tenir compte du mode désactivé
+function estPremiumEffectif(art) {
+    if (!modeAbonnementActif) return false; // Premium désactivé par admin
+    return art.premium === true || CATEGORIES_PREMIUM.includes(art.categorie);
+}
+
 /* ADMIN LISTES */
 function chargerAdhesionsAdmin() {
     var zone = document.getElementById("liste-adhesions"); if (!zone) return;
     var dem = JSON.parse(localStorage.getItem("adhesionsUNDR") || "[]");
     if (!dem.length) { zone.innerHTML = "<p style='color:#888;font-size:13px;'>Aucune demande.</p>"; return; }
     zone.innerHTML = dem.map(function(d, i) {
-        return "<div class='adhesion-item'><strong>" + d.nom + "</strong> — " + d.region + " — 📞 " + d.tel + "<br>" +
+        return "<div class='adhesion-item'>" +
+            "<strong>" + d.nom + "</strong> — " + d.region + " — 📞 " + d.tel + "<br>" +
             (d.organe ? "<small>Organe: " + d.organe + " | Poste: " + (d.poste||"—") + "</small><br>" : "") +
             "<small>" + d.naissance + " | " + d.id + " | " + d.date + "</small><br>" +
             "<span class='badge-statut " + (d.statut==="Validé"?"valide":"attente") + "'>" + d.statut + "</span>" +
-            (d.statut!=="Validé" ? "<button class='btn-valider-adhesion' data-index='" + i + "'>✅</button>" : "") +
-            "<button class='btn-suppr-adhesion' data-index='" + i + "'>🗑</button></div>";
+            (d.statut!=="Validé" ? "<button class='btn-valider-adhesion' data-index='" + i + "'>✅ Valider</button>" : "") +
+            "<button class='btn-pdf-adhesion' data-index='" + i + "'>📄 PDF</button>" +
+            "<button class='btn-suppr-adhesion' data-index='" + i + "'>🗑</button>" +
+        "</div>";
     }).join("");
     zone.querySelectorAll(".btn-valider-adhesion").forEach(function(b) {
         b.addEventListener("click", function() {
             var d = JSON.parse(localStorage.getItem("adhesionsUNDR")||"[]");
             d[Number(b.dataset.index)].statut = "Validé";
             localStorage.setItem("adhesionsUNDR", JSON.stringify(d)); chargerAdhesionsAdmin();
+        });
+    });
+    // 1. Bouton PDF pour chaque adhésion dans la liste admin
+    zone.querySelectorAll(".btn-pdf-adhesion").forEach(function(b) {
+        b.addEventListener("click", function() {
+            var dem2 = JSON.parse(localStorage.getItem("adhesionsUNDR")||"[]");
+            var adhesion = dem2[Number(b.dataset.index)];
+            if (adhesion) genererPDF(adhesion, null);
         });
     });
     zone.querySelectorAll(".btn-suppr-adhesion").forEach(function(b) {

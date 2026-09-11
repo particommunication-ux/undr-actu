@@ -45,9 +45,9 @@ html,body{width:100%;overflow-x:hidden;font-family:Arial,sans-serif;background:#
 .entete-fixe{position:fixed;top:0;left:0;right:0;z-index:100;background:white;box-shadow:0 2px 8px rgba(0,0,0,0.12);}
 
 /* BANDEAU ORANGE */
-.bandeau-abonnement{background:#e67e22;color:white;font-size:13px;font-weight:bold;padding:8px 12px;text-align:center;}
-.bandeau-boutons{display:flex;justify-content:center;gap:8px;margin-top:6px;flex-wrap:wrap;}
-.bandeau-boutons button{padding:6px 14px;border:none;border-radius:20px;font-size:13px;cursor:pointer;font-weight:bold;}
+.bandeau-abonnement{background:#e67e22;color:white;font-size:11px;font-weight:bold;padding:4px 10px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
+.bandeau-boutons{display:flex;gap:6px;flex-wrap:wrap;}
+.bandeau-boutons button{padding:3px 10px;border:none;border-radius:14px;font-size:11px;cursor:pointer;font-weight:bold;}
 #bandeau-btn-adherer{background:white;color:#e67e22;}
 #bandeau-btn-abo{background:#003366;color:white;}
 
@@ -271,3 +271,29 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     .modal-contenu{padding:18px 14px;}
     .guide-etape{font-size:12px;}
 }
+
+/* BOUTON PREMIUM ADMIN */
+.btn-premium-on {
+    display: block; width: 100%; padding: 10px;
+    background: linear-gradient(90deg, #003366, #e67e22);
+    color: white; border: none; border-radius: 8px;
+    font-size: 14px; font-weight: bold; cursor: pointer;
+    text-align: center;
+}
+.btn-premium-off {
+    display: block; width: 100%; padding: 10px;
+    background: #28a745; color: white;
+    border: none; border-radius: 8px;
+    font-size: 14px; font-weight: bold; cursor: pointer;
+    text-align: center;
+}
+.btn-premium-on:active { opacity: 0.85; }
+.btn-premium-off:active { opacity: 0.85; }
+
+/* BOUTON PDF DANS LISTE ADMIN */
+.btn-pdf-adhesion {
+    padding: 3px 8px; background: #e67e22; color: white;
+    border: none; border-radius: 4px; cursor: pointer;
+    font-size: 12px; margin-right: 3px;
+}
+.btn-pdf-adhesion:active { background: #cf6d17; }
