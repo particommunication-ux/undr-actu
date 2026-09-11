@@ -571,14 +571,14 @@ function genererPDF(d, photoDataUrl) {
         try {
             var jsPDF = window.jspdf.jsPDF;
             var doc = new jsPDF({ unit:"mm", format:"a4" });
-            doc.setFillColor(0,51,102); doc.rect(0,0,210,36,"F");
+            doc.setFillColor(230,126,34); doc.rect(0,0,210,36,"F");
             doc.setTextColor(255,255,255); doc.setFontSize(18); doc.setFont("helvetica","bold");
             doc.text("UNDR — Parti de l'Espoir", 105, 13, {align:"center"});
             doc.setFontSize(11); doc.setFont("helvetica","normal");
             doc.text("FICHE D'ADHÉSION", 105, 22, {align:"center"});
             doc.setFontSize(8);
             doc.text("Paix — Discipline — Travail", 105, 30, {align:"center"});
-            doc.setFillColor(230,126,34); doc.rect(0,36,210,4,"F");
+            doc.setFillColor(0,51,102); doc.rect(0,36,210,4,"F");
             doc.setFillColor(240,244,255); doc.roundedRect(14,46,182,12,2,2,"F");
             doc.setTextColor(0,51,102); doc.setFontSize(10); doc.setFont("helvetica","bold");
             doc.text("Dossier : " + d.id, 20, 54);
@@ -831,6 +831,76 @@ document.querySelectorAll(".lang-btn").forEach(function(btn) {
         document.documentElement.dir = langueActuelle === "ar" ? "rtl" : "ltr";
         fermerMenuGauche();
     });
+});
+
+/* ================================================================
+   4. STATUT & RI — MODAL
+   ================================================================ */
+function ouvrirModalStatutRI() {
+    chargerStatutRI();
+    document.getElementById("modal-statut-ri").style.display = "flex";
+}
+function fermerModalStatutRI() {
+    document.getElementById("modal-statut-ri").style.display = "none";
+}
+
+document.getElementById("fermer-statut-ri").addEventListener("click", fermerModalStatutRI);
+document.getElementById("modal-statut-ri").addEventListener("click", function(e) {
+    if (e.target === this) fermerModalStatutRI();
+});
+document.getElementById("menu-btn-statut-ri").addEventListener("click", function() {
+    fermerMenuGauche();
+    ouvrirModalStatutRI();
+});
+
+function chargerStatutRI() {
+    var zoneAdmin = document.getElementById("statut-ri-admin");
+    var zoneDoc = document.getElementById("statut-ri-doc");
+    var zoneVide = document.getElementById("statut-ri-vide");
+    var btnSuppr = document.getElementById("btn-suppr-statut-ri");
+
+    // Afficher zone admin si connecté
+    if (zoneAdmin) zoneAdmin.style.display = estAdmin ? "block" : "none";
+
+    // Charger le PDF existant
+    var pdfData = localStorage.getItem("statutRIUndr");
+    if (pdfData) {
+        zoneVide.style.display = "none";
+        var nomFichier = localStorage.getItem("statutRINomUndr") || "statut-ri-undr.pdf";
+        zoneDoc.innerHTML =
+            "<div class='pdf-nom'>📄 " + nomFichier + "</div>" +
+            "<iframe src='" + pdfData + "' title='Statut & RI UNDR'></iframe>" +
+            "<a href='" + pdfData + "' download='" + nomFichier + "' class='btn-retelecharger' style='display:inline-block;margin-top:8px;'>📥 Télécharger</a>";
+        if (btnSuppr) btnSuppr.style.display = estAdmin ? "block" : "none";
+    } else {
+        zoneVide.style.display = "block";
+        zoneDoc.innerHTML = "";
+        if (btnSuppr) btnSuppr.style.display = "none";
+    }
+}
+
+document.getElementById("btn-sauver-statut-ri").addEventListener("click", function() {
+    var fichier = document.getElementById("statut-ri-fichier").files[0];
+    if (!fichier) { alert("Merci de choisir un fichier PDF."); return; }
+    if (fichier.type !== "application/pdf") { alert("Le fichier doit être au format PDF."); return; }
+    if (fichier.size > 10 * 1024 * 1024) { alert("Fichier trop lourd (max 10 Mo)."); return; }
+    var r = new FileReader();
+    r.onload = function(e) {
+        localStorage.setItem("statutRIUndr", e.target.result);
+        localStorage.setItem("statutRINomUndr", fichier.name);
+        document.getElementById("statut-ri-fichier").value = "";
+        chargerStatutRI();
+        alert("✅ Document enregistré !");
+    };
+    r.readAsDataURL(fichier);
+});
+
+document.getElementById("btn-suppr-statut-ri").addEventListener("click", function() {
+    if (confirm("Supprimer le document Statut & RI ?")) {
+        localStorage.removeItem("statutRIUndr");
+        localStorage.removeItem("statutRINomUndr");
+        chargerStatutRI();
+    }
 });
 
 /* ================================================================

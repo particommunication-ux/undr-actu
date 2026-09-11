@@ -46,7 +46,7 @@ html,body{width:100%;overflow-x:hidden;font-family:Arial,sans-serif;background:#
 
 /* BANDEAU ORANGE */
 .bandeau-abonnement{background:#e67e22;color:white;font-size:11px;font-weight:bold;padding:4px 10px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
-.bandeau-boutons{display:flex;gap:6px;flex-wrap:wrap;}
+.bandeau-boutons{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;}
 .bandeau-boutons button{padding:3px 10px;border:none;border-radius:14px;font-size:11px;cursor:pointer;font-weight:bold;}
 #bandeau-btn-adherer{background:white;color:#e67e22;}
 #bandeau-btn-abo{background:#003366;color:white;}
@@ -229,6 +229,9 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 /* MODE SOMBRE */
 body.mode-sombre{background:#121212;color:#eee;}
 body.mode-sombre .entete-fixe{background:#1a1a1a;box-shadow:0 2px 8px rgba(0,0,0,0.4);}
+/* Couleurs entête PDF fallback */
+.entete{background:#e67e22;color:white;padding:18px;text-align:center;}
+.bande{height:5px;background:#003366;}
 body.mode-sombre header{background:#1a1a1a;}
 body.mode-sombre .titre-site{color:#6fa8dc;}
 body.mode-sombre .filtres{background:#1e1e1e;border-bottom-color:#333;}
@@ -297,3 +300,17 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     font-size: 12px; margin-right: 3px;
 }
 .btn-pdf-adhesion:active { background: #cf6d17; }
+
+/* 3. SIÈGE FOOTER */
+.siege-info { font-size:12px; color:#888; margin-top:5px; }
+
+/* 4. MODAL STATUT & RI */
+#statut-ri-doc iframe {
+    width: 100%; height: 65vh; border: none; border-radius: 8px;
+    display: block; margin-top: 8px;
+}
+#statut-ri-doc .pdf-nom {
+    font-size: 13px; color: #003366; font-weight: bold;
+    padding: 8px 10px; background: #f0f4ff; border-radius: 6px;
+    margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+}

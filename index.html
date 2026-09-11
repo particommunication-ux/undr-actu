@@ -33,6 +33,7 @@
         <hr style="margin:14px 0;">
         <button class="menu-item-btn" id="menu-btn-adherer">📋 Adhérer à l'UNDR</button>
         <button class="menu-item-btn" id="menu-btn-abonner">💎 S'abonner</button>
+        <button class="menu-item-btn" id="menu-btn-statut-ri">📜 Statut & RI de l'UNDR</button>
         <button class="menu-item-btn" id="menu-btn-partager">📤 Partager l'application</button>
         <hr style="margin:14px 0;">
 
@@ -363,12 +364,46 @@
 </div>
 
 <!-- FOOTER -->
+<!-- MODAL STATUT & RI -->
+<div id="modal-statut-ri" class="modal-overlay" style="display:none;">
+    <div class="modal-contenu">
+        <button class="fermer-modal" id="fermer-statut-ri">✖</button>
+        <h2 style="color:#003366; margin-bottom:14px;">📜 Statut &amp; Règlement Intérieur de l'UNDR</h2>
+
+        <!-- Vue lecture (tout le monde) -->
+        <div id="statut-ri-lecture">
+            <div id="statut-ri-vide" style="text-align:center; padding:30px; color:#888; display:none;">
+                <p style="font-size:32px;">📄</p>
+                <p>Aucun document disponible pour le moment.</p>
+                <p style="font-size:13px;">L'administrateur n'a pas encore téléversé le statut et RI.</p>
+            </div>
+            <div id="statut-ri-doc"></div>
+        </div>
+
+        <!-- Zone upload admin -->
+        <div id="statut-ri-admin" style="display:none;">
+            <div class="guide-paiement" style="margin-bottom:14px;">
+                <p style="font-size:13px; color:#555; line-height:1.6;">
+                    📌 Seul l'administrateur peut modifier ce document.<br>
+                    Le fichier doit être au format <strong>PDF uniquement</strong>.
+                </p>
+            </div>
+            <label class="label-upload">📎 Téléverser le fichier PDF (Statut &amp; RI) :</label>
+            <input type="file" id="statut-ri-fichier" accept="application/pdf">
+            <div id="apercu-statut-ri" class="apercu-media"></div>
+            <button id="btn-sauver-statut-ri" class="btn-payer" style="margin-top:10px;">💾 Enregistrer le document</button>
+            <button id="btn-suppr-statut-ri" class="btn-supprimer" style="margin-top:8px; width:100%; display:none;">🗑 Supprimer le document</button>
+        </div>
+    </div>
+</div>
+
 <footer class="pied-de-page">
     <p>© 2026 UNDR Actualités</p>
     <p class="contact-info">
         📞 <a href="tel:+23566797751">+235 66 79 77 51</a> &nbsp;|&nbsp;
         ✉️ <a href="mailto:gouatainebienvenu3@gmail.com">gouatainebienvenu3@gmail.com</a>
     </p>
+    <p class="siege-info">📍 Siège : N'Djamena, 7ème Arrondissement, Quartier Chagoua</p>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
