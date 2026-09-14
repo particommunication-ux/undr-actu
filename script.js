@@ -429,7 +429,7 @@ document.getElementById("nouvelle-image").addEventListener("change", function() 
 });
 document.getElementById("nouvelle-video-fichier").addEventListener("change", function() {
     var f = this.files[0]; if (!f) return;
-    if (f.size > 50*1024*1024) { alert("Vidéo trop lourde. Maximum 50 Mo."); this.value = ""; return; }
+    if (f.size > 250*1024*1024) { alert("Vidéo trop lourde. Maximum 250 Mo."); this.value = ""; return; }
     var r = new FileReader();
     r.onload = function(e) {
         videoFichierData = e.target.result;
@@ -441,8 +441,13 @@ document.getElementById("nouvelle-video-fichier").addEventListener("change", fun
 /* PUBLIER / MODIFIER */
 document.getElementById("bouton-publier").addEventListener("click", function() {
     var titre = document.getElementById("nouveau-titre").value.trim();
-    var contenu = document.getElementById("editeur-contenu").innerHTML.trim();
-    if (!titre || !contenu) { alert("Merci de remplir le titre et le contenu."); return; }
+    var contenuHTML = document.getElementById("editeur-contenu").innerHTML.trim();
+    /* Vérifier le texte brut (pas le HTML) pour éviter les faux positifs avec <br> vides */
+    var contenuTexte = document.getElementById("editeur-contenu").innerText.trim();
+    if (!titre) { alert("Merci de remplir le titre de l'article."); return; }
+    if (!contenuTexte) { alert("Merci de remplir le contenu de l'article."); return; }
+    /* Utiliser le HTML pour la mise en forme */
+    var contenu = contenuHTML;
 
     function sauver(imgData) {
         var obj = {
@@ -840,14 +845,226 @@ function appliquerTaille(n){var t={petit:"14px",normal:"16px",grand:"19px"};docu
 document.querySelectorAll(".taille-btn").forEach(function(b){b.addEventListener("click",function(){appliquerTaille(b.dataset.taille);});});
 appliquerTaille(localStorage.getItem("tailleTexteUNDR")||"normal");
 
-/* LANGUE */
+/* ================================================================
+   LANGUE — TRADUCTIONS COMPLÈTES
+   ================================================================ */
+var TRADUCTIONS = {
+    fr: {
+        /* Filtres */
+        "cat_toutes": "⭐ À la Une", "cat_actu": "Actualités", "cat_activ": "Activités",
+        "cat_com": "Communiqués", "cat_bne": "Portraits BNE", "cat_tchad": "Tchad",
+        "cat_pol": "Politique", "cat_div": "Divertissement",
+        /* Menus */
+        "menu_adherer": "Adhérer à l'UNDR", "menu_abonner": "S'abonner",
+        "menu_statut_ri": "Statut & RI de l'UNDR", "menu_partager": "Partager l'application",
+        "menu_langue": "Langue", "menu_apparence": "Apparence",
+        "menu_sombre": "Mode sombre", "menu_taille": "Taille du texte",
+        /* Bandeau */
+        "bandeau_texte": "Contenu réservé aux abonnés",
+        "btn_adherer": "Adhérer", "btn_abonner": "S'abonner",
+        /* Header */
+        "titre_site": "UNDR Actualités",
+        /* Boutons */
+        "btn_retour": "← Retour", "btn_partager_art": "Partager sur Facebook",
+        "btn_envoyer": "Envoyer", "btn_direct": "Suivre le Direct",
+        /* Verrou */
+        "verrou_titre": "Contenu réservé aux abonnés",
+        "verrou_texte": "Abonnez-vous pour accéder à l'intégralité de cet article.",
+        "btn_abo_verrou": "S'abonner — 1 000 FCFA/mois",
+        /* Adhésion */
+        "adh_titre": "Adhérer à l'UNDR",
+        "adh_sous": "Rejoignez le mouvement pour l'espoir et le renouveau du Tchad",
+        "adh_identite": "Votre identité", "adh_naissance": "Date de naissance *",
+        "adh_photo": "Photo d'identité * (max 2 Mo)",
+        "adh_confirm": "Confirmation", "adh_succes": "Demande envoyée !",
+        "adh_succes_texte": "Un responsable de l'UNDR vous contactera sous 48h.",
+        "charte_titre": "En adhérant à l'UNDR, je m'engage à :",
+        "charte_accord": "J'accepte la charte et les statuts de l'UNDR",
+        "btn_suivant": "Suivant →", "btn_retour_f": "← Retour",
+        "btn_soumettre": "✅ Soumettre", "btn_fermer": "Fermer",
+        /* Abonnement */
+        "abo_titre": "Abonnement Premium",
+        "abo_sous": "Accédez à tous les contenus exclusifs de l'UNDR",
+        "abo_av1": "Tous les articles sans restriction",
+        "abo_av2": "Actualités politiques exclusives",
+        "abo_av3": "Communiqués officiels complets",
+        "abo_av4": "Divertissement & contenus spéciaux",
+        /* Chat */
+        "chat_titre": "Chat en direct", "btn_envoyer_chat": "Envoyer",
+        /* Lire aussi */
+        "lire_aussi": "Lire aussi",
+        /* Admin formulaire */
+        "form_titre": "Ajouter un article", "btn_publier": "Publier"
+    },
+    en: {
+        "cat_toutes": "⭐ Top Stories", "cat_actu": "News", "cat_activ": "Activities",
+        "cat_com": "Press releases", "cat_bne": "BNE Portraits", "cat_tchad": "Chad",
+        "cat_pol": "Politics", "cat_div": "Entertainment",
+        "menu_adherer": "Join UNDR", "menu_abonner": "Subscribe",
+        "menu_statut_ri": "UNDR Statutes & IR", "menu_partager": "Share the app",
+        "menu_langue": "Language", "menu_apparence": "Appearance",
+        "menu_sombre": "Dark mode", "menu_taille": "Text size",
+        "bandeau_texte": "Content for subscribers only",
+        "btn_adherer": "Join", "btn_abonner": "Subscribe",
+        "titre_site": "UNDR News",
+        "btn_retour": "← Back", "btn_partager_art": "Share on Facebook",
+        "btn_envoyer": "Send", "btn_direct": "Watch Live",
+        "verrou_titre": "Subscribers only",
+        "verrou_texte": "Subscribe to access the full article.",
+        "btn_abo_verrou": "Subscribe — 1,000 FCFA/month",
+        "adh_titre": "Join UNDR",
+        "adh_sous": "Join the movement for hope and renewal of Chad",
+        "adh_identite": "Your identity", "adh_naissance": "Date of birth *",
+        "adh_photo": "ID photo * (max 2 MB)",
+        "adh_confirm": "Confirmation", "adh_succes": "Request sent!",
+        "adh_succes_texte": "An UNDR representative will contact you within 48h.",
+        "charte_titre": "By joining UNDR, I commit to:",
+        "charte_accord": "I accept the UNDR charter and statutes",
+        "btn_suivant": "Next →", "btn_retour_f": "← Back",
+        "btn_soumettre": "✅ Submit", "btn_fermer": "Close",
+        "abo_titre": "Premium Subscription",
+        "abo_sous": "Access all exclusive UNDR content",
+        "abo_av1": "All articles without restriction",
+        "abo_av2": "Exclusive political news",
+        "abo_av3": "Full official press releases",
+        "abo_av4": "Entertainment & special content",
+        "chat_titre": "Live Chat", "btn_envoyer_chat": "Send",
+        "lire_aussi": "Read also",
+        "form_titre": "Add an article", "btn_publier": "Publish"
+    },
+    ar: {
+        "cat_toutes": "⭐ الأبرز", "cat_actu": "أخبار", "cat_activ": "أنشطة",
+        "cat_com": "بيانات", "cat_bne": "صور المكتب", "cat_tchad": "تشاد",
+        "cat_pol": "سياسة", "cat_div": "ترفيه",
+        "menu_adherer": "الانضمام إلى UNDR", "menu_abonner": "الاشتراك",
+        "menu_statut_ri": "النظام الأساسي والنظام الداخلي", "menu_partager": "مشاركة التطبيق",
+        "menu_langue": "اللغة", "menu_apparence": "المظهر",
+        "menu_sombre": "الوضع المظلم", "menu_taille": "حجم الخط",
+        "bandeau_texte": "محتوى مخصص للمشتركين",
+        "btn_adherer": "انضم", "btn_abonner": "اشترك",
+        "titre_site": "أخبار UNDR",
+        "btn_retour": "رجوع →", "btn_partager_art": "مشاركة على فيسبوك",
+        "btn_envoyer": "إرسال", "btn_direct": "متابعة البث",
+        "verrou_titre": "محتوى للمشتركين فقط",
+        "verrou_texte": "اشترك للوصول إلى المقال كاملاً.",
+        "btn_abo_verrou": "اشترك — 1 000 فرنك/شهر",
+        "adh_titre": "الانضمام إلى UNDR",
+        "adh_sous": "انضم إلى حركة الأمل وتجديد تشاد",
+        "adh_identite": "هويتك", "adh_naissance": "تاريخ الميلاد *",
+        "adh_photo": "صورة الهوية * (أقصى 2 ميغا)",
+        "adh_confirm": "تأكيد", "adh_succes": "تم إرسال الطلب!",
+        "adh_succes_texte": "سيتصل بك مسؤول UNDR خلال 48 ساعة.",
+        "charte_titre": "بانضمامي إلى UNDR أتعهد بـ:",
+        "charte_accord": "أوافق على ميثاق UNDR",
+        "btn_suivant": "التالي ←", "btn_retour_f": "رجوع →",
+        "btn_soumettre": "✅ إرسال", "btn_fermer": "إغلاق",
+        "abo_titre": "اشتراك مميز",
+        "abo_sous": "الوصول إلى جميع محتويات UNDR الحصرية",
+        "abo_av1": "جميع المقالات بدون قيود",
+        "abo_av2": "أخبار سياسية حصرية",
+        "abo_av3": "بيانات رسمية كاملة",
+        "abo_av4": "ترفيه ومحتوى خاص",
+        "chat_titre": "دردشة مباشرة", "btn_envoyer_chat": "إرسال",
+        "lire_aussi": "اقرأ أيضاً",
+        "form_titre": "إضافة مقال", "btn_publier": "نشر"
+    }
+};
+
 var langueActuelle = localStorage.getItem("langueUNDR") || "fr";
+
+function appliquerLangue(lang) {
+    langueActuelle = lang;
+    localStorage.setItem("langueUNDR", lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+
+    var t = TRADUCTIONS[lang] || TRADUCTIONS["fr"];
+
+    /* Traduire tous les éléments avec data-i18n */
+    document.querySelectorAll("[data-i18n]").forEach(function(el) {
+        var cle = el.getAttribute("data-i18n");
+        if (t[cle]) el.textContent = t[cle];
+    });
+
+    /* Traduire les filtres */
+    document.querySelectorAll(".filtre-btn").forEach(function(btn) {
+        var cat = btn.dataset.categorie;
+        var map = {
+            "Toutes": t["cat_toutes"], "Actualités": t["cat_actu"],
+            "Activités": t["cat_activ"], "Communiqués": t["cat_com"],
+            "Portraits des membres du BNE": t["cat_bne"], "Actualités Tchad": t["cat_tchad"],
+            "Actualités Politique": t["cat_pol"], "Divertissement": t["cat_div"]
+        };
+        if (map[cat]) btn.textContent = map[cat];
+    });
+
+    /* Traduire les boutons du menu */
+    var menuItems = {
+        "menu-btn-adherer": t["menu_adherer"],
+        "menu-btn-abonner": t["menu_abonner"],
+        "menu-btn-statut-ri": t["menu_statut_ri"],
+        "menu-btn-partager": t["menu_partager"]
+    };
+    Object.keys(menuItems).forEach(function(id) {
+        var el = document.getElementById(id);
+        /* Garder l'icône, remplacer seulement le texte */
+        if (el && menuItems[id]) {
+            var icone = el.textContent.charAt(0) + el.textContent.charAt(1);
+            el.textContent = icone + " " + menuItems[id];
+        }
+    });
+
+    /* Titre du site */
+    var titre = document.querySelector(".titre-site");
+    if (titre && t["titre_site"]) titre.textContent = t["titre_site"];
+
+    /* Placeholders */
+    var pls = {
+        "nouveau-titre":   {fr:"Titre de l'article", en:"Article title", ar:"عنوان المقال"},
+        "adh-nom":         {fr:"Nom et Prénom complet *", en:"Full name *", ar:"الاسم الكامل *"},
+        "adh-tel":         {fr:"Numéro de téléphone *", en:"Phone number *", ar:"رقم الهاتف *"},
+        "adh-region":      {fr:"Adresse / Région / Ville *", en:"Address / Region *", ar:"العنوان / المنطقة *"},
+        "adh-organe":      {fr:"Organe du Parti", en:"Party organ", ar:"هيئة الحزب"},
+        "adh-poste":       {fr:"Poste occupé", en:"Position held", ar:"المنصب"},
+        "abo-nom":         {fr:"Nom et Prénom *", en:"Full name *", ar:"الاسم الكامل *"},
+        "abo-tel":         {fr:"Votre numéro de téléphone *", en:"Your phone number *", ar:"رقم هاتفك *"},
+        "abo-ref":         {fr:"Numéro de référence de la transaction *", en:"Transaction reference number *", ar:"رقم مرجع المعاملة *"},
+        "chat-pseudo":     {fr:"Votre nom", en:"Your name", ar:"اسمك"},
+        "chat-message":    {fr:"Votre message", en:"Your message", ar:"رسالتك"}
+    };
+    Object.keys(pls).forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && pls[id][lang]) el.placeholder = pls[id][lang];
+    });
+
+    /* Bouton publier */
+    var btnPub = document.getElementById("bouton-publier");
+    if (btnPub && !modeEdition && t["btn_publier"]) btnPub.textContent = t["btn_publier"];
+
+    /* Chat */
+    var chatTitre = document.querySelector(".chat-box h2");
+    if (chatTitre && t["chat_titre"]) chatTitre.textContent = t["chat_titre"];
+    var btnEnvoyer = document.getElementById("chat-envoyer");
+    if (btnEnvoyer && t["btn_envoyer_chat"]) btnEnvoyer.textContent = t["btn_envoyer_chat"];
+
+    /* Accordéons menu */
+    var accLabels = [
+        {btn:"acc-langue", icone:"🌍", key:"menu_langue"},
+        {btn:"acc-apparence", icone:"🎨", key:"menu_apparence"},
+        {btn:"acc-taille", icone:"🔤", key:"menu_taille"}
+    ];
+    accLabels.forEach(function(item) {
+        var el = document.getElementById(item.btn);
+        if (!el) return;
+        var icone = el.querySelector(".acc-icone");
+        var iconeChar = icone ? icone.textContent : "▾";
+        el.innerHTML = item.icone + " " + (t[item.key] || item.key) + " <span class='acc-icone'>" + iconeChar + "</span>";
+    });
+}
+
 document.querySelectorAll(".lang-btn").forEach(function(btn) {
     btn.addEventListener("click", function() {
-        langueActuelle = btn.dataset.lang;
-        localStorage.setItem("langueUNDR", langueActuelle);
-        document.documentElement.lang = langueActuelle;
-        document.documentElement.dir = langueActuelle === "ar" ? "rtl" : "ltr";
+        appliquerLangue(btn.dataset.lang);
         fermerMenuGauche();
     });
 });
@@ -931,6 +1148,7 @@ metAJourAffichageAdmin();
 rafraichirPubs();
 afficherArticles();
 ajusterEspaceEntete();
+appliquerLangue(langueActuelle); /* Appliquer la langue sauvegardée */
 setTimeout(demanderNotifications, 3000);
 
 
