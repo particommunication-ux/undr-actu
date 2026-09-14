@@ -259,13 +259,25 @@ function incrementerVue(id) {
 function afficherVue(id) {
     var el = document.getElementById("detail-vues");
     if (!el) return;
-    el.style.display = estAdmin ? "block" : "none";
-    if (!window.db || !estAdmin) return;
+    el.style.display = "block"; /* visible par tous */
+    if (!window.db) {
+        /* Afficher depuis le cache local en attendant Firebase */
+        var cached = localStorage.getItem("vues_" + id);
+        if (cached) {
+            var n = Number(cached);
+            el.textContent = "👁 " + n + (n > 1 ? " vues" : " vue");
+        }
+        return;
+    }
     window.db.collection("vues").doc(String(id)).onSnapshot(function(doc) {
         var n = doc.exists ? doc.data().compte : 0;
+        localStorage.setItem("vues_" + id, n);
         el.textContent = "👁 " + n + (n > 1 ? " vues" : " vue");
-        el.style.display = estAdmin ? "block" : "none";
-    }, function(){});
+        el.style.display = "block";
+    }, function() {
+        var cached = localStorage.getItem("vues_" + id);
+        if (cached) el.textContent = "👁 " + cached + " vue(s)";
+    });
 }
 
 /* ================================================================
@@ -546,10 +558,13 @@ document.getElementById("btn-soumettre-adhesion").addEventListener("click", func
     var photoFile = document.getElementById("adh-photo").files[0];
 
     function finaliser(photoDataUrl) {
+        /* Sauvegarder la demande AVEC la photo pour que l'admin puisse générer le PDF complet */
+        var dAvecPhoto = Object.assign({}, d, { photoBase64: photoDataUrl || "" });
         var dem = JSON.parse(localStorage.getItem("adhesionsUNDR") || "[]");
-        dem.push(d);
+        dem.push(dAvecPhoto);
         localStorage.setItem("adhesionsUNDR", JSON.stringify(dem));
         if (window.db) {
+            /* Firebase : on envoie sans la photo (trop lourde) */
             window.db.collection("adhesions").add(Object.assign({}, d, { date: firebase.firestore.FieldValue.serverTimestamp() })).catch(function(){});
         }
         derniereDemande = { data: d, photo: photoDataUrl };
@@ -745,12 +760,16 @@ function chargerAdhesionsAdmin() {
             localStorage.setItem("adhesionsUNDR", JSON.stringify(d)); chargerAdhesionsAdmin();
         });
     });
-    // 1. Bouton PDF pour chaque adhésion dans la liste admin
+    /* 1. Bouton PDF pour chaque adhésion dans la liste admin — avec photo */
     zone.querySelectorAll(".btn-pdf-adhesion").forEach(function(b) {
         b.addEventListener("click", function() {
             var dem2 = JSON.parse(localStorage.getItem("adhesionsUNDR")||"[]");
             var adhesion = dem2[Number(b.dataset.index)];
-            if (adhesion) genererPDF(adhesion, null);
+            if (adhesion) {
+                /* Récupérer la photo sauvegardée avec la demande */
+                var photo = adhesion.photoBase64 || null;
+                genererPDF(adhesion, photo);
+            }
         });
     });
     zone.querySelectorAll(".btn-suppr-adhesion").forEach(function(b) {

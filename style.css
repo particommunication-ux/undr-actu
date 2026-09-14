@@ -94,7 +94,7 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 .article{background:white;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,0.08);cursor:pointer;border-top:3px solid #e67e22;position:relative;overflow:hidden;}
 .article h2{color:#003366;font-size:15px;margin:6px 0 4px;}
 .date-article{color:#888;font-size:12px;margin-bottom:4px;}
-.vues-admin{color:#e67e22;font-size:12px;font-weight:bold;margin-bottom:6px;}
+.vues-admin{color:#888;font-size:12px;margin-bottom:6px;}
 
 /* ARTICLE UNE */
 .article.une{grid-column:1/-1;background:linear-gradient(135deg,#003366,#00509e);color:white;border-top:none;border-left:5px solid #e63946;}
