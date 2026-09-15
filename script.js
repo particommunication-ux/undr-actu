@@ -68,8 +68,34 @@ function activerNotifications() {
 }
 function envoyerNotifLocale(titre) {
     if (Notification.permission === "granted") {
-        new Notification("📰 UNDR Actualités", { body: "Nouvel article : " + titre, icon: "./logo.png" });
+        new Notification("📰 UNDR Actualités — Nouvelle publication", {
+            body: titre,
+            icon: "./logo.png",
+            badge: "./logo.png",
+            tag: "undr-nouvel-article"
+        });
     }
+}
+
+/* Toast de notification visuelle (comme une pub qui apparaît) */
+function afficherToast(message) {
+    /* Supprimer un toast existant */
+    var ancien = document.getElementById("toast-undr");
+    if (ancien) ancien.remove();
+
+    var toast = document.createElement("div");
+    toast.id = "toast-undr";
+    toast.className = "toast-notif";
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    /* Afficher avec animation */
+    setTimeout(function() { toast.classList.add("toast-visible"); }, 50);
+    /* Disparaître après 3 secondes */
+    setTimeout(function() {
+        toast.classList.remove("toast-visible");
+        setTimeout(function() { if (toast.parentNode) toast.remove(); }, 400);
+    }, 3500);
 }
 
 /* ================================================================
@@ -440,15 +466,27 @@ document.getElementById("nouvelle-video-fichier").addEventListener("change", fun
 /* PUBLIER / MODIFIER */
 document.getElementById("bouton-publier").addEventListener("click", function() {
     var titre = document.getElementById("nouveau-titre").value.trim();
-    var contenuHTML = document.getElementById("editeur-contenu").innerHTML.trim();
-    /* Vérifier le texte brut (pas le HTML) pour éviter les faux positifs avec <br> vides */
-    var contenuTexte = document.getElementById("editeur-contenu").innerText.trim();
-    if (!titre) { alert("Merci de remplir le titre de l'article."); return; }
-    if (!contenuTexte) { alert("Merci de remplir le contenu de l'article."); return; }
-    /* Utiliser le HTML pour la mise en forme */
-    var contenu = contenuHTML;
+    var editeur = document.getElementById("editeur-contenu");
+    var contenuHTML = editeur.innerHTML;
+
+    /* Nettoyer le contenu pour vérifier s'il est vraiment vide */
+    var contenuTexte = (editeur.textContent || editeur.innerText || "").trim();
+    /* Accepter aussi si l'admin a mis une image ou une vidéo sans texte */
+    var contenuImages = editeur.querySelectorAll ? editeur.querySelectorAll("img, video, iframe").length : 0;
+
+    if (!titre) {
+        alert("Merci de remplir le titre de l'article.");
+        return;
+    }
+    if (!contenuTexte && contenuImages === 0 && (!videoFichierData) && !document.getElementById("nouvelle-video").value.trim()) {
+        alert("Merci de remplir le contenu de l'article.");
+        return;
+    }
+
+    var contenu = contenuHTML || contenuTexte || "(Article sans texte)";
 
     function sauver(imgData) {
+        var modeEditionEtait = modeEdition;
         var obj = {
             titre: titre, contenu: contenu,
             categorie: document.getElementById("nouvelle-categorie").value,
@@ -480,7 +518,13 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
         document.getElementById("article-premium").checked = false;
         videoFichierData = null;
         afficherArticles();
-        alert("✅ Article publié !");
+        /* Notification visuelle à la publication */
+        if (modeEditionEtait) {
+            afficherToast("✅ Article modifié avec succès !");
+        } else {
+            afficherToast("🎉 Article \"" + obj.titre + "\" publié !");
+            envoyerNotifLocale(obj.titre);
+        }
     }
 
     var fi = document.getElementById("nouvelle-image").files[0];

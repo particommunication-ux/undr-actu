@@ -314,3 +314,30 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     padding: 8px 10px; background: #f0f4ff; border-radius: 6px;
     margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
 }
+
+/* ===== TOAST NOTIFICATION PUBLICATION ===== */
+.toast-notif {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: linear-gradient(135deg, #003366, #e67e22);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    z-index: 9999;
+    white-space: nowrap;
+    max-width: 90vw;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+}
+.toast-notif.toast-visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
