@@ -463,53 +463,76 @@ document.getElementById("nouvelle-video-fichier").addEventListener("change", fun
     r.readAsDataURL(f);
 });
 
-/* PUBLIER / MODIFIER */
+/* PUBLIER / MODIFIER — réécriture complète */
 document.getElementById("bouton-publier").addEventListener("click", function() {
-    var titre = document.getElementById("nouveau-titre").value.trim();
-    var editeur = document.getElementById("editeur-contenu");
-    var contenuHTML = editeur.innerHTML;
 
-    /* Nettoyer le contenu pour vérifier s'il est vraiment vide */
-    var contenuTexte = (editeur.textContent || editeur.innerText || "").trim();
-    /* Accepter aussi si l'admin a mis une image ou une vidéo sans texte */
-    var contenuImages = editeur.querySelectorAll ? editeur.querySelectorAll("img, video, iframe").length : 0;
-
+    /* 1. Récupérer le titre */
+    var titre = (document.getElementById("nouveau-titre").value || "").trim();
     if (!titre) {
-        alert("Merci de remplir le titre de l'article.");
-        return;
-    }
-    if (!contenuTexte && contenuImages === 0 && (!videoFichierData) && !document.getElementById("nouvelle-video").value.trim()) {
-        alert("Merci de remplir le contenu de l'article.");
+        alert("Merci d'entrer le titre de l'article.");
         return;
     }
 
-    var contenu = contenuHTML || contenuTexte || "(Article sans texte)";
+    /* 2. Récupérer le contenu — accepter texte OU vidéo */
+    var editeur = document.getElementById("editeur-contenu");
+    var contenu = editeur.innerHTML || "";
+    var videoLien = (document.getElementById("nouvelle-video").value || "").trim();
+    var aContenu = contenu.replace(/<[^>]*>/g, "").trim().length > 0;
+    var aVideo = videoFichierData || videoLien;
+    var aImage = document.getElementById("nouvelle-image").files.length > 0;
 
-    function sauver(imgData) {
-        var modeEditionEtait = modeEdition;
+    if (!aContenu && !aVideo && !aImage) {
+        /* Dernier recours : publier quand même avec un contenu minimal */
+        contenu = "<p>" + titre + "</p>";
+    }
+
+    /* 3. Déterminer si c'est une édition ou une création */
+    var estEdition = modeEdition && idEdition !== null;
+
+    /* 4. Construire l'objet article */
+    function construireEtSauver(imageData) {
         var obj = {
-            titre: titre, contenu: contenu,
+            titre: titre,
+            contenu: contenu,
             categorie: document.getElementById("nouvelle-categorie").value,
-            video: document.getElementById("nouvelle-video").value.trim(),
+            video: videoLien,
             videoFichier: videoFichierData || "",
             premium: document.getElementById("article-premium").checked,
-            image: imgData || ""
+            image: imageData || ""
         };
-        if (modeEdition && idEdition !== null) {
-            var idx = articles.findIndex(function(a) { return a.id === idEdition; });
-            if (idx !== -1) { obj.importance = articles[idx].importance || 0; Object.assign(articles[idx], obj); }
-            modeEdition = false; idEdition = null;
+
+        if (estEdition) {
+            var idx = -1;
+            for (var i = 0; i < articles.length; i++) {
+                if (articles[i].id === idEdition) { idx = i; break; }
+            }
+            if (idx !== -1) {
+                obj.id = articles[idx].id;
+                obj.date = articles[idx].date;
+                obj.importance = articles[idx].importance || 0;
+                articles[idx] = obj;
+            }
+            modeEdition = false;
+            idEdition = null;
             document.getElementById("bouton-publier").textContent = "Publier";
         } else {
             obj.id = Date.now();
-            obj.date = new Date().toLocaleDateString("fr-FR", {day:"numeric",month:"long",year:"numeric"});
+            obj.date = new Date().toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"});
             obj.importance = 2;
             articles.unshift(obj);
-            envoyerNotifLocale(titre);
         }
-        localStorage.setItem("articlesUNDR", JSON.stringify(articles));
+
+        /* 5. Sauvegarder */
+        try {
+            localStorage.setItem("articlesUNDR", JSON.stringify(articles));
+        } catch(e) {
+            alert("Erreur de sauvegarde (stockage plein ?). Essayez de supprimer d'anciens articles.");
+            return;
+        }
+
+        /* 6. Réinitialiser le formulaire */
         document.getElementById("nouveau-titre").value = "";
-        document.getElementById("editeur-contenu").innerHTML = "";
+        editeur.innerHTML = "";
         document.getElementById("nouvelle-video").value = "";
         document.getElementById("nouvelle-image").value = "";
         document.getElementById("nouvelle-video-fichier").value = "";
@@ -517,21 +540,32 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
         document.getElementById("apercu-video-admin").innerHTML = "";
         document.getElementById("article-premium").checked = false;
         videoFichierData = null;
+
+        /* 7. Rafraîchir et notifier */
         afficherArticles();
-        /* Notification visuelle à la publication */
-        if (modeEditionEtait) {
-            afficherToast("✅ Article modifié avec succès !");
+        if (estEdition) {
+            afficherToast("✅ Article modifié !");
         } else {
-            afficherToast("🎉 Article \"" + obj.titre + "\" publié !");
-            envoyerNotifLocale(obj.titre);
+            afficherToast("🎉 \"" + titre + "\" publié !");
+            envoyerNotifLocale(titre);
         }
     }
 
-    var fi = document.getElementById("nouvelle-image").files[0];
-    if (fi) { var r = new FileReader(); r.onload = function(e) { sauver(e.target.result); }; r.readAsDataURL(fi); }
-    else {
-        var artEx = modeEdition && idEdition ? articles.find(function(a) { return a.id === idEdition; }) : null;
-        sauver(artEx ? artEx.image : null);
+    /* 5. Lire l'image si présente, sinon sauver directement */
+    var fichierImage = document.getElementById("nouvelle-image").files[0];
+    if (fichierImage) {
+        var reader = new FileReader();
+        reader.onload = function(ev) { construireEtSauver(ev.target.result); };
+        reader.onerror = function() { construireEtSauver(null); };
+        reader.readAsDataURL(fichierImage);
+    } else {
+        var imageExistante = "";
+        if (estEdition && idEdition !== null) {
+            for (var i = 0; i < articles.length; i++) {
+                if (articles[i].id === idEdition) { imageExistante = articles[i].image || ""; break; }
+            }
+        }
+        construireEtSauver(imageExistante);
     }
 });
 
