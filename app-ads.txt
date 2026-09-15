@@ -1,0 +1,6 @@
+# app-ads.txt pour UNDR Actualités
+# Ce fichier permet à Google AdMob de vérifier que ce site est bien
+# associé à l'application UNDR Actualités sur le Play Store
+# App ID AdMob : ca-app-pub-3930833217023740~7182198394
+
+google.com, pub-3930833217023740, DIRECT, f08c47fec0942fa0

@@ -7,11 +7,38 @@
     <link rel="stylesheet" href="style.css?v=6">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#e67e22">
-    <!-- Google AdSense — décommentez quand vous avez votre ID -->
-    <!-- Remplacez ca-pub-XXXXXXXXXXXXXXXX par votre ID AdSense réel -->
+
+    <!-- Google AdSense — en attente d'approbation du site -->
+    <!-- Décommentez quand Google approuve votre site -->
     <!--
+    <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
     -->
+
+    <!-- Google AdMob — App ID : ca-app-pub-3930833217023740~7182198394 -->
+    <!-- SDK AdMob pour PWA via tag publicitaire -->
+    <script async src="https://www.googletagservices.com/tag/js/gpt.js"></script>
+    <script>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        googletag.cmd.push(function() {
+            /* Bannière haute — Bloc : ca-app-pub-3930833217023740/2766467357 */
+            googletag.defineSlot(
+                '/ca-app-pub-3930833217023740/2766467357',
+                [[320, 50], [300, 250], [320, 100]],
+                'admob-haut'
+            ).addService(googletag.pubads());
+            /* Bannière basse — même bloc pour l'instant */
+            googletag.defineSlot(
+                '/ca-app-pub-3930833217023740/2766467357',
+                [[320, 50], [300, 250]],
+                'admob-bas'
+            ).addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.pubads().collapseEmptyDivs();
+            googletag.enableServices();
+        });
+    </script>
 </head>
 <body>
 
@@ -109,9 +136,13 @@
 </div>
 <div id="espace-entete"></div>
 
-<!-- PUB HAUTE -->
-<div class="pub-zone" id="pub-haut">
+<!-- PUB HAUTE — AdMob ca-app-pub-3930833217023740/2766467357 -->
+<div class="pub-zone admob-zone" id="pub-haut">
     <div id="pub-maison-haut" class="pub-maison" style="display:none;"></div>
+    <div id="admob-haut" style="min-height:50px; text-align:center;">
+        <script>if(window.googletag && googletag.cmd) googletag.cmd.push(function(){ googletag.display('admob-haut'); });</script>
+    </div>
+</div>
     <!-- Google AdSense — zone haute -->
     <!-- IMPORTANT : Remplacez ca-pub-XXXXXXXXXXXXXXXX par votre vrai ID AdSense -->
     <!-- Vous trouverez cet ID dans votre compte AdSense > Paramètres > Informations du compte -->
@@ -375,9 +406,13 @@
     </div>
 </div>
 
-<!-- PUB BASSE -->
-<div class="pub-zone" id="pub-bas">
+<!-- PUB BASSE — AdMob ca-app-pub-3930833217023740/2766467357 -->
+<div class="pub-zone admob-zone" id="pub-bas">
     <div id="pub-maison-bas" class="pub-maison" style="display:none;"></div>
+    <div id="admob-bas" style="min-height:50px; text-align:center;">
+        <script>if(window.googletag && googletag.cmd) googletag.cmd.push(function(){ googletag.display('admob-bas'); });</script>
+    </div>
+</div>
     <!-- Google AdSense — zone basse -->
     <!-- IMPORTANT : Remplacez ca-pub-XXXXXXXXXXXXXXXX par votre vrai ID AdSense -->
     <!--

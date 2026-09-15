@@ -341,3 +341,17 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     transform: translateX(-50%) translateY(0);
     opacity: 1;
 }
+
+/* ===== ADMOB / PUBLICITÉS ===== */
+.admob-zone {
+    width: 100%;
+    max-width: 800px;
+    margin: 8px auto;
+    padding: 0 12px;
+    text-align: center;
+    min-height: 60px;
+}
+.admob-zone ins {
+    display: block;
+    margin: 0 auto;
+}
