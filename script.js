@@ -109,8 +109,7 @@ function metAJourAffichageAdmin() {
     var f = document.getElementById("formulaire-ajout");
     if (f) f.style.display = estAdmin ? "block" : "none";
     if (estAdmin) { chargerAdhesionsAdmin(); chargerAbonnesAdmin(); chargerPubsAdmin(); }
-    var vues = document.getElementById("detail-vues");
-    if (vues) vues.style.display = estAdmin ? "block" : "none";
+    /* Les vues sont gérées par afficherVue() — visible par tous */
     var btnPart = document.getElementById("btn-partager-article");
     if (btnPart) btnPart.style.display = estAdmin ? "inline-flex" : "none";
     afficherBoutonPremiumAdmin();
@@ -1047,18 +1046,21 @@ function appliquerLangue(lang) {
     var btnEnvoyer = document.getElementById("chat-envoyer");
     if (btnEnvoyer && t["btn_envoyer_chat"]) btnEnvoyer.textContent = t["btn_envoyer_chat"];
 
-    /* Accordéons menu */
+    /* Accordéons menu — mettre à jour le texte SANS toucher au onclick */
     var accLabels = [
-        {btn:"acc-langue", icone:"🌍", key:"menu_langue"},
-        {btn:"acc-apparence", icone:"🎨", key:"menu_apparence"},
-        {btn:"acc-taille", icone:"🔤", key:"menu_taille"}
+        {btn:"acc-langue", key:"menu_langue"},
+        {btn:"acc-apparence", key:"menu_apparence"},
+        {btn:"acc-taille", key:"menu_taille"}
     ];
     accLabels.forEach(function(item) {
         var el = document.getElementById(item.btn);
-        if (!el) return;
-        var icone = el.querySelector(".acc-icone");
-        var iconeChar = icone ? icone.textContent : "▾";
-        el.innerHTML = item.icone + " " + (t[item.key] || item.key) + " <span class='acc-icone'>" + iconeChar + "</span>";
+        if (!el || !t[item.key]) return;
+        /* Trouver le nœud texte (pas l'icône span) et le mettre à jour */
+        el.childNodes.forEach(function(node) {
+            if (node.nodeType === 3 && node.textContent.trim()) {
+                node.textContent = " " + t[item.key] + " ";
+            }
+        });
     });
 }
 
