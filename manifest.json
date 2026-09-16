@@ -2,8 +2,8 @@
   "name": "UNDR Actualités",
   "short_name": "UNDR Act",
   "description": "Application officielle du Parti UNDR — Actualités, activités et informations du mouvement pour l'espoir et le renouveau du Tchad. Paix - Discipline - Travail.",
-  "start_url": "/undr-actu/index.html",
-  "scope": "/undr-actu/",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#e67e22",
@@ -13,25 +13,61 @@
   "categories": ["news", "politics"],
   "icons": [
     {
-      "src": "logo.png",
+      "src": "icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "logo.png",
+      "src": "icons/icon-192x192-maskable.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "logo.png",
+      "src": "icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "logo.png",
+      "src": "icons/icon-512x512-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -39,8 +75,8 @@
   ],
   "screenshots": [
     {
-      "src": "logo.png",
-      "sizes": "512x512",
+      "src": "icons/screenshot-portrait.png",
+      "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "UNDR Actualités — Page d'accueil"
@@ -51,8 +87,8 @@
       "name": "Adhérer à l'UNDR",
       "short_name": "Adhésion",
       "description": "Remplir la fiche d'adhésion au Parti UNDR",
-      "url": "/undr-actu/index.html#adhesion",
-      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+      "url": "./index.html",
+      "icons": [{ "src": "icons/icon-192x192.png", "sizes": "192x192" }]
     }
   ]
 }
