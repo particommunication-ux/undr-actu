@@ -1,25 +1,52 @@
-/* UNDR Actualités — service-worker.js — v6 */
-/* Vide TOUS les anciens caches sans exception */
-self.addEventListener("install", function(e) {
-    self.skipWaiting();
+/* UNDR Actualités — service-worker.js — PWA Builder compatible */
+const CACHE_NAME = "undr-actu-v7";
+const RESSOURCES = [
+    "./index.html",
+    "./style.css",
+    "./script.js",
+    "./chat.js",
+    "./manifest.json",
+    "./logo.png"
+];
+
+self.addEventListener("message", function(event) {
+    if (event.data && event.data.type === "SKIP_WAITING") {
+        self.skipWaiting();
+    }
 });
-self.addEventListener("activate", function(e) {
-    e.waitUntil(
-        caches.keys().then(function(keys) {
-            return Promise.all(keys.map(function(k) {
-                console.log("Cache supprimé:", k);
-                return caches.delete(k);
-            }));
-        }).then(function() {
-            return self.clients.claim();
+
+self.addEventListener("install", function(event) {
+    event.waitUntil(
+        caches.open(CACHE_NAME).then(function(cache) {
+            return cache.addAll(RESSOURCES);
         })
     );
+    self.skipWaiting();
 });
-/* Aucun cache — réseau direct uniquement */
-self.addEventListener("fetch", function(e) {
-    e.respondWith(
-        fetch(e.request, { cache: "no-store" }).catch(function() {
-            return new Response("Hors ligne", { status: 503 });
+
+self.addEventListener("activate", function(event) {
+    event.waitUntil(
+        caches.keys().then(function(keys) {
+            return Promise.all(
+                keys.filter(function(k) { return k !== CACHE_NAME; })
+                    .map(function(k) { return caches.delete(k); })
+            );
+        }).then(function() { return self.clients.claim(); })
+    );
+});
+
+self.addEventListener("fetch", function(event) {
+    if (event.request.mode === "navigate") {
+        event.respondWith(
+            fetch(event.request).catch(function() {
+                return caches.match("./index.html");
+            })
+        );
+        return;
+    }
+    event.respondWith(
+        caches.match(event.request).then(function(cached) {
+            return cached || fetch(event.request);
         })
     );
 });

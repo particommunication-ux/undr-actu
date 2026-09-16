@@ -1232,3 +1232,9 @@ appliquerLangue(langueActuelle); /* Appliquer la langue sauvegardée */
 setTimeout(demanderNotifications, 3000);
 
 
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./service-worker.js")
+        .then(function(reg) { console.log("SW enregistré:", reg.scope); })
+        .catch(function(err) { console.log("SW erreur:", err); });
+}
