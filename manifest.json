@@ -10,7 +10,10 @@
   "orientation": "portrait-primary",
   "lang": "fr",
   "dir": "ltr",
-  "categories": ["news", "politics"],
+  "categories": [
+    "news",
+    "politics"
+  ],
   "icons": [
     {
       "src": "icon-72x72.png",
@@ -75,6 +78,13 @@
   ],
   "screenshots": [
     {
+      "src": "splash.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "UNDR Actualités — Écran de démarrage"
+    },
+    {
       "src": "screenshot-portrait.png",
       "sizes": "390x844",
       "type": "image/png",
@@ -88,7 +98,12 @@
       "short_name": "Adhésion",
       "description": "Remplir la fiche d'adhésion au Parti UNDR",
       "url": "./index.html",
-      "icons": [{ "src": "icon-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

@@ -554,15 +554,27 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
     /* 5. Lire l'image si présente, sinon sauver directement */
     var fichierImage = document.getElementById("nouvelle-image").files[0];
     if (fichierImage) {
-        var reader = new FileReader();
-        reader.onload = function(ev) { construireEtSauver(ev.target.result); };
-        reader.onerror = function() { construireEtSauver(null); };
-        reader.readAsDataURL(fichierImage);
+        /* Lire l'image et attendre la fin avant de sauver */
+        var readerImg = new FileReader();
+        readerImg.onload = function(ev) { 
+            var dataUrl = ev.target.result;
+            if (dataUrl && dataUrl.length > 100) {
+                construireEtSauver(dataUrl); 
+            } else {
+                alert("Erreur de lecture de l'image. Essayez une autre image.");
+            }
+        };
+        readerImg.onerror = function() { 
+            if (confirm("Impossible de lire l'image. Publier sans image ?")) {
+                construireEtSauver(null); 
+            }
+        };
+        readerImg.readAsDataURL(fichierImage);
     } else {
         var imageExistante = "";
         if (estEdition && idEdition !== null) {
-            for (var i = 0; i < articles.length; i++) {
-                if (articles[i].id === idEdition) { imageExistante = articles[i].image || ""; break; }
+            for (var k = 0; k < articles.length; k++) {
+                if (articles[k].id === idEdition) { imageExistante = articles[k].image || ""; break; }
             }
         }
         construireEtSauver(imageExistante);
@@ -624,7 +636,10 @@ document.getElementById("btn-retour-adhesion").addEventListener("click", functio
 });
 
 document.getElementById("btn-soumettre-adhesion").addEventListener("click", function() {
-    if (!document.getElementById("adh-accord").checked) { alert("Vous devez accepter la charte de l'UNDR."); return; }
+    if (!document.getElementById("adh-accord").checked) { 
+        alert("Vous devez accepter la charte et les statuts de l'UNDR pour continuer."); 
+        return; 
+    }
     var num = "UNDR-" + Date.now().toString().slice(-6);
     var d = {
         id: num,
@@ -1232,9 +1247,3 @@ appliquerLangue(langueActuelle); /* Appliquer la langue sauvegardée */
 setTimeout(demanderNotifications, 3000);
 
 
-
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./service-worker.js")
-        .then(function(reg) { console.log("SW enregistré:", reg.scope); })
-        .catch(function(err) { console.log("SW erreur:", err); });
-}
