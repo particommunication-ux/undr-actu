@@ -1,20 +1,34 @@
 {
   "name": "UNDR Actualités",
   "short_name": "UNDR Act",
-  "start_url": "index.html",
+  "description": "Application officielle du Parti UNDR — Actualités, activités et informations du mouvement pour l'espoir et le renouveau du Tchad.",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f4f5f7",
-  "theme_color": "#003366",
+  "background_color": "#ffffff",
+  "theme_color": "#e67e22",
+  "orientation": "portrait",
+  "lang": "fr",
+  "categories": ["news", "politics"],
   "icons": [
     {
       "src": "logo.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "logo.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.undr.actualites",
+      "id": "com.undr.actualites"
     }
   ]
 }
