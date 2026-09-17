@@ -90,41 +90,60 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 .btn-suppr-adhesion,.btn-suppr-abo{padding:3px 8px;background:#dc3545;color:white;border:none;border-radius:4px;cursor:pointer;font-size:12px;}
 
 /* GRILLE ARTICLES */
-.grille-articles{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;width:100%;max-width:1000px;margin:14px auto;padding:0 12px;}
-.article{background:white;border-radius:10px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,0.08);cursor:pointer;border-top:3px solid #e67e22;position:relative;overflow:hidden;}
-.article h2{color:#003366;font-size:15px;margin:6px 0 4px;}
-.date-article{color:#888;font-size:12px;margin-bottom:4px;}
-.vues-admin{color:#888;font-size:12px;margin-bottom:6px;}
+.grille-articles{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;width:100%;max-width:1000px;margin:20px auto;padding:0 14px;}
+
+/* CARTE ARTICLE */
+.article{
+    background:white;
+    border-radius:16px;
+    padding:0;
+    box-shadow:0 4px 16px rgba(0,0,0,0.10);
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    border:none;
+    transition:transform 0.18s ease,box-shadow 0.18s ease;
+}
+.article:active{transform:scale(0.97);box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.article-corps{padding:14px 14px 12px;}
+.article h2{color:#003366;font-size:15px;margin:8px 0 5px;line-height:1.45;font-weight:700;}
+.date-article{color:#aaa;font-size:11px;margin-bottom:4px;letter-spacing:0.2px;}
+.vues-admin{color:#e67e22;font-size:11px;font-weight:600;margin-bottom:4px;}
+
+/* Accent couleur haut de carte */
+.article::before{content:"";display:block;height:4px;background:linear-gradient(90deg,#e67e22,#003366);}
 
 /* ARTICLE UNE */
-.article.une{grid-column:1/-1;background:linear-gradient(135deg,#003366,#00509e);color:white;border-top:none;border-left:5px solid #e63946;}
-.article.une h2{color:white;font-size:19px;}
-.article.une .date-article{color:#cdd9e8;}
-.article.une .badge{background:rgba(255,255,255,0.2);color:white;}
-.article.une .article-img{height:190px;}
+.article.une{grid-column:1/-1;background:linear-gradient(150deg,#003366 0%,#00509e 55%,#006bb3 100%);color:white;}
+.article.une::before{background:linear-gradient(90deg,#e63946,#e67e22);height:5px;}
+.article.une h2{color:white;font-size:21px;line-height:1.3;}
+.article.une .date-article{color:rgba(255,255,255,0.65);}
+.article.une .badge{background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.25);}
+.article.une .article-img{height:210px;}
+.article.une .article-corps{padding:16px 16px 14px;}
 
 /* BADGES */
-.badge{display:inline-block;background:#e0e7ff;color:#003366;font-size:12px;padding:3px 9px;border-radius:12px;margin-bottom:6px;border-left:3px solid #e67e22;}
-.badge-premium{display:inline-block;background:#fff3cd;color:#856404;font-size:11px;padding:2px 6px;border-radius:12px;margin-left:4px;font-weight:bold;}
-.badge-une{display:inline-block;background:#e67e22;color:white;font-size:11px;padding:2px 8px;border-radius:12px;margin-left:4px;font-weight:bold;}
+.badge{display:inline-block;background:#e8eeff;color:#003366;font-size:11px;padding:3px 10px;border-radius:20px;margin-bottom:6px;font-weight:600;}
+.badge-premium{display:inline-block;background:#fff3cd;color:#856404;font-size:11px;padding:2px 8px;border-radius:20px;margin-left:4px;font-weight:600;}
+.badge-une{display:inline-block;background:#e67e22;color:white;font-size:11px;padding:2px 9px;border-radius:20px;margin-left:4px;font-weight:700;}
 
 /* VERROU */
-.carte-verrou-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;color:white;font-size:24px;gap:5px;z-index:2;}
-.carte-verrou-overlay small{font-size:11px;background:rgba(0,0,0,0.55);padding:3px 9px;border-radius:20px;}
-.img-floue{filter:blur(5px);}
+.carte-verrou-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.35);display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;font-size:26px;gap:6px;z-index:2;}
+.carte-verrou-overlay small{font-size:12px;background:rgba(0,0,0,0.6);padding:4px 12px;border-radius:20px;}
+.img-floue{filter:blur(6px);}
 
 /* BOUTONS ADMIN CARTE */
-.admin-carte-btns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
-.btn-supprimer{padding:5px 10px;background:#e63946;color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px;}
-.btn-modifier{padding:5px 10px;background:#003366;color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px;}
-.select-importance{padding:4px 8px;border:1px solid #ccc;border-radius:6px;font-size:12px;background:white;cursor:pointer;}
+.admin-carte-btns{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 12px;}
+.btn-supprimer{padding:6px 12px;background:#e63946;color:white;border:none;border-radius:8px;cursor:pointer;font-size:12px;}
+.btn-modifier{padding:6px 12px;background:#003366;color:white;border:none;border-radius:8px;cursor:pointer;font-size:12px;}
+.select-importance{padding:5px 8px;border:1px solid #ddd;border-radius:8px;font-size:12px;background:white;cursor:pointer;}
 
 /* PARTAGER FACEBOOK */
-.btn-partager-carte{position:absolute;top:8px;right:8px;background:#1877f2;color:white;border:none;border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;z-index:3;}
-.btn-partager-article{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:#1877f2;color:white;border:none;border-radius:20px;font-size:13px;cursor:pointer;margin:8px 0 12px;}
+.btn-partager-carte{position:absolute;top:12px;right:12px;background:#1877f2;color:white;border:none;border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;z-index:3;box-shadow:0 2px 8px rgba(24,119,242,0.4);}
+.btn-partager-article{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:#1877f2;color:white;border:none;border-radius:20px;font-size:13px;cursor:pointer;margin:8px 0 12px;font-weight:600;}
 
 /* IMAGES ET VIDÉOS */
-.article-img{display:block;width:100%;height:155px;object-fit:cover;border-radius:8px;margin-bottom:8px;}
+.article-img{display:block;width:100%;height:170px;object-fit:cover;margin-bottom:0;}
 .article-video{display:block;width:100%;height:200px;border-radius:8px;margin-bottom:10px;}
 
 /* VUE DÉTAIL */

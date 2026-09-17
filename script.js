@@ -245,14 +245,18 @@ function afficherArticles() {
             : "";
 
         div.innerHTML =
-            "<img src='" + img + "' class='article-img" + (verr ? " img-floue" : "") + "' alt='" + art.titre + "'>" +
-            (verr ? "<div class='carte-verrou-overlay'><span>🔒</span><small>Abonnez-vous</small></div>" : "") +
-            "<span class='badge'>" + art.categorie + "</span>" +
-            (premium ? "<span class='badge-premium'>🔒 Premium</span>" : "") +
-            badgeUne +
-            "<h2>" + art.titre + "</h2>" +
-            "<p class='date-article'>" + art.date + "</p>" +
-            btnPartager +
+            "<div class='article-img-zone'>" +
+                "<img src='" + img + "' class='article-img" + (verr ? " img-floue" : "") + "' alt='" + art.titre + "'>" +
+                (verr ? "<div class='carte-verrou-overlay'><span>🔒</span><small>Abonnez-vous</small></div>" : "") +
+                btnPartager +
+            "</div>" +
+            "<div class='article-corps'>" +
+                "<span class='badge'>" + art.categorie + "</span>" +
+                (premium ? "<span class='badge-premium'>🔒 Premium</span>" : "") +
+                badgeUne +
+                "<h2>" + art.titre + "</h2>" +
+                "<p class='date-article'>" + art.date + "</p>" +
+            "</div>" +
             boutonsAdmin;
 
         conteneur.appendChild(div);
@@ -445,52 +449,71 @@ conteneur.addEventListener("click", function(e) {
     }
 });
 
-/* APERÇU IMAGE ET VIDÉO ADMIN */
+/* ================================================================
+   COMPRESSION IMAGE VIA CANVAS (Android compatible)
+   Convertit n'importe quelle image en JPEG compressé max 800px
+   ================================================================ */
+function compresserImage(fichier, callback) {
+    var url = URL.createObjectURL(fichier);
+    var img = new Image();
+    img.onload = function() {
+        var MAX = 800;
+        var w = img.width, h = img.height;
+        if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+        if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
+        var canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+        var dataUrl = canvas.toDataURL("image/jpeg", 0.75);
+        URL.revokeObjectURL(url);
+        callback(dataUrl);
+    };
+    img.onerror = function() {
+        URL.revokeObjectURL(url);
+        callback(null);
+    };
+    img.src = url;
+}
+
+/* APERÇU IMAGE ADMIN */
 document.getElementById("nouvelle-image").addEventListener("change", function() {
     var f = this.files[0]; if (!f) return;
-    var r = new FileReader();
-    r.onload = function(e) { document.getElementById("apercu-image-admin").innerHTML = "<img src='" + e.target.result + "' style='max-height:80px;border-radius:6px;'>"; };
-    r.readAsDataURL(f);
+    compresserImage(f, function(dataUrl) {
+        if (dataUrl) {
+            document.getElementById("apercu-image-admin").innerHTML =
+                "<img src='" + dataUrl + "' style='max-height:80px;border-radius:6px;margin-top:4px;'>";
+        }
+    });
 });
+
 document.getElementById("nouvelle-video-fichier").addEventListener("change", function() {
     var f = this.files[0]; if (!f) return;
     if (f.size > 250*1024*1024) { alert("Vidéo trop lourde. Maximum 250 Mo."); this.value = ""; return; }
     var r = new FileReader();
     r.onload = function(e) {
         videoFichierData = e.target.result;
-        document.getElementById("apercu-video-admin").innerHTML = "<video src='" + e.target.result + "' style='max-height:100px;border-radius:6px;' controls></video>";
+        document.getElementById("apercu-video-admin").innerHTML =
+            "<video src='" + e.target.result + "' style='max-height:100px;border-radius:6px;margin-top:4px;' controls></video>";
     };
     r.readAsDataURL(f);
 });
 
-/* PUBLIER / MODIFIER — réécriture complète */
+/* PUBLIER / MODIFIER */
 document.getElementById("bouton-publier").addEventListener("click", function() {
-
-    /* 1. Récupérer le titre */
     var titre = (document.getElementById("nouveau-titre").value || "").trim();
-    if (!titre) {
-        alert("Merci d'entrer le titre de l'article.");
-        return;
-    }
+    if (!titre) { alert("Merci d'entrer le titre de l'article."); return; }
 
-    /* 2. Récupérer le contenu — accepter texte OU vidéo */
     var editeur = document.getElementById("editeur-contenu");
     var contenu = editeur.innerHTML || "";
     var videoLien = (document.getElementById("nouvelle-video").value || "").trim();
-    var aContenu = contenu.replace(/<[^>]*>/g, "").trim().length > 0;
-    var aVideo = videoFichierData || videoLien;
-    var aImage = document.getElementById("nouvelle-image").files.length > 0;
-
-    if (!aContenu && !aVideo && !aImage) {
-        /* Dernier recours : publier quand même avec un contenu minimal */
+    if (!contenu.replace(/<[^>]*>/g, "").trim() && !videoFichierData && !videoLien) {
         contenu = "<p>" + titre + "</p>";
     }
 
-    /* 3. Déterminer si c'est une édition ou une création */
     var estEdition = modeEdition && idEdition !== null;
 
-    /* 4. Construire l'objet article */
-    function construireEtSauver(imageData) {
+    function sauverArticle(imageData) {
         var obj = {
             titre: titre,
             contenu: contenu,
@@ -502,35 +525,34 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
         };
 
         if (estEdition) {
-            var idx = -1;
             for (var i = 0; i < articles.length; i++) {
-                if (articles[i].id === idEdition) { idx = i; break; }
+                if (articles[i].id === idEdition) {
+                    obj.id = articles[i].id;
+                    obj.date = articles[i].date;
+                    obj.importance = articles[i].importance || 0;
+                    articles[i] = obj;
+                    break;
+                }
             }
-            if (idx !== -1) {
-                obj.id = articles[idx].id;
-                obj.date = articles[idx].date;
-                obj.importance = articles[idx].importance || 0;
-                articles[idx] = obj;
-            }
-            modeEdition = false;
-            idEdition = null;
+            modeEdition = false; idEdition = null;
             document.getElementById("bouton-publier").textContent = "Publier";
         } else {
             obj.id = Date.now();
-            obj.date = new Date().toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"});
+            obj.date = new Date().toLocaleDateString("fr-FR", {day:"numeric",month:"long",year:"numeric"});
             obj.importance = 2;
             articles.unshift(obj);
         }
 
-        /* 5. Sauvegarder */
         try {
             localStorage.setItem("articlesUNDR", JSON.stringify(articles));
         } catch(e) {
-            alert("Erreur de sauvegarde (stockage plein ?). Essayez de supprimer d'anciens articles.");
-            return;
+            /* Stockage plein : vider les anciennes images */
+            articles = articles.map(function(a, idx) {
+                return idx > 3 ? Object.assign({}, a, {image: "", videoFichier: ""}) : a;
+            });
+            localStorage.setItem("articlesUNDR", JSON.stringify(articles));
         }
 
-        /* 6. Réinitialiser le formulaire */
         document.getElementById("nouveau-titre").value = "";
         editeur.innerHTML = "";
         document.getElementById("nouvelle-video").value = "";
@@ -541,43 +563,25 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
         document.getElementById("article-premium").checked = false;
         videoFichierData = null;
 
-        /* 7. Rafraîchir et notifier */
         afficherArticles();
-        if (estEdition) {
-            afficherToast("✅ Article modifié !");
-        } else {
-            afficherToast("🎉 \"" + titre + "\" publié !");
-            envoyerNotifLocale(titre);
-        }
+        afficherToast(estEdition ? "✅ Article modifié !" : "🎉 \"" + titre + "\" publié !");
+        if (!estEdition) envoyerNotifLocale(titre);
     }
 
-    /* 5. Lire l'image si présente, sinon sauver directement */
     var fichierImage = document.getElementById("nouvelle-image").files[0];
     if (fichierImage) {
-        /* Lire l'image et attendre la fin avant de sauver */
-        var readerImg = new FileReader();
-        readerImg.onload = function(ev) { 
-            var dataUrl = ev.target.result;
-            if (dataUrl && dataUrl.length > 100) {
-                construireEtSauver(dataUrl); 
-            } else {
-                alert("Erreur de lecture de l'image. Essayez une autre image.");
-            }
-        };
-        readerImg.onerror = function() { 
-            if (confirm("Impossible de lire l'image. Publier sans image ?")) {
-                construireEtSauver(null); 
-            }
-        };
-        readerImg.readAsDataURL(fichierImage);
+        /* Compresser via Canvas — fonctionne sur tous les Android */
+        compresserImage(fichierImage, function(dataUrl) {
+            sauverArticle(dataUrl);
+        });
     } else {
-        var imageExistante = "";
-        if (estEdition && idEdition !== null) {
-            for (var k = 0; k < articles.length; k++) {
-                if (articles[k].id === idEdition) { imageExistante = articles[k].image || ""; break; }
+        var imgExist = "";
+        if (estEdition) {
+            for (var j = 0; j < articles.length; j++) {
+                if (articles[j].id === idEdition) { imgExist = articles[j].image || ""; break; }
             }
         }
-        construireEtSauver(imageExistante);
+        sauverArticle(imgExist);
     }
 });
 
@@ -603,10 +607,18 @@ document.getElementById("modal-adhesion").addEventListener("click", function(e) 
 
 document.getElementById("adh-photo").addEventListener("change", function() {
     var f = this.files[0]; if (!f) return;
-    if (f.size > 2*1024*1024) { alert("Photo trop lourde (max 2 Mo)."); this.value = ""; return; }
-    var r = new FileReader();
-    r.onload = function(e) { document.getElementById("apercu-photo").innerHTML = "<img src='" + e.target.result + "' style='max-width:100%;max-height:110px;border-radius:6px;margin-top:6px;'>"; };
-    r.readAsDataURL(f);
+    /* Accepter jusqu'à 10 Mo, compresser via Canvas */
+    if (f.size > 10*1024*1024) { alert("Photo trop lourde (max 10 Mo)."); this.value = ""; return; }
+    compresserImage(f, function(dataUrl) {
+        if (dataUrl) {
+            document.getElementById("apercu-photo").innerHTML =
+                "<img src='" + dataUrl + "' style='max-width:100%;max-height:110px;border-radius:6px;margin-top:6px;'>";
+            /* Stocker temporairement pour la soumission */
+            window._photoAdhesionTemp = dataUrl;
+        } else {
+            alert("Impossible de lire la photo. Essayez une autre image.");
+        }
+    });
 });
 
 document.getElementById("btn-suivant-adhesion").addEventListener("click", function() {
@@ -673,8 +685,17 @@ document.getElementById("btn-soumettre-adhesion").addEventListener("click", func
         genererPDF(d, photoDataUrl);
     }
 
-    if (photoFile) { var r = new FileReader(); r.onload = function(e) { finaliser(e.target.result); }; r.readAsDataURL(photoFile); }
-    else finaliser(null);
+    if (photoFile) {
+        /* Utiliser la photo déjà compressée si disponible, sinon relire */
+        if (window._photoAdhesionTemp) {
+            finaliser(window._photoAdhesionTemp);
+            window._photoAdhesionTemp = null;
+        } else {
+            compresserImage(photoFile, function(dataUrl) {
+                finaliser(dataUrl);
+            });
+        }
+    } else finaliser(null);
 });
 
 /* 3. GÉNÉRATION PDF */
