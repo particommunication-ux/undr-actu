@@ -37,7 +37,20 @@ var articlesParDefaut = [
     {id:3,titre:"Déclaration officielle du groupe",date:"10 juillet 2026",contenu:"Le groupe a publié une déclaration concernant les récents débats budgétaires.",categorie:"Communiqués",image:"",video:"",videoFichier:"",premium:true,importance:1}
 ];
 
-var articles = JSON.parse(localStorage.getItem("articlesUNDR") || "null") || articlesParDefaut;
+/* Récupérer les articles depuis localStorage
+   Migration : anciens articles avec champ 'resume' → 'contenu' */
+var articlesStockes = JSON.parse(localStorage.getItem("articlesUNDR") || "null");
+if (articlesStockes && articlesStockes.length > 0) {
+    /* Migrer les anciens articles qui utilisent 'resume' au lieu de 'contenu' */
+    articlesStockes = articlesStockes.map(function(a) {
+        if (!a.contenu && a.resume) { a.contenu = a.resume; }
+        if (!a.importance) { a.importance = 0; }
+        return a;
+    });
+    articles = articlesStockes;
+} else {
+    articles = articlesParDefaut;
+}
 var categorieActuelle = "Toutes";
 var modeEdition = false;
 var idEdition = null;
@@ -221,8 +234,8 @@ function afficherArticles() {
         div.className = i === 0 ? "article une" : "article";
         if (verr) div.classList.add("article-verrou");
         div.dataset.id = art.id;
-        /* Utiliser l'image stockée ou une couleur de fond si absente */
-        var img = (art.image && art.image.length > 10) ? art.image : "";
+        /* Utiliser l'image stockée — accepter data:, http:, et https: */
+        var img = (art.image && (art.image.startsWith("data:") || art.image.startsWith("http"))) ? art.image : "";
 
         /* 1. Badge "À la Une" et bouton 📘 Facebook : admin seulement */
         var badgeUne = (i === 0 && estAdmin) ? "<span class='badge-une'>⭐ À la Une</span>" : "";
@@ -334,7 +347,7 @@ function ouvrirArticle(id) {
     if (!art) return;
     var premium = estPremiumEffectif(art);
     var verr = premium && !estAbonne && !estAdmin;
-    var img = (art.image && art.image.length > 10) ? art.image : "";
+    var img = (art.image && (art.image.startsWith("data:") || art.image.startsWith("http"))) ? art.image : "";
     var detailImgEl = document.getElementById("detail-img");
     if (img) {
         detailImgEl.src = img;
@@ -426,6 +439,7 @@ conteneur.addEventListener("click", function(e) {
         if (confirm("Supprimer cet article ?")) {
             articles = articles.filter(function(a) { return a.id !== id; });
             localStorage.setItem("articlesUNDR", JSON.stringify(articles));
+            sauvegarderArticlesFirebase();
             afficherArticles();
         }
         return;
@@ -532,13 +546,19 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
             articles.unshift(obj);
         }
 
-        /* 5. Sauvegarder */
+        /* 5. Sauvegarder localement */
         try {
             localStorage.setItem("articlesUNDR", JSON.stringify(articles));
         } catch(e) {
-            alert("Erreur de sauvegarde (stockage plein ?). Essayez de supprimer d'anciens articles.");
-            return;
+            /* Stockage plein — retirer les vidéos des anciens articles */
+            articles = articles.map(function(a, idx) {
+                return idx > 5 ? Object.assign({}, a, {videoFichier: ""}) : a;
+            });
+            localStorage.setItem("articlesUNDR", JSON.stringify(articles));
         }
+
+        /* 5b. Sauvegarder sur Firebase (sans videoFichier car trop lourd) */
+        sauvegarderArticlesFirebase();
 
         /* 6. Réinitialiser le formulaire */
         document.getElementById("nouveau-titre").value = "";
