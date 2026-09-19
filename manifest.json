@@ -1,11 +1,11 @@
 {
   "name": "UNDR Actualités",
-  "short_name": "UNDR Act",
+  "short_name": "UNDR Actualités",
   "description": "Application officielle du Parti UNDR — Actualités, activités et informations du mouvement pour l'espoir et le renouveau du Tchad. Paix - Discipline - Travail.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#003366",
   "theme_color": "#e67e22",
   "orientation": "portrait-primary",
   "lang": "fr",

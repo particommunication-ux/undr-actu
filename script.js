@@ -117,14 +117,9 @@ document.getElementById("point-admin").addEventListener("click", function(e) {
             afficherArticles();
         }
     } else {
-        var s = prompt("Mot de passe administrateur :");
-        if (s === MOT_DE_PASSE_ADMIN) {
-            estAdmin = true;
-            sessionStorage.setItem("adminUNDR", "true");
-            alert("✅ Mode admin activé.");
-        } else if (s !== null) {
-            alert("❌ Mot de passe incorrect.");
-        }
+        var s = null; /* Remplacé par modal admin */
+        afficherModalAdmin();
+        return;
         mettreAJourPointAdmin();
         metAJourAffichageAdmin();
         afficherArticles();
@@ -146,7 +141,7 @@ function metAJourAffichageAdmin() {
    ================================================================ */
 function mettreAJourBandeauAbo() {
     var b = document.getElementById("bandeau-abonnement");
-    if (b) b.style.display = (!estAbonne && !estAdmin) ? "block" : "none";
+    if (b) b.style.display = "none"; /* Abonnement désactivé */
     ajusterEspaceEntete();
     var s = document.getElementById("statut-abonnement-panneau");
     if (!s) return;
@@ -195,7 +190,6 @@ document.getElementById("ouvrir-menu-gauche").addEventListener("click", ouvrirMe
 document.getElementById("fermer-menu-gauche").addEventListener("click", fermerMenuGauche);
 document.getElementById("overlay-menu-gauche").addEventListener("click", fermerMenuGauche);
 document.getElementById("menu-btn-adherer").addEventListener("click", function() { fermerMenuGauche(); ouvrirModalAdhesion(); });
-document.getElementById("menu-btn-abonner").addEventListener("click", function() { fermerMenuGauche(); ouvrirModalAbonnement(); });
 document.getElementById("menu-btn-partager").addEventListener("click", function() { fermerMenuGauche(); partagerFacebook(window.location.href); });
 
 /* ================================================================
@@ -227,7 +221,8 @@ function afficherArticles() {
         div.className = i === 0 ? "article une" : "article";
         if (verr) div.classList.add("article-verrou");
         div.dataset.id = art.id;
-        var img = art.image || ("https://picsum.photos/seed/" + encodeURIComponent(art.titre) + "/400/200");
+        /* Utiliser l'image stockée ou une couleur de fond si absente */
+        var img = (art.image && art.image.length > 10) ? art.image : "";
 
         /* 1. Badge "À la Une" et bouton 📘 Facebook : admin seulement */
         var badgeUne = (i === 0 && estAdmin) ? "<span class='badge-une'>⭐ À la Une</span>" : "";
@@ -245,17 +240,16 @@ function afficherArticles() {
             : "";
 
         div.innerHTML =
-            "<div class='article-img-zone'>" +
-                "<img src='" + img + "' class='article-img" + (verr ? " img-floue" : "") + "' alt='" + art.titre + "'>" +
-                (verr ? "<div class='carte-verrou-overlay'><span>🔒</span><small>Abonnez-vous</small></div>" : "") +
-                btnPartager +
-            "</div>" +
+            /* Image : affichée si disponible, sinon fond coloré */
+            (img ? "<img src='" + img + "' class='article-img" + (verr ? " img-floue" : "") + "' alt='" + art.titre + "'>" : "<div class='article-img-placeholder'></div>") +
+            (verr ? "<div class='carte-verrou-overlay'><span>🔒</span><small>Abonnez-vous</small></div>" : "") +
             "<div class='article-corps'>" +
-                "<span class='badge'>" + art.categorie + "</span>" +
-                (premium ? "<span class='badge-premium'>🔒 Premium</span>" : "") +
-                badgeUne +
-                "<h2>" + art.titre + "</h2>" +
-                "<p class='date-article'>" + art.date + "</p>" +
+            "<span class='badge'>" + art.categorie + "</span>" +
+            (premium ? "<span class='badge-premium'>🔒 Premium</span>" : "") +
+            badgeUne +
+            "<h2>" + art.titre + "</h2>" +
+            "<p class='date-article'>" + art.date + "</p>" +
+            btnPartager +
             "</div>" +
             boutonsAdmin;
 
@@ -340,10 +334,15 @@ function ouvrirArticle(id) {
     if (!art) return;
     var premium = estPremiumEffectif(art);
     var verr = premium && !estAbonne && !estAdmin;
-    var img = art.image || ("https://picsum.photos/seed/" + encodeURIComponent(art.titre) + "/400/200");
-
-    document.getElementById("detail-img").src = img;
-    document.getElementById("detail-img").style.filter = verr ? "blur(6px)" : "none";
+    var img = (art.image && art.image.length > 10) ? art.image : "";
+    var detailImgEl = document.getElementById("detail-img");
+    if (img) {
+        detailImgEl.src = img;
+        detailImgEl.style.display = "block";
+    } else {
+        detailImgEl.style.display = "none";
+    }
+    detailImgEl.style.filter = verr ? "blur(6px)" : "none";
     document.getElementById("detail-badge").textContent = art.categorie;
     document.getElementById("detail-titre").textContent = art.titre;
     document.getElementById("detail-date").textContent = art.date;
@@ -383,19 +382,26 @@ function ouvrirArticle(id) {
 
     conteneur.style.display = "none";
     document.getElementById("filtres-list").style.display = "none";
-    document.getElementById("vue-detail").style.display = "block";
+    var vueDetail = document.getElementById("vue-detail");
+    vueDetail.style.display = "block";
+    vueDetail.classList.remove("slide-in");
+    void vueDetail.offsetWidth; /* forcer reflow */
+    vueDetail.classList.add("slide-in");
     afficherLireAussi(art);
     window.scrollTo(0, 0);
 }
 
 document.getElementById("retour-liste").addEventListener("click", function() {
-    document.getElementById("vue-detail").style.display = "none";
-    conteneur.style.display = "grid";
-    document.getElementById("filtres-list").style.display = "flex";
+    var vd = document.getElementById("vue-detail");
+    vd.classList.add("slide-out");
+    setTimeout(function() {
+        vd.style.display = "none";
+        vd.classList.remove("slide-out");
+        conteneur.style.display = "grid";
+        document.getElementById("filtres-list").style.display = "flex";
+    }, 280);
 });
-document.getElementById("btn-abo-verrou").addEventListener("click", ouvrirModalAbonnement);
 document.getElementById("bandeau-btn-adherer").addEventListener("click", ouvrirModalAdhesion);
-document.getElementById("bandeau-btn-abo").addEventListener("click", ouvrirModalAbonnement);
 
 /* FILTRES */
 boutonsFiltre.forEach(function(b) {
@@ -449,71 +455,52 @@ conteneur.addEventListener("click", function(e) {
     }
 });
 
-/* ================================================================
-   COMPRESSION IMAGE VIA CANVAS (Android compatible)
-   Convertit n'importe quelle image en JPEG compressé max 800px
-   ================================================================ */
-function compresserImage(fichier, callback) {
-    var url = URL.createObjectURL(fichier);
-    var img = new Image();
-    img.onload = function() {
-        var MAX = 800;
-        var w = img.width, h = img.height;
-        if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
-        if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
-        var canvas = document.createElement("canvas");
-        canvas.width = w; canvas.height = h;
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, w, h);
-        var dataUrl = canvas.toDataURL("image/jpeg", 0.75);
-        URL.revokeObjectURL(url);
-        callback(dataUrl);
-    };
-    img.onerror = function() {
-        URL.revokeObjectURL(url);
-        callback(null);
-    };
-    img.src = url;
-}
-
-/* APERÇU IMAGE ADMIN */
+/* APERÇU IMAGE ET VIDÉO ADMIN */
 document.getElementById("nouvelle-image").addEventListener("change", function() {
     var f = this.files[0]; if (!f) return;
-    compresserImage(f, function(dataUrl) {
-        if (dataUrl) {
-            document.getElementById("apercu-image-admin").innerHTML =
-                "<img src='" + dataUrl + "' style='max-height:80px;border-radius:6px;margin-top:4px;'>";
-        }
-    });
+    var r = new FileReader();
+    r.onload = function(e) { document.getElementById("apercu-image-admin").innerHTML = "<img src='" + e.target.result + "' style='max-height:80px;border-radius:6px;'>"; };
+    r.readAsDataURL(f);
 });
-
 document.getElementById("nouvelle-video-fichier").addEventListener("change", function() {
     var f = this.files[0]; if (!f) return;
     if (f.size > 250*1024*1024) { alert("Vidéo trop lourde. Maximum 250 Mo."); this.value = ""; return; }
     var r = new FileReader();
     r.onload = function(e) {
         videoFichierData = e.target.result;
-        document.getElementById("apercu-video-admin").innerHTML =
-            "<video src='" + e.target.result + "' style='max-height:100px;border-radius:6px;margin-top:4px;' controls></video>";
+        document.getElementById("apercu-video-admin").innerHTML = "<video src='" + e.target.result + "' style='max-height:100px;border-radius:6px;' controls></video>";
     };
     r.readAsDataURL(f);
 });
 
-/* PUBLIER / MODIFIER */
+/* PUBLIER / MODIFIER — réécriture complète */
 document.getElementById("bouton-publier").addEventListener("click", function() {
-    var titre = (document.getElementById("nouveau-titre").value || "").trim();
-    if (!titre) { alert("Merci d'entrer le titre de l'article."); return; }
 
+    /* 1. Récupérer le titre */
+    var titre = (document.getElementById("nouveau-titre").value || "").trim();
+    if (!titre) {
+        alert("Merci d'entrer le titre de l'article.");
+        return;
+    }
+
+    /* 2. Récupérer le contenu — accepter texte OU vidéo */
     var editeur = document.getElementById("editeur-contenu");
     var contenu = editeur.innerHTML || "";
     var videoLien = (document.getElementById("nouvelle-video").value || "").trim();
-    if (!contenu.replace(/<[^>]*>/g, "").trim() && !videoFichierData && !videoLien) {
+    var aContenu = contenu.replace(/<[^>]*>/g, "").trim().length > 0;
+    var aVideo = videoFichierData || videoLien;
+    var aImage = document.getElementById("nouvelle-image").files.length > 0;
+
+    if (!aContenu && !aVideo && !aImage) {
+        /* Dernier recours : publier quand même avec un contenu minimal */
         contenu = "<p>" + titre + "</p>";
     }
 
+    /* 3. Déterminer si c'est une édition ou une création */
     var estEdition = modeEdition && idEdition !== null;
 
-    function sauverArticle(imageData) {
+    /* 4. Construire l'objet article */
+    function construireEtSauver(imageData) {
         var obj = {
             titre: titre,
             contenu: contenu,
@@ -525,34 +512,35 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
         };
 
         if (estEdition) {
+            var idx = -1;
             for (var i = 0; i < articles.length; i++) {
-                if (articles[i].id === idEdition) {
-                    obj.id = articles[i].id;
-                    obj.date = articles[i].date;
-                    obj.importance = articles[i].importance || 0;
-                    articles[i] = obj;
-                    break;
-                }
+                if (articles[i].id === idEdition) { idx = i; break; }
             }
-            modeEdition = false; idEdition = null;
+            if (idx !== -1) {
+                obj.id = articles[idx].id;
+                obj.date = articles[idx].date;
+                obj.importance = articles[idx].importance || 0;
+                articles[idx] = obj;
+            }
+            modeEdition = false;
+            idEdition = null;
             document.getElementById("bouton-publier").textContent = "Publier";
         } else {
             obj.id = Date.now();
-            obj.date = new Date().toLocaleDateString("fr-FR", {day:"numeric",month:"long",year:"numeric"});
+            obj.date = new Date().toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"});
             obj.importance = 2;
             articles.unshift(obj);
         }
 
+        /* 5. Sauvegarder */
         try {
             localStorage.setItem("articlesUNDR", JSON.stringify(articles));
         } catch(e) {
-            /* Stockage plein : vider les anciennes images */
-            articles = articles.map(function(a, idx) {
-                return idx > 3 ? Object.assign({}, a, {image: "", videoFichier: ""}) : a;
-            });
-            localStorage.setItem("articlesUNDR", JSON.stringify(articles));
+            alert("Erreur de sauvegarde (stockage plein ?). Essayez de supprimer d'anciens articles.");
+            return;
         }
 
+        /* 6. Réinitialiser le formulaire */
         document.getElementById("nouveau-titre").value = "";
         editeur.innerHTML = "";
         document.getElementById("nouvelle-video").value = "";
@@ -563,25 +551,31 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
         document.getElementById("article-premium").checked = false;
         videoFichierData = null;
 
+        /* 7. Rafraîchir et notifier */
         afficherArticles();
-        afficherToast(estEdition ? "✅ Article modifié !" : "🎉 \"" + titre + "\" publié !");
-        if (!estEdition) envoyerNotifLocale(titre);
+        if (estEdition) {
+            afficherToast("✅ Article modifié !");
+        } else {
+            afficherToast("🎉 \"" + titre + "\" publié !");
+            envoyerNotifLocale(titre);
+        }
     }
 
+    /* 5. Lire l'image si présente, sinon sauver directement */
     var fichierImage = document.getElementById("nouvelle-image").files[0];
     if (fichierImage) {
-        /* Compresser via Canvas — fonctionne sur tous les Android */
-        compresserImage(fichierImage, function(dataUrl) {
-            sauverArticle(dataUrl);
-        });
+        var reader = new FileReader();
+        reader.onload = function(ev) { construireEtSauver(ev.target.result); };
+        reader.onerror = function() { construireEtSauver(null); };
+        reader.readAsDataURL(fichierImage);
     } else {
-        var imgExist = "";
-        if (estEdition) {
-            for (var j = 0; j < articles.length; j++) {
-                if (articles[j].id === idEdition) { imgExist = articles[j].image || ""; break; }
+        var imageExistante = "";
+        if (estEdition && idEdition !== null) {
+            for (var i = 0; i < articles.length; i++) {
+                if (articles[i].id === idEdition) { imageExistante = articles[i].image || ""; break; }
             }
         }
-        sauverArticle(imgExist);
+        construireEtSauver(imageExistante);
     }
 });
 
@@ -607,18 +601,10 @@ document.getElementById("modal-adhesion").addEventListener("click", function(e) 
 
 document.getElementById("adh-photo").addEventListener("change", function() {
     var f = this.files[0]; if (!f) return;
-    /* Accepter jusqu'à 10 Mo, compresser via Canvas */
-    if (f.size > 10*1024*1024) { alert("Photo trop lourde (max 10 Mo)."); this.value = ""; return; }
-    compresserImage(f, function(dataUrl) {
-        if (dataUrl) {
-            document.getElementById("apercu-photo").innerHTML =
-                "<img src='" + dataUrl + "' style='max-width:100%;max-height:110px;border-radius:6px;margin-top:6px;'>";
-            /* Stocker temporairement pour la soumission */
-            window._photoAdhesionTemp = dataUrl;
-        } else {
-            alert("Impossible de lire la photo. Essayez une autre image.");
-        }
-    });
+    if (f.size > 2*1024*1024) { alert("Photo trop lourde (max 2 Mo)."); this.value = ""; return; }
+    var r = new FileReader();
+    r.onload = function(e) { document.getElementById("apercu-photo").innerHTML = "<img src='" + e.target.result + "' style='max-width:100%;max-height:110px;border-radius:6px;margin-top:6px;'>"; };
+    r.readAsDataURL(f);
 });
 
 document.getElementById("btn-suivant-adhesion").addEventListener("click", function() {
@@ -648,10 +634,7 @@ document.getElementById("btn-retour-adhesion").addEventListener("click", functio
 });
 
 document.getElementById("btn-soumettre-adhesion").addEventListener("click", function() {
-    if (!document.getElementById("adh-accord").checked) { 
-        alert("Vous devez accepter la charte et les statuts de l'UNDR pour continuer."); 
-        return; 
-    }
+    if (!document.getElementById("adh-accord").checked) { alert("Vous devez accepter la charte de l'UNDR."); return; }
     var num = "UNDR-" + Date.now().toString().slice(-6);
     var d = {
         id: num,
@@ -685,17 +668,8 @@ document.getElementById("btn-soumettre-adhesion").addEventListener("click", func
         genererPDF(d, photoDataUrl);
     }
 
-    if (photoFile) {
-        /* Utiliser la photo déjà compressée si disponible, sinon relire */
-        if (window._photoAdhesionTemp) {
-            finaliser(window._photoAdhesionTemp);
-            window._photoAdhesionTemp = null;
-        } else {
-            compresserImage(photoFile, function(dataUrl) {
-                finaliser(dataUrl);
-            });
-        }
-    } else finaliser(null);
+    if (photoFile) { var r = new FileReader(); r.onload = function(e) { finaliser(e.target.result); }; r.readAsDataURL(photoFile); }
+    else finaliser(null);
 });
 
 /* 3. GÉNÉRATION PDF */
@@ -1254,6 +1228,64 @@ document.getElementById("btn-suppr-statut-ri").addEventListener("click", functio
         chargerStatutRI();
     }
 });
+
+
+/* ================================================================
+   MODAL ADMIN PERSONNALISÉE (remplace le prompt natif)
+   ================================================================ */
+function afficherModalAdmin() {
+    var overlay = document.getElementById("modal-admin-pwd");
+    if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "modal-admin-pwd";
+        overlay.className = "modal-admin-overlay";
+        overlay.innerHTML =
+            "<div class='modal-admin-box'>" +
+                "<div class='modal-admin-logo'>" +
+                    "<img src='logo.png' alt='UNDR' style='width:48px;'>" +
+                    "<h3>Administration UNDR</h3>" +
+                "</div>" +
+                "<p style='color:#555;font-size:14px;margin-bottom:12px;'>Entrez le mot de passe pour accéder au mode administration.</p>" +
+                "<input type='password' id='input-pwd-admin' placeholder='Mot de passe' style='width:100%;padding:12px;border:2px solid #003366;border-radius:10px;font-size:16px;outline:none;margin-bottom:14px;'>" +
+                "<div style='display:flex;gap:10px;'>" +
+                    "<button id='btn-pwd-annuler' style='flex:1;padding:12px;background:#f0f0f0;color:#333;border:none;border-radius:10px;font-size:15px;cursor:pointer;'>Annuler</button>" +
+                    "<button id='btn-pwd-ok' style='flex:1;padding:12px;background:#003366;color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;'>Connexion</button>" +
+                "</div>" +
+                "<p id='msg-pwd-erreur' style='color:#e63946;font-size:13px;margin-top:8px;text-align:center;display:none;'>❌ Mot de passe incorrect</p>" +
+            "</div>";
+        document.body.appendChild(overlay);
+
+        document.getElementById("btn-pwd-annuler").addEventListener("click", function() {
+            overlay.style.display = "none";
+        });
+        document.getElementById("btn-pwd-ok").addEventListener("click", function() {
+            var pwd = document.getElementById("input-pwd-admin").value;
+            if (pwd === MOT_DE_PASSE_ADMIN) {
+                estAdmin = true;
+                sessionStorage.setItem("adminUNDR", "true");
+                overlay.style.display = "none";
+                mettreAJourPointAdmin();
+                metAJourAffichageAdmin();
+                afficherArticles();
+                afficherToast("✅ Mode admin activé !");
+            } else {
+                document.getElementById("msg-pwd-erreur").style.display = "block";
+                document.getElementById("input-pwd-admin").value = "";
+                document.getElementById("input-pwd-admin").focus();
+            }
+        });
+        document.getElementById("input-pwd-admin").addEventListener("keydown", function(e) {
+            if (e.key === "Enter") document.getElementById("btn-pwd-ok").click();
+        });
+        overlay.addEventListener("click", function(e) {
+            if (e.target === overlay) overlay.style.display = "none";
+        });
+    }
+    document.getElementById("msg-pwd-erreur").style.display = "none";
+    document.getElementById("input-pwd-admin").value = "";
+    overlay.style.display = "flex";
+    setTimeout(function() { document.getElementById("input-pwd-admin").focus(); }, 300);
+}
 
 /* ================================================================
    INITIALISATION
