@@ -418,42 +418,53 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     position:relative;
     flex:1;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    gap:24px;
+    gap:16px;
     padding:32px 24px;
     overflow:hidden;
 }
-.accueil-corps::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background-image:url('fond-accueil.jpg');
+.accueil-diaporama{
+    position:absolute;inset:0;z-index:0;
+    overflow:hidden;
+}
+.diapo-image{
+    position:absolute;inset:0;
     background-size:cover;
     background-position:center;
-    z-index:0;
+    opacity:0;
+    transform:scale(1);
+    transition:opacity 1s ease;
+}
+.diapo-image.diapo-active{
+    opacity:1;
+    animation:diapoZoom 3.6s ease forwards;
+}
+@keyframes diapoZoom{
+    from{transform:scale(1);}
+    to{transform:scale(1.08);}
 }
 .accueil-corps::after{
     content:"";
     position:absolute;
     inset:0;
     background:linear-gradient(rgba(10,40,95,0.58),rgba(10,40,95,0.58));
-    z-index:0;
+    z-index:1;
 }
-.accueil-corps > *{position:relative;z-index:1;}
+.accueil-corps > .accueil-btn{position:relative;z-index:2;}
 
 .accueil-btn{
-    width:100%;max-width:340px;
+    width:100%;max-width:250px;
     background:#d2691e;
     color:#fff;
-    border:2px solid rgba(255,255,255,0.85);
-    border-radius:14px;
-    padding:18px;
-    font-size:22px;
+    border:1.5px solid rgba(255,255,255,0.85);
+    border-radius:10px;
+    padding:12px 16px;
+    font-size:16px;
     font-weight:800;
     cursor:pointer;
-    box-shadow:0 4px 14px rgba(0,0,0,0.3);
+    box-shadow:0 3px 10px rgba(0,0,0,0.3);
     transition:transform .1s ease;
 }
-.accueil-btn:active{transform:scale(0.97);}
+.accueil-btn:active{transform:scale(0.9);}
 
 .accueil-pied{
     background:#0a2a5e;
@@ -490,5 +501,52 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
 
 @media (max-width:380px){
     .accueil-titre{font-size:20px;}
-    .accueil-btn{font-size:19px;padding:15px;}
+    .accueil-btn{font-size:14px;padding:11px 14px;max-width:220px;}
 }
+
+/* ================================================================
+   ANIMATIONS D'OUVERTURE — BOUTONS ET PANNEAUX DU SITE
+   ================================================================ */
+
+/* Effet de pression sur tous les boutons du site */
+button{transition:transform .15s ease;}
+button:active{transform:scale(0.93);}
+
+/* Fondu d'entrée pour les fonds semi-transparents (menu, modales) */
+@keyframes overlayFadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+.overlay-menu-gauche{animation:overlayFadeIn .3s ease;}
+.modal-overlay{animation:overlayFadeIn .25s ease;}
+
+/* Le menu latéral glisse depuis la gauche */
+@keyframes menuGaucheSlideIn{
+    from{transform:translateX(-100%);}
+    to{transform:translateX(0);}
+}
+.menu-gauche{animation:menuGaucheSlideIn .3s ease;}
+
+/* Les modales (Adhérer, Statut & RI) apparaissent en zoom */
+@keyframes modalPopIn{
+    from{opacity:0;transform:scale(.9) translateY(14px);}
+    to{opacity:1;transform:scale(1) translateY(0);}
+}
+.modal-contenu{animation:modalPopIn .3s ease;}
+
+/* Le formulaire d'ajout d'article (admin) apparaît en zoom */
+.formulaire{animation:modalPopIn .3s ease;}
+
+/* La vue détail d'un article glisse depuis la droite */
+@keyframes detailSlideIn{
+    from{opacity:0;transform:translateX(30px);}
+    to{opacity:1;transform:translateX(0);}
+}
+.vue-detail{animation:detailSlideIn .3s ease;}
+
+/* Le direct Facebook apparaît en glissant vers le bas */
+@keyframes directSlideDown{
+    from{opacity:0;transform:translateY(-14px);}
+    to{opacity:1;transform:translateY(0);}
+}
+.zone-direct{animation:directSlideDown .3s ease;}

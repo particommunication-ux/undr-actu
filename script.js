@@ -170,6 +170,17 @@ document.getElementById("menu-btn-partager").addEventListener("click", function(
 /* ================================================================
    PAGE D'ACCUEIL (SPLASH)
    ================================================================ */
+(function() {
+    var diapos = document.querySelectorAll("#accueil-diaporama .diapo-image");
+    if (!diapos.length) return;
+    var index = 0;
+    setInterval(function() {
+        diapos[index].classList.remove("diapo-active");
+        index = (index + 1) % diapos.length;
+        diapos[index].classList.add("diapo-active");
+    }, 3000);
+})();
+
 function fermerPageAccueil(callback) {
     var pa = document.getElementById("page-accueil");
     var ac = document.getElementById("app-contenu");
