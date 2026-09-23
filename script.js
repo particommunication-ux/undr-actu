@@ -237,6 +237,12 @@ function trierALaUne(liste) {
     });
 }
 
+function genererExtrait(contenuHtml) {
+    var texte = (contenuHtml || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+    if (texte.length > 160) texte = texte.substring(0, 160).trim() + "…";
+    return texte;
+}
+
 function afficherArticles() {
     conteneur.innerHTML = "";
     var liste = categorieActuelle === "Toutes"
@@ -278,11 +284,21 @@ function afficherArticles() {
                 (premium ? "<span class='badge-premium'>🔒 Premium</span>" : "") +
                 badgeUne +
                 "<h2>" + art.titre + "</h2>" +
+                "<p class='extrait-article'>" + genererExtrait(art.contenu) + "</p>" +
+                "<button class='btn-lire-suite' data-id='" + art.id + "'>Lire la suite →</button>" +
                 "<p class='date-article'>" + art.date + "</p>" +
             "</div>" +
             boutonsAdmin;
 
         conteneur.appendChild(div);
+    });
+
+    /* Bouton "Lire la suite" : ouvre l'article sans déclencher le clic de la carte */
+    conteneur.querySelectorAll(".btn-lire-suite").forEach(function(btn) {
+        btn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            ouvrirArticle(Number(btn.dataset.id));
+        });
     });
 
     /* Gérer le sélecteur d'importance admin */

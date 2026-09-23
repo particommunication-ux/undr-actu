@@ -95,7 +95,7 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 /* CARTE ARTICLE */
 .article{
     background:white;
-    border-radius:16px;
+    border-radius:0;
     padding:0;
     box-shadow:0 4px 16px rgba(0,0,0,0.10);
     cursor:pointer;
@@ -107,6 +107,29 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 .article:active{transform:scale(0.97);box-shadow:0 2px 8px rgba(0,0,0,0.08);}
 .article-corps{padding:14px 14px 12px;}
 .article h2{color:#003366;font-size:15px;margin:8px 0 5px;line-height:1.45;font-weight:700;}
+.extrait-article{
+    color:#555;
+    font-size:13px;
+    line-height:1.5;
+    margin:0 0 6px;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+.btn-lire-suite{
+    background:none;
+    border:none;
+    color:#e67e22;
+    font-size:13px;
+    font-weight:700;
+    padding:0;
+    margin:0 0 8px;
+    cursor:pointer;
+    display:inline-block;
+}
+.article.une .extrait-article{color:rgba(255,255,255,0.85);}
+.article.une .btn-lire-suite{color:#fff;text-decoration:underline;}
 .date-article{color:#aaa;font-size:11px;margin-bottom:4px;letter-spacing:0.2px;}
 .vues-admin{color:#e67e22;font-size:11px;font-weight:600;margin-bottom:4px;}
 
@@ -144,7 +167,7 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 
 /* IMAGES ET VIDÉOS */
 .article-img{display:block;width:100%;height:170px;object-fit:cover;margin-bottom:0;}
-.article-video{display:block;width:100%;height:200px;border-radius:8px;margin-bottom:10px;}
+.article-video{display:block;width:100%;height:200px;border-radius:0;margin-bottom:10px;}
 
 /* VUE DÉTAIL */
 .vue-detail{width:100%;max-width:700px;margin:14px auto;padding:0 14px;}
@@ -160,7 +183,7 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 .lire-aussi{margin-top:22px;padding-top:14px;border-top:1px solid #eee;}
 .lire-aussi h3{color:#003366;margin-bottom:10px;font-size:15px;}
 .lire-aussi-grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;}
-.lire-aussi-carte{cursor:pointer;border-radius:8px;overflow:hidden;background:white;box-shadow:0 2px 5px rgba(0,0,0,0.08);}
+.lire-aussi-carte{cursor:pointer;border-radius:0;overflow:hidden;background:white;box-shadow:0 2px 5px rgba(0,0,0,0.08);}
 .lire-aussi-carte img{width:100%;height:80px;object-fit:cover;display:block;}
 .lire-aussi-carte p{padding:6px;margin:0;font-size:12px;font-weight:bold;color:#003366;}
 
@@ -207,10 +230,11 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 .charte-adhesion li{margin-bottom:6px;color:#333;}
 .label-checkbox{display:flex;align-items:flex-start;gap:10px;font-size:15px;margin:14px 0 12px;cursor:pointer;color:#003366;font-weight:bold;line-height:1.5;}
 .label-checkbox input[type="checkbox"]{width:20px;height:20px;flex-shrink:0;margin-top:2px;accent-color:#003366;}
-.recap-adhesion{background:#f0f4ff;border-radius:8px;padding:10px;margin-bottom:10px;font-size:14px;}
-.recap-ligne{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #dce3ff;}
+.recap-adhesion{background:#f0f4ff;border:1px solid #dce3ff;border-radius:8px;padding:12px 14px;margin-bottom:10px;font-size:14px;}
+.recap-ligne{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid #dce3ff;color:#222;}
 .recap-ligne:last-child{border-bottom:none;}
-.recap-ligne span{color:#666;}
+.recap-ligne span{color:#555;}
+.recap-ligne strong{color:#003366;text-align:right;}
 .btn-row{display:flex;gap:8px;margin-top:6px;}
 .btn-primary-vert{flex:1;padding:12px;background:#003366;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-weight:bold;}
 .btn-primary-vert:active{background:#e67e22;}
@@ -268,11 +292,14 @@ body.mode-sombre .menu-gauche{background:#1e1e1e;}
 body.mode-sombre .modal-contenu{background:#1e1e1e;}
 body.mode-sombre .chat-messages{background:#2a2a2a;}
 body.mode-sombre .pied-de-page{background:#1a1a1a;color:#aaa;}
-body.mode-sombre .offre-abo,.recap-adhesion,.charte-adhesion{background:#2a2a2a;}
+body.mode-sombre .offre-abo,body.mode-sombre .recap-adhesion,body.mode-sombre .charte-adhesion{background:#2a2a2a;}
+body.mode-sombre .recap-ligne{border-bottom-color:#444;}
+body.mode-sombre .recap-ligne span{color:#aaa;}
+body.mode-sombre .recap-ligne strong{color:#fff;}
 body.mode-sombre .verrou-contenu{background:#1e1e1e;}
 body.mode-sombre .editeur-contenu{background:#2a2a2a;color:#eee;border-color:#444;}
 body.mode-sombre .contenu-article{color:#ddd;}
-body.mode-sombre .menu-item-btn,.acc-btn{color:#6fa8dc;}
+body.mode-sombre .menu-item-btn,body.mode-sombre .acc-btn{color:#6fa8dc;}
 body.mode-sombre .acc-contenu{background:#1a1a2e;}
 body.mode-sombre .guide-paiement{background:#1a2030;border-color:#2a4060;}
 body.mode-sombre .guide-etape{color:#ccc;}
