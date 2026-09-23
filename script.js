@@ -170,36 +170,44 @@ document.getElementById("menu-btn-partager").addEventListener("click", function(
 /* ================================================================
    PAGE D'ACCUEIL (SPLASH)
    ================================================================ */
-function fermerPageAccueil() {
+function fermerPageAccueil(callback) {
     var pa = document.getElementById("page-accueil");
     var ac = document.getElementById("app-contenu");
-    if (pa) pa.style.display = "none";
-    if (ac) ac.style.display = "block";
-    ajusterEspaceEntete();
+    if (pa) pa.classList.add("page-accueil-sortie");
+    setTimeout(function() {
+        if (pa) pa.style.display = "none";
+        if (ac) {
+            ac.style.display = "block";
+            requestAnimationFrame(function() { ac.classList.add("app-contenu-visible"); });
+        }
+        ajusterEspaceEntete();
+        if (typeof callback === "function") callback();
+    }, 380);
 }
 var btnAccueilAccueil = document.getElementById("accueil-btn-accueil");
-if (btnAccueilAccueil) btnAccueilAccueil.addEventListener("click", fermerPageAccueil);
+if (btnAccueilAccueil) btnAccueilAccueil.addEventListener("click", function() { fermerPageAccueil(); });
 
 var btnAccueilAdherer = document.getElementById("accueil-btn-adherer");
 if (btnAccueilAdherer) btnAccueilAdherer.addEventListener("click", function() {
-    fermerPageAccueil();
-    ouvrirModalAdhesion();
+    fermerPageAccueil(function() { ouvrirModalAdhesion(); });
 });
 
 var btnAccueilActus = document.getElementById("accueil-btn-actualites");
 if (btnAccueilActus) btnAccueilActus.addEventListener("click", function() {
-    fermerPageAccueil();
-    var btnFiltreActus = document.querySelector('.filtre-btn[data-categorie="Actualités"]');
-    if (btnFiltreActus) btnFiltreActus.click();
+    fermerPageAccueil(function() {
+        var btnFiltreActus = document.querySelector('.filtre-btn[data-categorie="Actualités"]');
+        if (btnFiltreActus) btnFiltreActus.click();
+    });
 });
 
 var btnAccueilContact = document.getElementById("accueil-btn-contact");
 if (btnAccueilContact) btnAccueilContact.addEventListener("click", function() {
-    fermerPageAccueil();
-    setTimeout(function() {
-        var pied = document.querySelector(".pied-de-page");
-        if (pied) pied.scrollIntoView({ behavior: "smooth" });
-    }, 150);
+    fermerPageAccueil(function() {
+        setTimeout(function() {
+            var pied = document.querySelector(".pied-de-page");
+            if (pied) pied.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+    });
 });
 
 /* ================================================================
