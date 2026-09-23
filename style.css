@@ -92,7 +92,7 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 .btn-suppr-adhesion,.btn-suppr-abo{padding:3px 8px;background:#dc3545;color:white;border:none;border-radius:4px;cursor:pointer;font-size:12px;}
 
 /* GRILLE ARTICLES */
-.grille-articles{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;width:100%;max-width:1000px;margin:20px auto;padding:0 14px;}
+.grille-articles{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px;width:100%;max-width:1000px;margin:20px auto;padding:0 14px;}
 
 /* CARTE ARTICLE */
 .article{
@@ -324,7 +324,7 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
 
 /* RESPONSIVE */
 @media(max-width:480px){
-    .grille-articles{grid-template-columns:1fr;padding:0 10px;gap:12px;}
+    .grille-articles{grid-template-columns:1fr;padding:0 10px;gap:24px;}
     .article.une h2{font-size:16px;}
     .article-img{height:145px;}
     .article.une .article-img{height:175px;}
@@ -456,7 +456,6 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
 }
 .accueil-logo{
     width:58px;height:auto;display:block;margin:0 auto 6px;
-    filter:drop-shadow(0 0 12px rgba(230,126,34,0.5));
 }
 .accueil-titre{color:#a8460f;font-size:24px;font-weight:800;margin:0;text-shadow:0 1px 2px rgba(255,255,255,0.6);}
 
@@ -501,10 +500,10 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     width:100%;max-width:250px;
     background:#d2691e;
     color:#fff;
-    border:1.5px solid rgba(255,255,255,0.85);
+    border:none;
     border-radius:10px;
     padding:12px 16px;
-    font-size:16px;
+    font-size:20px;
     font-weight:800;
     cursor:pointer;
     box-shadow:0 3px 10px rgba(0,0,0,0.3);
@@ -524,7 +523,7 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     margin-bottom:14px;
     line-height:1.35;
 }
-.accueil-pied-logo{width:36px;height:36px;border-radius:50%;background:#fff;object-fit:contain;flex-shrink:0;}
+.accueil-pied-logo{width:36px;height:36px;background:transparent;object-fit:contain;flex-shrink:0;}
 
 .accueil-rejoindre{
     display:flex;align-items:center;justify-content:space-between;
@@ -547,7 +546,7 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
 
 @media (max-width:380px){
     .accueil-titre{font-size:20px;}
-    .accueil-btn{font-size:14px;padding:11px 14px;max-width:220px;}
+    .accueil-btn{font-size:17px;padding:11px 14px;max-width:220px;}
 }
 
 /* ================================================================
