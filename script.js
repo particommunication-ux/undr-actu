@@ -134,39 +134,10 @@ document.getElementById("point-admin").addEventListener("click", function(e) {
 function metAJourAffichageAdmin() {
     var f = document.getElementById("formulaire-ajout");
     if (f) f.style.display = estAdmin ? "block" : "none";
-    if (estAdmin) { chargerAdhesionsAdmin(); chargerAbonnesAdmin(); chargerPubsAdmin(); }
+    if (estAdmin) { chargerAdhesionsAdmin(); chargerPubsAdmin(); }
     /* Les vues sont gérées par afficherVue() — visible par tous */
     var btnPart = document.getElementById("btn-partager-article");
     if (btnPart) btnPart.style.display = estAdmin ? "inline-flex" : "none";
-    afficherBoutonPremiumAdmin();
-}
-
-/* ================================================================
-   ABONNEMENT
-   ================================================================ */
-function mettreAJourBandeauAbo() {
-    var b = document.getElementById("bandeau-abonnement");
-    if (b) b.style.display = (!estAbonne && !estAdmin) ? "block" : "none";
-    ajusterEspaceEntete();
-    var s = document.getElementById("statut-abonnement-panneau");
-    if (!s) return;
-    if (estAbonne) {
-        s.innerHTML = "<div class='statut-abo actif'>💎 Abonnement actif</div><button id='btn-resil-abo' class='btn-resilier'>Se désabonner</button>";
-        document.getElementById("btn-resil-abo").addEventListener("click", function() {
-            if (confirm("Voulez-vous vous désabonner ?")) {
-                localStorage.removeItem("abonneUNDR");
-                estAbonne = false;
-                mettreAJourBandeauAbo();
-                afficherArticles();
-            }
-        });
-    } else {
-        s.innerHTML = "<div class='statut-abo inactif'>🔒 Pas d'abonnement actif</div><button class='btn-payer' id='btn-abo-panneau' style='margin-top:8px;width:100%;'>S'abonner — 1 000 FCFA/mois</button>";
-        document.getElementById("btn-abo-panneau").addEventListener("click", function() {
-            fermerMenuGauche();
-            ouvrirModalAbonnement();
-        });
-    }
 }
 
 /* ================================================================
@@ -183,7 +154,6 @@ window.addEventListener("resize", ajusterEspaceEntete);
    MENU GAUCHE
    ================================================================ */
 function ouvrirMenuGauche() {
-    mettreAJourBandeauAbo();
     document.getElementById("menu-gauche").style.display = "block";
     document.getElementById("overlay-menu-gauche").style.display = "block";
 }
@@ -195,8 +165,42 @@ document.getElementById("ouvrir-menu-gauche").addEventListener("click", ouvrirMe
 document.getElementById("fermer-menu-gauche").addEventListener("click", fermerMenuGauche);
 document.getElementById("overlay-menu-gauche").addEventListener("click", fermerMenuGauche);
 document.getElementById("menu-btn-adherer").addEventListener("click", function() { fermerMenuGauche(); ouvrirModalAdhesion(); });
-document.getElementById("menu-btn-abonner").addEventListener("click", function() { fermerMenuGauche(); ouvrirModalAbonnement(); });
 document.getElementById("menu-btn-partager").addEventListener("click", function() { fermerMenuGauche(); partagerFacebook(window.location.href); });
+
+/* ================================================================
+   PAGE D'ACCUEIL (SPLASH)
+   ================================================================ */
+function fermerPageAccueil() {
+    var pa = document.getElementById("page-accueil");
+    var ac = document.getElementById("app-contenu");
+    if (pa) pa.style.display = "none";
+    if (ac) ac.style.display = "block";
+    ajusterEspaceEntete();
+}
+var btnAccueilAccueil = document.getElementById("accueil-btn-accueil");
+if (btnAccueilAccueil) btnAccueilAccueil.addEventListener("click", fermerPageAccueil);
+
+var btnAccueilAdherer = document.getElementById("accueil-btn-adherer");
+if (btnAccueilAdherer) btnAccueilAdherer.addEventListener("click", function() {
+    fermerPageAccueil();
+    ouvrirModalAdhesion();
+});
+
+var btnAccueilActus = document.getElementById("accueil-btn-actualites");
+if (btnAccueilActus) btnAccueilActus.addEventListener("click", function() {
+    fermerPageAccueil();
+    var btnFiltreActus = document.querySelector('.filtre-btn[data-categorie="Actualités"]');
+    if (btnFiltreActus) btnFiltreActus.click();
+});
+
+var btnAccueilContact = document.getElementById("accueil-btn-contact");
+if (btnAccueilContact) btnAccueilContact.addEventListener("click", function() {
+    fermerPageAccueil();
+    setTimeout(function() {
+        var pied = document.querySelector(".pied-de-page");
+        if (pied) pied.scrollIntoView({ behavior: "smooth" });
+    }, 150);
+});
 
 /* ================================================================
    5. PARTAGE FACEBOOK DIRECT
@@ -355,7 +359,6 @@ function ouvrirArticle(id) {
     } else {
         dr.innerHTML = "<div style='font-family:Times New Roman,serif;font-size:12pt;line-height:1.8;'>" + (art.contenu || "") + "</div>";
     }
-    document.getElementById("verrou-premium").style.display = verr ? "flex" : "none";
 
     var zv = document.getElementById("detail-video-zone");
     zv.innerHTML = "";
@@ -393,10 +396,6 @@ document.getElementById("retour-liste").addEventListener("click", function() {
     conteneur.style.display = "grid";
     document.getElementById("filtres-list").style.display = "flex";
 });
-document.getElementById("btn-abo-verrou").addEventListener("click", ouvrirModalAbonnement);
-document.getElementById("bandeau-btn-adherer").addEventListener("click", ouvrirModalAdhesion);
-document.getElementById("bandeau-btn-abo").addEventListener("click", ouvrirModalAbonnement);
-
 /* FILTRES */
 boutonsFiltre.forEach(function(b) {
     b.addEventListener("click", function() {
@@ -432,7 +431,6 @@ conteneur.addEventListener("click", function(e) {
         document.getElementById("nouvelle-categorie").value = art.categorie;
         document.getElementById("editeur-contenu").innerHTML = art.contenu || "";
         document.getElementById("nouvelle-video").value = art.video || "";
-        document.getElementById("article-premium").checked = art.premium === true;
         videoFichierData = art.videoFichier || null;
         modeEdition = true; idEdition = id;
         document.getElementById("bouton-publier").textContent = "Enregistrer";
@@ -444,7 +442,6 @@ conteneur.addEventListener("click", function(e) {
     if (carte) {
         var id = Number(carte.dataset.id);
         var art = articles.find(function(a) { return a.id === id; });
-        if (art && estPremiumEffectif(art) && !estAbonne && !estAdmin) { ouvrirModalAbonnement(); return; }
         if (art) ouvrirArticle(id);
     }
 });
@@ -520,7 +517,6 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
             categorie: document.getElementById("nouvelle-categorie").value,
             video: videoLien,
             videoFichier: videoFichierData || "",
-            premium: document.getElementById("article-premium").checked,
             image: imageData || ""
         };
 
@@ -560,7 +556,6 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
         document.getElementById("nouvelle-video-fichier").value = "";
         document.getElementById("apercu-image-admin").innerHTML = "";
         document.getElementById("apercu-video-admin").innerHTML = "";
-        document.getElementById("article-premium").checked = false;
         videoFichierData = null;
 
         afficherArticles();
@@ -774,86 +769,9 @@ function genererPDF(d, photoDataUrl) {
 }
 
 /* ================================================================
-   4. MODAL ABONNEMENT — PAR RÉFÉRENCE DE TRANSACTION
+   PREMIUM/ABONNEMENT — fonctionnalité retirée, contenu toujours libre
    ================================================================ */
-function afficherEtapePaiement(num) {
-    ["1","2","erreur"].forEach(function(n) {
-        var el = document.getElementById(n === "erreur" ? "etape-paiement-erreur" : "etape-paiement-" + n);
-        if (el) el.style.display = "none";
-    });
-    var cible = document.getElementById(num === "erreur" ? "etape-paiement-erreur" : "etape-paiement-" + num);
-    if (cible) cible.style.display = "block";
-}
-
-function ouvrirModalAbonnement() {
-    afficherEtapePaiement("1");
-    ["abo-nom","abo-tel","abo-ref"].forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ""; });
-    document.getElementById("abo-operateur").value = "";
-    document.getElementById("modal-abonnement").style.display = "flex";
-}
-function fermerModalAbonnement() { document.getElementById("modal-abonnement").style.display = "none"; }
-document.getElementById("fermer-abonnement").addEventListener("click", fermerModalAbonnement);
-document.getElementById("modal-abonnement").addEventListener("click", function(e) { if (e.target === this) fermerModalAbonnement(); });
-document.getElementById("btn-reessayer").addEventListener("click", function() { afficherEtapePaiement("1"); });
-
-document.getElementById("btn-confirmer-abo").addEventListener("click", function() {
-    var nom = document.getElementById("abo-nom").value.trim();
-    var tel = document.getElementById("abo-tel").value.trim();
-    var op  = document.getElementById("abo-operateur").value;
-    var ref = document.getElementById("abo-ref").value.trim();
-    if (!nom || !tel || !op || !ref) {
-        document.getElementById("msg-erreur-paiement").textContent = "Merci de remplir tous les champs, y compris le numéro de référence.";
-        afficherEtapePaiement("erreur");
-        return;
-    }
-    /* Activer l'abonnement immédiatement */
-    estAbonne = true;
-    localStorage.setItem("abonneUNDR", "true");
-    localStorage.setItem("abonneTelUNDR", tel);
-    var ab = JSON.parse(localStorage.getItem("abonnesUNDR") || "[]");
-    ab.push({ nom:nom, tel:tel, operateur:op, ref:ref, date:new Date().toLocaleDateString("fr-FR"), statut:"Validé" });
-    localStorage.setItem("abonnesUNDR", JSON.stringify(ab));
-    if (window.db) {
-        window.db.collection("abonnements").add({ nom:nom, tel:tel, operateur:op, ref:ref, date:firebase.firestore.FieldValue.serverTimestamp(), statut:"Validé" }).catch(function(){});
-    }
-    document.getElementById("ref-confirmee").textContent = ref;
-    afficherEtapePaiement("2");
-});
-
-document.getElementById("fermer-succes-abo").addEventListener("click", function() {
-    fermerModalAbonnement();
-    mettreAJourBandeauAbo();
-    afficherArticles();
-    alert("🎉 Bienvenue ! Vous avez maintenant accès à tous les contenus UNDR.");
-});
-
-/* ================================================================
-   3. MODE ABONNEMENT — BOUTON ADMIN POUR DÉSACTIVER
-   ================================================================ */
-var modeAbonnementActif = localStorage.getItem("premiumDesactiveUNDR") !== "true";
-
-function afficherBoutonPremiumAdmin() {
-    var zone = document.getElementById("btn-premium-admin");
-    if (!zone || !estAdmin) return;
-    zone.style.display = "block";
-    zone.innerHTML = modeAbonnementActif
-        ? "<button id='btn-toggle-premium' class='btn-premium-on'>🔒 Premium activé — Cliquer pour désactiver</button>"
-        : "<button id='btn-toggle-premium' class='btn-premium-off'>🔓 Premium désactivé — Cliquer pour réactiver</button>";
-    document.getElementById("btn-toggle-premium").addEventListener("click", function() {
-        modeAbonnementActif = !modeAbonnementActif;
-        localStorage.setItem("premiumDesactiveUNDR", modeAbonnementActif ? "false" : "true");
-        // Si désactivé : tous les articles sont accessibles sans abonnement
-        afficherBoutonPremiumAdmin();
-        afficherArticles();
-        alert(modeAbonnementActif ? "✅ Mode Premium réactivé." : "🔓 Mode Premium désactivé. Tous les articles sont maintenant accessibles.");
-    });
-}
-
-// Surcharger estPremium pour tenir compte du mode désactivé
-function estPremiumEffectif(art) {
-    if (!modeAbonnementActif) return false; // Premium désactivé par admin
-    return art.premium === true || CATEGORIES_PREMIUM.includes(art.categorie);
-}
+function estPremiumEffectif(art) { return false; }
 
 /* ADMIN LISTES */
 function chargerAdhesionsAdmin() {
@@ -898,25 +816,6 @@ function chargerAdhesionsAdmin() {
         });
     });
 }
-function chargerAbonnesAdmin() {
-    var zone = document.getElementById("liste-abonnes"); if (!zone) return;
-    var ab = JSON.parse(localStorage.getItem("abonnesUNDR") || "[]");
-    if (!ab.length) { zone.innerHTML = "<p style='color:#888;font-size:13px;'>Aucun abonné.</p>"; return; }
-    zone.innerHTML = ab.map(function(a, i) {
-        return "<div class='adhesion-item'><strong>" + a.nom + "</strong> — " + a.operateur + " — 📞 " + a.tel + "<br>" +
-            "<small>Réf: " + (a.ref||a.txId||"—") + " | " + a.date + "</small><br>" +
-            "<span class='badge-statut " + (a.statut==="Validé"?"valide":"attente") + "'>" + a.statut + "</span>" +
-            "<button class='btn-suppr-abo' data-index='" + i + "'>🗑</button></div>";
-    }).join("");
-    zone.querySelectorAll(".btn-suppr-abo").forEach(function(b) {
-        b.addEventListener("click", function() {
-            var a = JSON.parse(localStorage.getItem("abonnesUNDR")||"[]");
-            a.splice(Number(b.dataset.index),1);
-            localStorage.setItem("abonnesUNDR", JSON.stringify(a)); chargerAbonnesAdmin();
-        });
-    });
-}
-
 /* PUBLICITÉS */
 function chargerPubsAdmin() {
     var ph=JSON.parse(localStorage.getItem("pubHautUNDR")||"null");
@@ -1114,7 +1013,6 @@ function appliquerLangue(lang) {
     /* Traduire les boutons du menu */
     var menuItems = {
         "menu-btn-adherer": t["menu_adherer"],
-        "menu-btn-abonner": t["menu_abonner"],
         "menu-btn-statut-ri": t["menu_statut_ri"],
         "menu-btn-partager": t["menu_partager"]
     };
@@ -1258,7 +1156,6 @@ document.getElementById("btn-suppr-statut-ri").addEventListener("click", functio
 /* ================================================================
    INITIALISATION
    ================================================================ */
-mettreAJourBandeauAbo();
 mettreAJourPointAdmin();
 metAJourAffichageAdmin();
 rafraichirPubs();

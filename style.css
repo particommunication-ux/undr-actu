@@ -382,3 +382,93 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     display: block;
     margin: 0 auto;
 }
+
+/* ================================================================
+   PAGE D'ACCUEIL (SPLASH)
+   ================================================================ */
+.page-accueil{
+    position:fixed;inset:0;z-index:2000;
+    display:flex;flex-direction:column;
+    background:#0a2a5e;
+}
+.accueil-entete{
+    background:#fff;text-align:center;
+    padding:20px 16px 14px;
+    border-bottom:4px solid #e67e22;
+    flex-shrink:0;
+}
+.accueil-logo{width:58px;height:auto;display:block;margin:0 auto 6px;}
+.accueil-titre{color:#e67e22;font-size:24px;font-weight:800;margin:0;}
+
+.accueil-corps{
+    position:relative;
+    flex:1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:24px;
+    padding:32px 24px;
+    overflow:hidden;
+}
+.accueil-corps::before{
+    content:"";
+    position:absolute;
+    inset:-6px;
+    background-image:linear-gradient(rgba(8,35,80,0.62),rgba(8,35,80,0.62)), url('fond-accueil.jpg');
+    background-size:cover;
+    background-position:center;
+    filter:blur(4px);
+    z-index:0;
+}
+.accueil-corps > *{position:relative;z-index:1;}
+
+.accueil-btn{
+    width:100%;max-width:340px;
+    background:#d2691e;
+    color:#fff;
+    border:2px solid rgba(255,255,255,0.85);
+    border-radius:14px;
+    padding:18px;
+    font-size:22px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(0,0,0,0.3);
+    transition:transform .1s ease;
+}
+.accueil-btn:active{transform:scale(0.97);}
+
+.accueil-pied{
+    background:#0a2a5e;
+    padding:14px 16px 20px;
+    color:#fff;
+    flex-shrink:0;
+}
+.accueil-pied-ligne{
+    display:flex;align-items:center;gap:10px;
+    font-size:12px;font-weight:bold;
+    margin-bottom:14px;
+    line-height:1.35;
+}
+.accueil-pied-logo{width:36px;height:36px;border-radius:50%;background:#fff;object-fit:contain;flex-shrink:0;}
+
+.accueil-rejoindre{
+    display:flex;align-items:center;justify-content:space-between;
+    background:#12417f;
+    padding:10px 14px;
+    border-radius:10px;
+    flex-wrap:wrap;
+    gap:10px;
+}
+.accueil-rejoindre-texte{font-style:italic;font-weight:bold;font-size:15px;}
+.accueil-reseaux{display:flex;gap:10px;}
+.reseau-icone{
+    width:38px;height:38px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+}
+.reseau-icone svg{width:20px;height:20px;}
+.reseau-fb{background:#1877f2;}
+.reseau-wa{background:#25d366;}
+
+@media (max-width:380px){
+    .accueil-titre{font-size:20px;}
+    .accueil-btn{font-size:19px;padding:15px;}
+}
