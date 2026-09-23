@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>UNDR Actualités</title>
-    <link rel="stylesheet" href="style.css?v=10">
+    <link rel="stylesheet" href="style.css?v=11">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#e67e22">
     <!-- Splash screen portrait -->
@@ -113,6 +113,7 @@
         </div>
         <hr style="margin:14px 0;">
         <button class="menu-item-btn" id="menu-btn-adherer">📋 Adhérer à l'UNDR</button>
+        <button class="menu-item-btn menu-btn-don" id="menu-btn-don">🧡 Faire un don</button>
         <button class="menu-item-btn" id="menu-btn-statut-ri">📜 Statut & RI de l'UNDR</button>
         <button class="menu-item-btn" id="menu-btn-partager">📤 Partager l'application</button>
         <hr style="margin:14px 0;">
@@ -266,6 +267,55 @@
 </div>
 
 <!-- MODAL ADHÉSION -->
+<!-- MODAL DON -->
+<div id="modal-don" class="modal-overlay" style="display:none;">
+    <div class="modal-contenu">
+        <button class="fermer-modal" id="fermer-don">✖</button>
+        <div class="modal-header-abo">
+            <h2>🧡 Faire un don</h2>
+            <p>Votre soutien encourage notre équipe et améliore ce site au quotidien.</p>
+        </div>
+
+        <div id="don-etape-1">
+            <p class="don-description">
+                Chaque don, quel que soit son montant, est dédié à l'encouragement de l'équipe
+                UNDR Actualités et à l'amélioration continue du site (hébergement, nouvelles
+                fonctionnalités, maintenance).
+            </p>
+            <div class="don-montants">
+                <button class="don-montant-btn" data-montant="5 €">5 €</button>
+                <button class="don-montant-btn" data-montant="10 €">10 €</button>
+                <button class="don-montant-btn" data-montant="15 €">15 €</button>
+                <button class="don-montant-btn" data-montant="20 €">20 €</button>
+            </div>
+        </div>
+
+        <div id="don-etape-2" style="display:none;">
+            <h3 style="color:#003366;text-align:center;margin-bottom:12px;">
+                Merci pour votre don de <span id="don-montant-choisi"></span> !
+            </h3>
+            <div class="guide-paiement">
+                <div class="guide-etape">
+                    <span class="guide-num">1</span>
+                    <div>
+                        Envoyez le montant équivalent via <strong>Airtel Money</strong> ou <strong>Moov Money</strong> au numéro :
+                        <div class="numero-paiement">+235 66 79 77 51</div>
+                    </div>
+                </div>
+                <div class="guide-etape">
+                    <span class="guide-num">2</span>
+                    <div>La conversion en Francs CFA se fait automatiquement, selon le taux en vigueur de votre opérateur.</div>
+                </div>
+                <div class="guide-etape">
+                    <span class="guide-num">3</span>
+                    <div>Merci infiniment pour votre générosité et votre soutien à l'UNDR ! 🙏</div>
+                </div>
+            </div>
+            <button class="btn-primary-vert" id="don-retour" style="width:100%;">← Choisir un autre montant</button>
+        </div>
+    </div>
+</div>
+
 <div id="modal-adhesion" class="modal-overlay" style="display:none;">
     <div class="modal-contenu">
         <button class="fermer-modal" id="fermer-adhesion">✖</button>
@@ -415,7 +465,7 @@
 <!-- FIN CONTENU PRINCIPAL -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="script.js?v=10"></script>
+<script src="script.js?v=11"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="chat.js?v=7"></script>

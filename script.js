@@ -165,6 +165,7 @@ document.getElementById("ouvrir-menu-gauche").addEventListener("click", ouvrirMe
 document.getElementById("fermer-menu-gauche").addEventListener("click", fermerMenuGauche);
 document.getElementById("overlay-menu-gauche").addEventListener("click", fermerMenuGauche);
 document.getElementById("menu-btn-adherer").addEventListener("click", function() { fermerMenuGauche(); ouvrirModalAdhesion(); });
+document.getElementById("menu-btn-don").addEventListener("click", function() { fermerMenuGauche(); ouvrirModalDon(); });
 document.getElementById("menu-btn-partager").addEventListener("click", function() { fermerMenuGauche(); partagerFacebook(window.location.href); });
 
 /* ================================================================
@@ -178,7 +179,7 @@ document.getElementById("menu-btn-partager").addEventListener("click", function(
         diapos[index].classList.remove("diapo-active");
         index = (index + 1) % diapos.length;
         diapos[index].classList.add("diapo-active");
-    }, 3000);
+    }, 5000);
 })();
 
 function fermerPageAccueil(callback) {
@@ -613,6 +614,30 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
         }
         sauverArticle(imgExist);
     }
+});
+
+/* ================================================================
+   MODAL DON
+   ================================================================ */
+function ouvrirModalDon() {
+    document.getElementById("don-etape-1").style.display = "block";
+    document.getElementById("don-etape-2").style.display = "none";
+    document.getElementById("modal-don").style.display = "flex";
+}
+function fermerModalDon() { document.getElementById("modal-don").style.display = "none"; }
+document.getElementById("fermer-don").addEventListener("click", fermerModalDon);
+document.getElementById("modal-don").addEventListener("click", function(e) { if (e.target === this) fermerModalDon(); });
+
+document.querySelectorAll(".don-montant-btn").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+        document.getElementById("don-montant-choisi").textContent = btn.dataset.montant;
+        document.getElementById("don-etape-1").style.display = "none";
+        document.getElementById("don-etape-2").style.display = "block";
+    });
+});
+document.getElementById("don-retour").addEventListener("click", function() {
+    document.getElementById("don-etape-2").style.display = "none";
+    document.getElementById("don-etape-1").style.display = "block";
 });
 
 /* ================================================================

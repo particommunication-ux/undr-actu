@@ -20,6 +20,8 @@ html,body{width:100%;overflow-x:hidden;font-family:Arial,sans-serif;background:#
 .overlay-menu-gauche{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:750;}
 .point-admin{position:absolute;bottom:-2px;right:-4px;font-size:14px;color:#e67e22;cursor:pointer;user-select:none;}
 .menu-item-btn{display:block;width:100%;text-align:left;padding:12px 10px;background:none;border:none;border-radius:8px;font-size:15px;cursor:pointer;color:#003366;font-weight:bold;margin-bottom:4px;}
+.menu-btn-don{background:#e67e22 !important;color:#fff !important;border-radius:10px !important;text-align:center !important;box-shadow:0 3px 8px rgba(230,126,34,0.35);margin:6px 0 10px !important;}
+.menu-btn-don:active{background:#cf6d17 !important;}
 .menu-item-btn:active{background:#f0f4ff;}
 
 /* ACCORDÉONS MENU */
@@ -59,8 +61,8 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 /* FILTRES */
 .filtres{display:flex;width:100%;overflow-x:auto;background:white;border-bottom:1px solid #eee;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .filtres::-webkit-scrollbar{display:none;}
-.filtre-btn{background:none;border:none;padding:13px 16px;font-size:14px;font-weight:500;color:#555;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;flex-shrink:0;}
-.filtre-btn.actif{color:#e67e22;font-weight:bold;border-bottom:3px solid #e67e22;}
+.filtre-btn{background:none;border:none;padding:20px 26px;font-size:19px;font-weight:700;color:#555;cursor:pointer;white-space:nowrap;border-bottom:4px solid transparent;flex-shrink:0;}
+.filtre-btn.actif{color:#e67e22;font-weight:bold;border-bottom:4px solid #e67e22;}
 
 /* FORMULAIRE ADMIN */
 .formulaire{width:100%;max-width:700px;margin:16px auto;padding:16px;background:white;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
@@ -263,6 +265,19 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 .guide-num{background:#e67e22;color:white;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:13px;flex-shrink:0;}
 .guide-note{margin-top:5px;font-size:12px;color:#555;background:white;border-radius:6px;padding:6px 8px;border-left:3px solid #e67e22;}
 .numero-paiement{font-size:20px;font-weight:bold;color:#003366;text-align:center;padding:6px 0;letter-spacing:2px;}
+.don-description{font-size:14px;color:#555;line-height:1.6;margin-bottom:16px;}
+.don-montants{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.don-montant-btn{
+    background:#fff3e8;
+    border:2px solid #e67e22;
+    color:#e67e22;
+    font-size:20px;
+    font-weight:800;
+    padding:16px 10px;
+    border-radius:12px;
+    cursor:pointer;
+}
+.don-montant-btn:active{background:#e67e22;color:#fff;}
 .aide-ref{font-size:12px;color:#666;background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:8px 10px;margin:6px 0 10px;line-height:1.5;}
 
 /* PDF ADHÉSION */
@@ -313,7 +328,7 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     .article.une h2{font-size:16px;}
     .article-img{height:145px;}
     .article.une .article-img{height:175px;}
-    .filtre-btn{padding:11px 9px;font-size:12px;}
+    .filtre-btn{padding:15px 14px;font-size:15px;}
     .lire-aussi-grille{grid-template-columns:1fr 1fr;}
     .btn-row{flex-direction:column;}
     .chat-input-row{flex-wrap:wrap;}
@@ -433,13 +448,17 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     opacity:1;
 }
 .accueil-entete{
-    background:#fff;text-align:center;
+    background:linear-gradient(180deg,#a9ddf7 0%,#e4f5fd 100%);
+    text-align:center;
     padding:20px 16px 14px;
     border-bottom:4px solid #e67e22;
     flex-shrink:0;
 }
-.accueil-logo{width:58px;height:auto;display:block;margin:0 auto 6px;}
-.accueil-titre{color:#e67e22;font-size:24px;font-weight:800;margin:0;}
+.accueil-logo{
+    width:58px;height:auto;display:block;margin:0 auto 6px;
+    filter:drop-shadow(0 0 12px rgba(230,126,34,0.5));
+}
+.accueil-titre{color:#a8460f;font-size:24px;font-weight:800;margin:0;text-shadow:0 1px 2px rgba(255,255,255,0.6);}
 
 .accueil-corps{
     position:relative;
@@ -463,7 +482,7 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
 }
 .diapo-image.diapo-active{
     opacity:1;
-    animation:diapoZoom 3.6s ease forwards;
+    animation:diapoZoom 6s ease forwards;
 }
 @keyframes diapoZoom{
     from{transform:scale(1);}
