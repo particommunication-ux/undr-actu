@@ -807,20 +807,38 @@ function afficherEvenements() {
 
     widget.style.display = "block";
     indexEvenementActif = 0;
-    carrousel.innerHTML = evenementsActifs.map(function(ev, i) {
-        return "<div class='evenement-carte" + (i === 0 ? " actif" : "") + "'>" +
+
+    function carteHTML(ev, couleurIndex) {
+        return "<div class='evenement-carte couleur-" + (couleurIndex % 5) + "'>" +
             (ev.image ? "<img src='" + ev.image + "' class='evenement-img' alt=''>" : "<div class='evenement-img' style='display:flex;align-items:center;justify-content:center;font-size:28px;'>🗓️</div>") +
             "<div class='evenement-texte'><h3>" + ev.titre + "</h3>" +
             (ev.texte ? "<p>" + ev.texte + "</p>" : "") +
             "</div></div>";
-    }).join("");
+    }
+
+    /* Piste : toutes les annonces + une copie de la 1ère à la fin pour boucler sans à-coup */
+    var htmlCartes = evenementsActifs.map(function(ev, i) { return carteHTML(ev, i); }).join("");
+    if (evenementsActifs.length > 1) htmlCartes += carteHTML(evenementsActifs[0], 0);
+    carrousel.innerHTML = "<div class='evenements-piste' id='evenements-piste'>" + htmlCartes + "</div>";
+
+    var piste = document.getElementById("evenements-piste");
+    piste.style.transform = "translateX(0)";
 
     if (evenementsActifs.length > 1) {
-        var cartes = carrousel.querySelectorAll(".evenement-carte");
+        var total = evenementsActifs.length;
         intervalleEvenements = setInterval(function() {
-            cartes[indexEvenementActif].classList.remove("actif");
-            indexEvenementActif = (indexEvenementActif + 1) % cartes.length;
-            cartes[indexEvenementActif].classList.add("actif");
+            indexEvenementActif++;
+            piste.style.transition = "transform .7s ease";
+            piste.style.transform = "translateX(-" + (indexEvenementActif * 100) + "%)";
+            if (indexEvenementActif === total) {
+                /* On vient d'afficher la copie : au bout de la transition, saut instantané au début */
+                setTimeout(function() {
+                    piste.style.transition = "none";
+                    piste.style.transform = "translateX(0)";
+                    indexEvenementActif = 0;
+                    piste.offsetHeight; /* forcer le recalcul avant de réactiver la transition */
+                }, 720);
+            }
         }, 4500);
     }
 }
