@@ -260,11 +260,19 @@ function genererExtrait(contenuHtml) {
     return texte;
 }
 
+var articlesTousAffiches = false;
 function afficherArticles() {
     conteneur.innerHTML = "";
     var liste = categorieActuelle === "Toutes"
         ? trierALaUne(articles)
         : articles.filter(function(a) { return a.categorie === categorieActuelle; });
+
+    var listeComplete = liste;
+    var masques = 0;
+    if (!articlesTousAffiches && liste.length > 3) {
+        masques = liste.length - 3;
+        liste = liste.slice(0, 3);
+    }
 
     liste.forEach(function(art, i) {
         var div = document.createElement("div");
@@ -309,6 +317,24 @@ function afficherArticles() {
 
         conteneur.appendChild(div);
     });
+
+    /* Bouton "Voir plus" / "Voir moins" */
+    var ancienBtn = document.getElementById("btn-voir-plus-articles");
+    if (ancienBtn) ancienBtn.remove();
+    if (listeComplete.length > 3) {
+        var btnVoirPlus = document.createElement("button");
+        btnVoirPlus.id = "btn-voir-plus-articles";
+        btnVoirPlus.className = "btn-voir-plus";
+        btnVoirPlus.textContent = articlesTousAffiches
+            ? "▲ Voir moins"
+            : "Voir plus (" + masques + ") ▼";
+        btnVoirPlus.addEventListener("click", function() {
+            articlesTousAffiches = !articlesTousAffiches;
+            afficherArticles();
+            if (!articlesTousAffiches) conteneur.scrollIntoView({ behavior: "smooth" });
+        });
+        conteneur.insertAdjacentElement("afterend", btnVoirPlus);
+    }
 
     /* Bouton "Lire la suite" : ouvre l'article sans déclencher le clic de la carte */
     conteneur.querySelectorAll(".btn-lire-suite").forEach(function(btn) {
@@ -497,6 +523,7 @@ boutonsFiltre.forEach(function(b) {
         boutonsFiltre.forEach(function(x) { x.classList.remove("actif"); });
         b.classList.add("actif");
         categorieActuelle = b.dataset.categorie;
+        articlesTousAffiches = false;
         afficherArticles();
     });
 });
@@ -695,13 +722,16 @@ document.getElementById("evenement-image").addEventListener("change", function()
 document.getElementById("btn-publier-evenement").addEventListener("click", function() {
     var titre = (document.getElementById("evenement-titre").value || "").trim();
     var texte = (document.getElementById("evenement-texte").value || "").trim();
+    var date  = document.getElementById("evenement-date").value || "";
     if (!titre) { alert("Merci d'entrer le titre de l'événement."); return; }
+    if (!date) { alert("Merci de choisir la date de l'événement dans le calendrier."); return; }
 
     function sauverEvenement(imageData) {
         evenements.unshift({
             id: Date.now(),
             titre: titre,
             texte: texte,
+            date: date,
             image: imageData || ""
         });
         try {
@@ -714,6 +744,7 @@ document.getElementById("btn-publier-evenement").addEventListener("click", funct
         }
         document.getElementById("evenement-titre").value = "";
         document.getElementById("evenement-texte").value = "";
+        document.getElementById("evenement-date").value = "";
         document.getElementById("evenement-image").value = "";
         document.getElementById("apercu-evenement-image").innerHTML = "";
         afficherEvenements();
@@ -729,14 +760,23 @@ document.getElementById("btn-publier-evenement").addEventListener("click", funct
     }
 });
 
+function evenementEstPasse(ev) {
+    if (!ev.date) return false;
+    var finDeJournee = new Date(ev.date + "T23:59:59");
+    return finDeJournee < new Date();
+}
+
 function afficherListeEvenementsAdmin() {
     var zone = document.getElementById("liste-evenements-admin");
     if (!zone) return;
     if (!evenements.length) { zone.innerHTML = "<p style='color:#888;font-size:13px;'>Aucune annonce.</p>"; return; }
     zone.innerHTML = evenements.map(function(ev, i) {
+        var passe = evenementEstPasse(ev);
+        var dateAffichee = ev.date ? new Date(ev.date + "T00:00:00").toLocaleDateString("fr-FR", {day:"numeric",month:"long",year:"numeric"}) : "—";
         return "<div class='adhesion-item'>" +
             (ev.image ? "<img src='" + ev.image + "' style='width:100%;max-height:90px;object-fit:cover;border-radius:6px;margin-bottom:6px;'>" : "") +
-            "<strong>" + ev.titre + "</strong>" +
+            "<strong>" + ev.titre + "</strong> " +
+            (passe ? "<span class='badge-statut attente'>⏱ Expiré</span>" : "<span class='badge-statut valide'>📅 " + dateAffichee + "</span>") +
             (ev.texte ? "<br><small>" + ev.texte.substring(0,80) + (ev.texte.length>80?"…":"") + "</small>" : "") +
             "<br><button class='btn-suppr-abo' data-index='" + i + "'>🗑 Supprimer</button></div>";
     }).join("");
@@ -757,7 +797,9 @@ function afficherEvenements() {
 
     if (intervalleEvenements) { clearInterval(intervalleEvenements); intervalleEvenements = null; }
 
-    if (!evenements.length) {
+    var evenementsActifs = evenements.filter(function(ev) { return !evenementEstPasse(ev); });
+
+    if (!evenementsActifs.length) {
         widget.style.display = "none";
         carrousel.innerHTML = "";
         return;
@@ -765,7 +807,7 @@ function afficherEvenements() {
 
     widget.style.display = "block";
     indexEvenementActif = 0;
-    carrousel.innerHTML = evenements.map(function(ev, i) {
+    carrousel.innerHTML = evenementsActifs.map(function(ev, i) {
         return "<div class='evenement-carte" + (i === 0 ? " actif" : "") + "'>" +
             (ev.image ? "<img src='" + ev.image + "' class='evenement-img' alt=''>" : "<div class='evenement-img' style='display:flex;align-items:center;justify-content:center;font-size:28px;'>🗓️</div>") +
             "<div class='evenement-texte'><h3>" + ev.titre + "</h3>" +
@@ -773,7 +815,7 @@ function afficherEvenements() {
             "</div></div>";
     }).join("");
 
-    if (evenements.length > 1) {
+    if (evenementsActifs.length > 1) {
         var cartes = carrousel.querySelectorAll(".evenement-carte");
         intervalleEvenements = setInterval(function() {
             cartes[indexEvenementActif].classList.remove("actif");
@@ -782,6 +824,7 @@ function afficherEvenements() {
         }, 4500);
     }
 }
+
 
 /* ================================================================
    MODAL DON
@@ -1385,6 +1428,7 @@ metAJourAffichageAdmin();
 rafraichirPubs();
 afficherArticles();
 afficherEvenements();
+setInterval(afficherEvenements, 5 * 60 * 1000); /* revérifie l'expiration toutes les 5 min */
 ajusterEspaceEntete();
 appliquerLangue(langueActuelle); /* Appliquer la langue sauvegardée */
 setTimeout(demanderNotifications, 3000);
