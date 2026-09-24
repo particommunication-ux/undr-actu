@@ -1,10 +1,9 @@
 /* UNDR Actualités — service-worker.js — PWA Builder compatible */
-const CACHE_NAME = "undr-actu-v7";
+const CACHE_NAME = "undr-actu-v8";
 const RESSOURCES = [
     "./index.html",
     "./style.css",
     "./script.js",
-    "./chat.js",
     "./manifest.json",
     "./logo.png"
 ];

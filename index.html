@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>UNDR Actualités</title>
-    <link rel="stylesheet" href="style.css?v=13">
+    <link rel="stylesheet" href="style.css?v=14">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#e67e22">
     <!-- Splash screen portrait -->
@@ -244,6 +244,15 @@
         <input type="file" id="pub-bas-image" accept="image/*">
         <button id="btn-sauver-pub-bas">💾 Enregistrer pub basse</button>
         <hr style="margin:16px 0;">
+        <h3>🗓️ Prochains événements</h3>
+        <input type="text" id="evenement-titre" placeholder="Titre de l'événement">
+        <textarea id="evenement-texte" placeholder="Description de l'annonce" rows="3" style="width:100%;box-sizing:border-box;font-family:inherit;padding:8px;border:1px solid #ccc;border-radius:6px;margin-top:6px;"></textarea>
+        <label class="label-upload">📷 Image :</label>
+        <input type="file" id="evenement-image" accept="image/*">
+        <div id="apercu-evenement-image" class="apercu-media"></div>
+        <button id="btn-publier-evenement" style="margin-top:8px;">Publier l'annonce</button>
+        <div id="liste-evenements-admin" class="liste-adhesions" style="margin-top:12px;">Aucune annonce.</div>
+        <hr style="margin:16px 0;">
         <h3>👥 Demandes d'adhésion</h3>
         <div id="liste-adhesions" class="liste-adhesions">Chargement...</div>
     </div>
@@ -395,15 +404,10 @@
     </p>
 </div>
 
-<!-- CHAT -->
-<div class="chat-box">
-    <h2>Chat en direct</h2>
-    <div id="chat-messages" class="chat-messages"></div>
-    <div class="chat-input-row">
-        <input type="text" id="chat-pseudo" placeholder="Votre nom" maxlength="20">
-        <input type="text" id="chat-message" placeholder="Votre message">
-        <button id="chat-envoyer">Envoyer</button>
-    </div>
+<!-- PROCHAINS ÉVÉNEMENTS -->
+<div id="widget-evenements" class="widget-evenements" style="display:none;">
+    <div class="widget-evenements-entete">🗓️ Prochains événements</div>
+    <div id="evenements-carrousel" class="evenements-carrousel"></div>
 </div>
 
 <!-- PUB BASSE — AdMob ca-app-pub-3930833217023740/2766467357 -->
@@ -473,9 +477,8 @@
 <!-- FIN CONTENU PRINCIPAL -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="script.js?v=13"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="chat.js?v=8"></script>
+<script src="script.js?v=14"></script>
 </body>
 </html>

@@ -17,6 +17,22 @@ let estAdmin = sessionStorage.getItem("adminUNDR") === "true";
 let estAbonne = localStorage.getItem("abonneUNDR") === "true";
 const CATEGORIES_PREMIUM = ["Actualités","Communiqués","Actualités Tchad","Actualités Politique","Divertissement"];
 
+/* ================================================================
+   FIREBASE — nécessaire aux vues, likes et prochains événements
+   ================================================================ */
+if (typeof firebase !== "undefined") {
+    var firebaseConfig = {
+        apiKey: "AIzaSyBHqV5kBxzDn3RRGOq0fXkhByiCPcovKPE",
+        authDomain: "undr-actu-c3c93.firebaseapp.com",
+        projectId: "undr-actu-c3c93",
+        storageBucket: "undr-actu-c3c93.firebasestorage.app",
+        messagingSenderId: "876878050929",
+        appId: "1:876878050929:web:fbed51a7fd3e375ce3cdd0"
+    };
+    firebase.initializeApp(firebaseConfig);
+    window.db = firebase.firestore();
+}
+
 /* ---- ACCORDÉONS MENU (fonction globale appelée depuis HTML) ---- */
 function toggleAcc(id, btn) {
     var el = document.getElementById(id);
@@ -134,7 +150,7 @@ document.getElementById("point-admin").addEventListener("click", function(e) {
 function metAJourAffichageAdmin() {
     var f = document.getElementById("formulaire-ajout");
     if (f) f.style.display = estAdmin ? "block" : "none";
-    if (estAdmin) { chargerAdhesionsAdmin(); chargerPubsAdmin(); }
+    if (estAdmin) { chargerAdhesionsAdmin(); chargerPubsAdmin(); afficherListeEvenementsAdmin(); }
     /* Les vues sont gérées par afficherVue() — visible par tous */
     var btnPart = document.getElementById("btn-partager-article");
     if (btnPart) btnPart.style.display = estAdmin ? "inline-flex" : "none";
@@ -660,6 +676,114 @@ document.getElementById("bouton-publier").addEventListener("click", function() {
 });
 
 /* ================================================================
+   PROCHAINS ÉVÉNEMENTS
+   ================================================================ */
+var evenements = JSON.parse(localStorage.getItem("evenementsUNDR") || "[]");
+var indexEvenementActif = 0;
+var intervalleEvenements = null;
+
+document.getElementById("evenement-image").addEventListener("change", function() {
+    var f = this.files[0]; if (!f) return;
+    compresserImage(f, function(dataUrl) {
+        if (dataUrl) {
+            document.getElementById("apercu-evenement-image").innerHTML =
+                "<img src='" + dataUrl + "' style='max-height:80px;border-radius:6px;margin-top:4px;'>";
+        }
+    });
+});
+
+document.getElementById("btn-publier-evenement").addEventListener("click", function() {
+    var titre = (document.getElementById("evenement-titre").value || "").trim();
+    var texte = (document.getElementById("evenement-texte").value || "").trim();
+    if (!titre) { alert("Merci d'entrer le titre de l'événement."); return; }
+
+    function sauverEvenement(imageData) {
+        evenements.unshift({
+            id: Date.now(),
+            titre: titre,
+            texte: texte,
+            image: imageData || ""
+        });
+        try {
+            localStorage.setItem("evenementsUNDR", JSON.stringify(evenements));
+        } catch(e) {
+            evenements = evenements.map(function(ev, idx) {
+                return idx > 3 ? Object.assign({}, ev, {image:""}) : ev;
+            });
+            localStorage.setItem("evenementsUNDR", JSON.stringify(evenements));
+        }
+        document.getElementById("evenement-titre").value = "";
+        document.getElementById("evenement-texte").value = "";
+        document.getElementById("evenement-image").value = "";
+        document.getElementById("apercu-evenement-image").innerHTML = "";
+        afficherEvenements();
+        afficherListeEvenementsAdmin();
+        afficherToast("🎉 Événement publié !");
+    }
+
+    var fichier = document.getElementById("evenement-image").files[0];
+    if (fichier) {
+        compresserImage(fichier, function(dataUrl) { sauverEvenement(dataUrl); });
+    } else {
+        sauverEvenement("");
+    }
+});
+
+function afficherListeEvenementsAdmin() {
+    var zone = document.getElementById("liste-evenements-admin");
+    if (!zone) return;
+    if (!evenements.length) { zone.innerHTML = "<p style='color:#888;font-size:13px;'>Aucune annonce.</p>"; return; }
+    zone.innerHTML = evenements.map(function(ev, i) {
+        return "<div class='adhesion-item'>" +
+            (ev.image ? "<img src='" + ev.image + "' style='width:100%;max-height:90px;object-fit:cover;border-radius:6px;margin-bottom:6px;'>" : "") +
+            "<strong>" + ev.titre + "</strong>" +
+            (ev.texte ? "<br><small>" + ev.texte.substring(0,80) + (ev.texte.length>80?"…":"") + "</small>" : "") +
+            "<br><button class='btn-suppr-abo' data-index='" + i + "'>🗑 Supprimer</button></div>";
+    }).join("");
+    zone.querySelectorAll(".btn-suppr-abo").forEach(function(b) {
+        b.addEventListener("click", function() {
+            evenements.splice(Number(b.dataset.index), 1);
+            localStorage.setItem("evenementsUNDR", JSON.stringify(evenements));
+            afficherEvenements();
+            afficherListeEvenementsAdmin();
+        });
+    });
+}
+
+function afficherEvenements() {
+    var widget = document.getElementById("widget-evenements");
+    var carrousel = document.getElementById("evenements-carrousel");
+    if (!widget || !carrousel) return;
+
+    if (intervalleEvenements) { clearInterval(intervalleEvenements); intervalleEvenements = null; }
+
+    if (!evenements.length) {
+        widget.style.display = "none";
+        carrousel.innerHTML = "";
+        return;
+    }
+
+    widget.style.display = "block";
+    indexEvenementActif = 0;
+    carrousel.innerHTML = evenements.map(function(ev, i) {
+        return "<div class='evenement-carte" + (i === 0 ? " actif" : "") + "'>" +
+            (ev.image ? "<img src='" + ev.image + "' class='evenement-img' alt=''>" : "<div class='evenement-img' style='display:flex;align-items:center;justify-content:center;font-size:28px;'>🗓️</div>") +
+            "<div class='evenement-texte'><h3>" + ev.titre + "</h3>" +
+            (ev.texte ? "<p>" + ev.texte + "</p>" : "") +
+            "</div></div>";
+    }).join("");
+
+    if (evenements.length > 1) {
+        var cartes = carrousel.querySelectorAll(".evenement-carte");
+        intervalleEvenements = setInterval(function() {
+            cartes[indexEvenementActif].classList.remove("actif");
+            indexEvenementActif = (indexEvenementActif + 1) % cartes.length;
+            cartes[indexEvenementActif].classList.add("actif");
+        }, 4500);
+    }
+}
+
+/* ================================================================
    MODAL DON
    ================================================================ */
 function ouvrirModalDon() {
@@ -1004,8 +1128,8 @@ var TRADUCTIONS = {
         "abo_av2": "Actualités politiques exclusives",
         "abo_av3": "Communiqués officiels complets",
         "abo_av4": "Divertissement & contenus spéciaux",
-        /* Chat */
-        "chat_titre": "Chat en direct", "btn_envoyer_chat": "Envoyer",
+        /* Prochains événements */
+        "evenements_titre": "🗓️ Prochains événements",
         /* Lire aussi */
         "lire_aussi": "Lire aussi",
         /* Admin formulaire */
@@ -1043,7 +1167,7 @@ var TRADUCTIONS = {
         "abo_av2": "Exclusive political news",
         "abo_av3": "Full official press releases",
         "abo_av4": "Entertainment & special content",
-        "chat_titre": "Live Chat", "btn_envoyer_chat": "Send",
+        "evenements_titre": "🗓️ Upcoming events",
         "lire_aussi": "Read also",
         "form_titre": "Add an article", "btn_publier": "Publish"
     },
@@ -1079,7 +1203,7 @@ var TRADUCTIONS = {
         "abo_av2": "أخبار سياسية حصرية",
         "abo_av3": "بيانات رسمية كاملة",
         "abo_av4": "ترفيه ومحتوى خاص",
-        "chat_titre": "دردشة مباشرة", "btn_envoyer_chat": "إرسال",
+        "evenements_titre": "🗓️ الفعاليات القادمة",
         "lire_aussi": "اقرأ أيضاً",
         "form_titre": "إضافة مقال", "btn_publier": "نشر"
     }
@@ -1143,8 +1267,7 @@ function appliquerLangue(lang) {
         "abo-nom":         {fr:"Nom et Prénom *", en:"Full name *", ar:"الاسم الكامل *"},
         "abo-tel":         {fr:"Votre numéro de téléphone *", en:"Your phone number *", ar:"رقم هاتفك *"},
         "abo-ref":         {fr:"Numéro de référence de la transaction *", en:"Transaction reference number *", ar:"رقم مرجع المعاملة *"},
-        "chat-pseudo":     {fr:"Votre nom", en:"Your name", ar:"اسمك"},
-        "chat-message":    {fr:"Votre message", en:"Your message", ar:"رسالتك"}
+        "abo-ref":         {fr:"Numéro de référence de la transaction *", en:"Transaction reference number *", ar:"رقم مرجع المعاملة *"}
     };
     Object.keys(pls).forEach(function(id) {
         var el = document.getElementById(id);
@@ -1155,11 +1278,9 @@ function appliquerLangue(lang) {
     var btnPub = document.getElementById("bouton-publier");
     if (btnPub && !modeEdition && t["btn_publier"]) btnPub.textContent = t["btn_publier"];
 
-    /* Chat */
-    var chatTitre = document.querySelector(".chat-box h2");
-    if (chatTitre && t["chat_titre"]) chatTitre.textContent = t["chat_titre"];
-    var btnEnvoyer = document.getElementById("chat-envoyer");
-    if (btnEnvoyer && t["btn_envoyer_chat"]) btnEnvoyer.textContent = t["btn_envoyer_chat"];
+    /* Prochains événements */
+    var evTitre = document.querySelector(".widget-evenements-entete");
+    if (evTitre && t["evenements_titre"]) evTitre.textContent = t["evenements_titre"];
 
     /* Accordéons menu — mettre à jour le texte SANS toucher au onclick */
     var accLabels = [
@@ -1263,6 +1384,7 @@ mettreAJourPointAdmin();
 metAJourAffichageAdmin();
 rafraichirPubs();
 afficherArticles();
+afficherEvenements();
 ajusterEspaceEntete();
 appliquerLangue(langueActuelle); /* Appliquer la langue sauvegardée */
 setTimeout(demanderNotifications, 3000);
