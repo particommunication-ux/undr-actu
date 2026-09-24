@@ -350,6 +350,48 @@ function afficherVue(id) {
 }
 
 /* ================================================================
+   6bis. J'AIME (LIKES) FIREBASE
+   ================================================================ */
+function afficherLikes(id) {
+    var btn = document.getElementById("btn-jaime");
+    var compteEl = document.getElementById("jaime-compte");
+    if (!btn || !compteEl) return;
+
+    var dejaAime = localStorage.getItem("aime_" + id) === "true";
+    btn.classList.toggle("aime", dejaAime);
+
+    function majAffichage(n) {
+        compteEl.textContent = n;
+        localStorage.setItem("jaime_compte_" + id, n);
+    }
+    var cache = localStorage.getItem("jaime_compte_" + id);
+    if (cache) majAffichage(Number(cache));
+
+    if (window.db) {
+        window.db.collection("likes").doc(String(id)).onSnapshot(function(doc) {
+            majAffichage(doc.exists ? (doc.data().compte || 0) : 0);
+        }, function() {});
+    }
+
+    btn.onclick = function() {
+        var aime = localStorage.getItem("aime_" + id) === "true";
+        var variation = aime ? -1 : 1;
+        localStorage.setItem("aime_" + id, aime ? "false" : "true");
+        btn.classList.toggle("aime", !aime);
+
+        var compteActuel = Number(localStorage.getItem("jaime_compte_" + id) || "0");
+        majAffichage(Math.max(0, compteActuel + variation));
+
+        if (window.db) {
+            window.db.collection("likes").doc(String(id)).get().then(function(doc) {
+                var base = doc.exists ? (doc.data().compte || 0) : 0;
+                window.db.collection("likes").doc(String(id)).set({ compte: Math.max(0, base + variation) });
+            }).catch(function(){});
+        }
+    };
+}
+
+/* ================================================================
    LIRE AUSSI
    ================================================================ */
 function afficherLireAussi(artActuel) {
@@ -419,6 +461,7 @@ function ouvrirArticle(id) {
     /* 6. Vues */
     incrementerVue(id);
     afficherVue(id);
+    afficherLikes(id);
 
     conteneur.style.display = "none";
     document.getElementById("filtres-list").style.display = "none";

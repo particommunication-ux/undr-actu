@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>UNDR Actualités</title>
-    <link rel="stylesheet" href="style.css?v=12">
+    <link rel="stylesheet" href="style.css?v=13">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#e67e22">
     <!-- Splash screen portrait -->
@@ -260,7 +260,10 @@
     <span id="detail-badge" class="badge"></span>
     <h2 id="detail-titre"></h2>
     <p id="detail-date" class="date-article"></p>
-    <p id="detail-vues" class="vues-admin" style="display:none;"></p>
+    <div class="ligne-stats-article">
+        <p id="detail-vues" class="vues-admin" style="display:none;"></p>
+        <button id="btn-jaime" class="btn-jaime">🧡 <span id="jaime-compte">0</span></button>
+    </div>
     <button id="btn-partager-article" class="btn-partager-article" style="display:none;">
         📘 Partager sur Facebook
     </button>
@@ -383,10 +386,13 @@
 <!-- DIRECT FACEBOOK -->
 <button id="toggle-direct" class="direct-btn">🔴 Suivre le Direct</button>
 <div id="zone-direct" class="zone-direct" style="display:none;">
-    <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAssembleenationaleTchad&tabs=timeline&width=500&height=700&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false"
+    <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D61573724820762&tabs=timeline&width=500&height=700&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false"
         width="100%" height="700" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
         allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
     </iframe>
+    <p class="direct-lien-secours">
+        La page ne s'affiche pas ? <a href="https://www.facebook.com/profile.php?id=61573724820762" target="_blank" rel="noopener">Ouvrez-la directement sur Facebook →</a>
+    </p>
 </div>
 
 <!-- CHAT -->
@@ -467,9 +473,9 @@
 <!-- FIN CONTENU PRINCIPAL -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="script.js?v=12"></script>
+<script src="script.js?v=13"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="chat.js?v=7"></script>
+<script src="chat.js?v=8"></script>
 </body>
 </html>

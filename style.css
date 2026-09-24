@@ -10,7 +10,7 @@ html,body{width:100%;overflow-x:hidden;font-family:Arial,sans-serif;background:#
 .banniere-notif-btns button:last-child{background:rgba(255,255,255,0.2);color:white;}
 
 /* HAMBURGER */
-.icone-menu{position:fixed;top:10px;left:10px;z-index:700;background:rgba(0,51,102,0.9);color:white;border:none;font-size:22px;width:42px;height:42px;border-radius:8px;cursor:pointer;}
+.icone-menu{position:fixed;top:10px;left:10px;z-index:700;background:rgba(230,126,34,0.95);color:white;border:none;font-size:22px;width:42px;height:42px;border-radius:8px;cursor:pointer;}
 
 /* MENU GAUCHE */
 .menu-gauche{position:fixed;top:0;left:0;bottom:0;width:275px;background:white;z-index:800;box-shadow:4px 0 16px rgba(0,0,0,0.2);overflow-y:auto;}
@@ -54,7 +54,7 @@ html,body{width:100%;overflow-x:hidden;font-family:Arial,sans-serif;background:#
 #bandeau-btn-abo{background:#003366;color:white;}
 
 /* HEADER */
-header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3px solid #e67e22;}
+header{background:linear-gradient(180deg,#fff7ef,#ffffff);padding:12px 16px 8px;text-align:center;border-bottom:4px solid #e67e22;}
 .titre-site{font-size:22px;font-weight:bold;color:#003366;margin:5px 0 0;}
 .logo{max-width:62px;height:auto;display:block;margin:0 auto 4px;}
 
@@ -134,6 +134,23 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 .article.une .btn-lire-suite{color:#fff;text-decoration:underline;}
 .date-article{color:#aaa;font-size:11px;margin-bottom:4px;letter-spacing:0.2px;}
 .vues-admin{color:#e67e22;font-size:11px;font-weight:600;margin-bottom:4px;}
+.ligne-stats-article{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.btn-jaime{
+    background:#fff3e8;
+    border:1.5px solid #e67e22;
+    color:#e67e22;
+    font-size:14px;
+    font-weight:700;
+    padding:6px 14px;
+    border-radius:20px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:transform .1s ease,background .2s ease;
+}
+.btn-jaime.aime{background:#e67e22;color:#fff;}
+.btn-jaime:active{transform:scale(0.92);}
 
 /* Accent couleur haut de carte */
 .article::before{content:"";display:block;height:4px;background:linear-gradient(90deg,#e67e22,#003366);}
@@ -148,7 +165,7 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 .article.une .article-corps{padding:16px 16px 14px;}
 
 /* BADGES */
-.badge{display:inline-block;background:#e8eeff;color:#003366;font-size:11px;padding:3px 10px;border-radius:20px;margin-bottom:6px;font-weight:600;}
+.badge{display:inline-block;background:#ffe6d1;color:#c65a13;font-size:11px;padding:3px 10px;border-radius:20px;margin-bottom:6px;font-weight:600;}
 .badge-premium{display:inline-block;background:#fff3cd;color:#856404;font-size:11px;padding:2px 8px;border-radius:20px;margin-left:4px;font-weight:600;}
 .badge-une{display:inline-block;background:#e67e22;color:white;font-size:11px;padding:2px 9px;border-radius:20px;margin-left:4px;font-weight:700;}
 
@@ -192,6 +209,8 @@ header{background:white;padding:12px 16px 8px;text-align:center;border-bottom:3p
 /* DIRECT */
 .direct-btn{display:block;margin:12px auto 0;padding:10px 18px;background:#e63946;color:white;border:none;border-radius:6px;font-size:14px;cursor:pointer;font-weight:bold;}
 .zone-direct{width:100%;max-width:700px;margin:14px auto;padding:0 12px;}
+.direct-lien-secours{text-align:center;font-size:13px;color:#777;margin-top:8px;}
+.direct-lien-secours a{color:#1877f2;font-weight:600;}
 .zone-direct iframe{display:block;max-width:100%;border-radius:10px;}
 
 /* CHAT */
@@ -512,7 +531,7 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
 .accueil-btn:active{transform:scale(0.9);}
 
 .accueil-pied{
-    background:#0a2a5e;
+    background:linear-gradient(180deg,#e67e22,#c65d0e);
     padding:14px 16px 20px;
     color:#fff;
     flex-shrink:0;
