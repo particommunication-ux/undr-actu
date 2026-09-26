@@ -658,43 +658,53 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
 
 /* Effet de pression sur tous les boutons du site */
 button{transition:transform .15s ease;}
-button:active{transform:scale(0.93);}
+button:active{transform:scale(0.9);}
 
 /* Fondu d'entrée pour les fonds semi-transparents (menu, modales) */
 @keyframes overlayFadeIn{
     from{opacity:0;}
     to{opacity:1;}
 }
-.overlay-menu-gauche{animation:overlayFadeIn .3s ease;}
-.modal-overlay{animation:overlayFadeIn .25s ease;}
+.overlay-menu-gauche{animation:overlayFadeIn .35s ease;}
+.modal-overlay{animation:overlayFadeIn .3s ease;}
 
-/* Le menu latéral glisse depuis la gauche */
+/* Le menu latéral glisse depuis la gauche, avec un léger rebond à l'arrivée */
 @keyframes menuGaucheSlideIn{
-    from{transform:translateX(-100%);}
-    to{transform:translateX(0);}
+    0%{transform:translateX(-100%);}
+    70%{transform:translateX(3%);}
+    100%{transform:translateX(0);}
 }
-.menu-gauche{animation:menuGaucheSlideIn .3s ease;}
+.menu-gauche{animation:menuGaucheSlideIn .45s cubic-bezier(0.22,1,0.36,1);}
 
-/* Les modales (Adhérer, Statut & RI) apparaissent en zoom */
+/* Les modales (Adhérer, Statut & RI, Don, Cotisations) apparaissent en zoom bien visible */
 @keyframes modalPopIn{
-    from{opacity:0;transform:scale(.9) translateY(14px);}
-    to{opacity:1;transform:scale(1) translateY(0);}
+    0%{opacity:0;transform:scale(.75) translateY(40px);}
+    100%{opacity:1;transform:scale(1) translateY(0);}
 }
-.modal-contenu{animation:modalPopIn .3s ease;}
+.modal-contenu{animation:modalPopIn .45s cubic-bezier(0.22,1,0.36,1);}
 
 /* Le formulaire d'ajout d'article (admin) apparaît en zoom */
-.formulaire{animation:modalPopIn .3s ease;}
+.formulaire{animation:modalPopIn .45s cubic-bezier(0.22,1,0.36,1);}
 
-/* La vue détail d'un article glisse depuis la droite */
+/* La vue détail d'un article glisse franchement depuis la droite, comme un changement de page */
 @keyframes detailSlideIn{
-    from{opacity:0;transform:translateX(30px);}
-    to{opacity:1;transform:translateX(0);}
+    0%{opacity:0;transform:translateX(100%);}
+    100%{opacity:1;transform:translateX(0);}
 }
-.vue-detail{animation:detailSlideIn .3s ease;}
+.vue-detail{animation:detailSlideIn .45s cubic-bezier(0.22,1,0.36,1);}
 
-/* Le direct Facebook apparaît en glissant vers le bas */
-@keyframes directSlideDown{
-    from{opacity:0;transform:translateY(-14px);}
-    to{opacity:1;transform:translateY(0);}
+/* La liste des articles apparaît en fondu + léger glissement vers le haut au retour */
+@keyframes listeFadeIn{
+    0%{opacity:0;transform:translateY(18px);}
+    100%{opacity:1;transform:translateY(0);}
 }
-.zone-direct{animation:directSlideDown .3s ease;}
+#liste-articles{animation:listeFadeIn .4s cubic-bezier(0.22,1,0.36,1);}
+
+/* Le direct Facebook et les prochains événements apparaissent en glissant vers le bas */
+@keyframes directSlideDown{
+    0%{opacity:0;transform:translateY(-35px);}
+    100%{opacity:1;transform:translateY(0);}
+}
+.zone-direct{animation:directSlideDown .4s cubic-bezier(0.22,1,0.36,1);}
+.widget-evenements{animation:directSlideDown .4s cubic-bezier(0.22,1,0.36,1);}
+
