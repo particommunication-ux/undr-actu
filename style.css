@@ -544,6 +544,23 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     width:58px;height:auto;display:block;margin:0 auto 6px;
 }
 .accueil-titre{color:#a8460f;font-size:24px;font-weight:800;margin:0;text-shadow:0 1px 2px rgba(255,255,255,0.6);}
+.accueil-bandeau-defilant{
+    width:100%;
+    overflow:hidden;
+    white-space:nowrap;
+    margin-top:6px;
+}
+.accueil-bandeau-defilant span{
+    display:inline-block;
+    color:#0a2a5e;
+    font-weight:700;
+    font-size:14px;
+    animation:defilementDroiteGauche 10s linear infinite;
+}
+@keyframes defilementDroiteGauche{
+    0%{transform:translateX(100vw);}
+    100%{transform:translateX(-100%);}
+}
 
 .accueil-corps{
     position:relative;
@@ -609,7 +626,7 @@ body.mode-sombre .lang-btn,.taille-btn{background:#2a2a2a;color:#eee;border-colo
     margin-bottom:14px;
     line-height:1.35;
 }
-.accueil-pied-logo{width:36px;height:36px;background:transparent;object-fit:contain;flex-shrink:0;}
+.accueil-pied-logo{width:36px;height:36px;background:#0a2a5e;border-radius:50%;object-fit:contain;flex-shrink:0;padding:5px;box-sizing:border-box;}
 
 .accueil-rejoindre{
     display:flex;align-items:center;justify-content:space-between;
