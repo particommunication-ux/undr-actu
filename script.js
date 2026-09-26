@@ -181,6 +181,7 @@ document.getElementById("ouvrir-menu-gauche").addEventListener("click", ouvrirMe
 document.getElementById("fermer-menu-gauche").addEventListener("click", fermerMenuGauche);
 document.getElementById("overlay-menu-gauche").addEventListener("click", fermerMenuGauche);
 document.getElementById("menu-btn-adherer").addEventListener("click", function() { fermerMenuGauche(); ouvrirModalAdhesion(); });
+document.getElementById("menu-btn-cotisations").addEventListener("click", function() { fermerMenuGauche(); ouvrirModalCotisations(); });
 document.getElementById("menu-btn-don").addEventListener("click", function() { fermerMenuGauche(); ouvrirModalDon(); });
 document.getElementById("menu-btn-partager").addEventListener("click", function() { fermerMenuGauche(); partagerFacebook(window.location.href); });
 
@@ -843,6 +844,17 @@ function afficherEvenements() {
     }
 }
 
+
+/* ================================================================
+   MODAL COTISATIONS STATUTAIRES
+   ================================================================ */
+function ouvrirModalCotisations() {
+    document.getElementById("modal-cotisations").style.display = "flex";
+}
+function fermerModalCotisations() { document.getElementById("modal-cotisations").style.display = "none"; }
+document.getElementById("fermer-cotisations").addEventListener("click", fermerModalCotisations);
+document.getElementById("cotisations-fermer-bas").addEventListener("click", fermerModalCotisations);
+document.getElementById("modal-cotisations").addEventListener("click", function(e) { if (e.target === this) fermerModalCotisations(); });
 
 /* ================================================================
    MODAL DON

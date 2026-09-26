@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>UNDR Actualités</title>
-    <link rel="stylesheet" href="style.css?v=16">
+    <link rel="stylesheet" href="style.css?v=18">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#e67e22">
     <!-- Splash screen portrait -->
@@ -150,6 +150,7 @@
         </div>
 
         <hr style="margin:14px 0;">
+        <button class="menu-item-btn menu-btn-cotisations" id="menu-btn-cotisations">💳 Cotisations statutaires</button>
         <button class="menu-item-btn menu-btn-don" id="menu-btn-don">🧡 Faire un don</button>
 
     </div>
@@ -283,6 +284,45 @@
 </div>
 
 <!-- MODAL ADHÉSION -->
+<!-- MODAL COTISATIONS STATUTAIRES -->
+<div id="modal-cotisations" class="modal-overlay" style="display:none;">
+    <div class="modal-contenu">
+        <button class="fermer-modal" id="fermer-cotisations">✖</button>
+        <div class="modal-header-abo">
+            <h2>💳 Cotisations statutaires</h2>
+            <p>Une obligation prévue par les statuts, pour tout adhérent de l'UNDR.</p>
+        </div>
+
+        <p class="don-description">
+            Conformément aux <strong>Statuts et au Règlement Intérieur</strong> de l'UNDR, chaque
+            adhérent s'engage à s'acquitter de sa cotisation. Ces fonds servent exclusivement au
+            fonctionnement du parti : organisation des activités, fonctionnement des instances,
+            et indépendance financière du mouvement vis-à-vis de tout acteur extérieur.
+        </p>
+
+        <div class="guide-paiement">
+            <div class="guide-etape">
+                <span class="guide-num">1</span>
+                <div>
+                    Le montant de votre cotisation dépend de votre situation (militant, cadre, responsable).
+                    Contactez le <strong>Trésorier de l'UNDR</strong> pour connaître le montant qui vous concerne :
+                    <div class="numero-paiement">+235 66 85 95 95</div>
+                </div>
+            </div>
+            <div class="guide-etape">
+                <span class="guide-num">2</span>
+                <div>Le trésorier vous indiquera la marche à suivre pour le règlement (Airtel Money, Moov Money ou autre moyen).</div>
+            </div>
+            <div class="guide-etape">
+                <span class="guide-num">3</span>
+                <div>Conservez toujours une preuve de paiement (message de confirmation ou reçu) une fois votre cotisation réglée.</div>
+            </div>
+        </div>
+
+        <button class="btn-primary-vert" id="cotisations-fermer-bas" style="width:100%;">J'ai compris</button>
+    </div>
+</div>
+
 <!-- MODAL DON -->
 <div id="modal-don" class="modal-overlay" style="display:none;">
     <div class="modal-contenu">
@@ -481,6 +521,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="script.js?v=16"></script>
+<script src="script.js?v=17"></script>
 </body>
 </html>

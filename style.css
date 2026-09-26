@@ -20,6 +20,8 @@ html,body{width:100%;overflow-x:hidden;font-family:Arial,sans-serif;background:#
 .overlay-menu-gauche{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:750;}
 .point-admin{position:absolute;bottom:-2px;right:-4px;font-size:14px;color:#e67e22;cursor:pointer;user-select:none;}
 .menu-item-btn{display:block;width:100%;text-align:left;padding:12px 10px;background:none;border:none;border-radius:8px;font-size:15px;cursor:pointer;color:#003366;font-weight:bold;margin-bottom:4px;}
+.menu-btn-cotisations{background:#0a2a5e !important;color:#fff !important;border-radius:10px !important;text-align:center !important;box-shadow:0 3px 8px rgba(10,42,94,0.35);margin:6px 0 !important;}
+.menu-btn-cotisations:active{background:#08224a !important;}
 .menu-btn-don{background:#e67e22 !important;color:#fff !important;border-radius:10px !important;text-align:center !important;box-shadow:0 3px 8px rgba(230,126,34,0.35);margin:6px 0 10px !important;}
 .menu-btn-don:active{background:#cf6d17 !important;}
 .menu-item-btn:active{background:#f0f4ff;}
