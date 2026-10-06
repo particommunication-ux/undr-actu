@@ -574,6 +574,16 @@ conteneur.addEventListener("click", function(e) {
    Convertit n'importe quelle image en JPEG compressé max 800px
    ================================================================ */
 function compresserImage(fichier, callback) {
+    /* Les GIF (souvent animés) sont conservés tels quels : redessiner sur un canvas
+       ne capturerait qu'une image fixe et perdrait l'animation. */
+    if (fichier.type === "image/gif") {
+        if (fichier.size > 5*1024*1024) { callback(null); return; }
+        var lecteur = new FileReader();
+        lecteur.onload = function(e) { callback(e.target.result); };
+        lecteur.onerror = function() { callback(null); };
+        lecteur.readAsDataURL(fichier);
+        return;
+    }
     var url = URL.createObjectURL(fichier);
     var img = new Image();
     img.onload = function() {
@@ -585,7 +595,11 @@ function compresserImage(fichier, callback) {
         canvas.width = w; canvas.height = h;
         var ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, w, h);
-        var dataUrl = canvas.toDataURL("image/jpeg", 0.75);
+        /* Conserver le format d'origine (PNG transparent, WEBP...) plutôt que de tout forcer en JPEG */
+        var typeOrigine = (fichier.type && fichier.type.indexOf("image/") === 0) ? fichier.type : "image/jpeg";
+        var dataUrl = (typeOrigine === "image/jpeg" || typeOrigine === "image/webp")
+            ? canvas.toDataURL(typeOrigine, 0.8)
+            : canvas.toDataURL(typeOrigine);
         URL.revokeObjectURL(url);
         callback(dataUrl);
     };
